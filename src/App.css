@@ -5,19 +5,23 @@
   text-align: center;
 }
 
+/* Logo */
 .logo {
   height: 6em;
   padding: 1.5em;
   will-change: filter;
   transition: filter 300ms;
 }
+
 .logo:hover {
   filter: drop-shadow(0 0 2em #646cffaa);
 }
+
 .logo.react:hover {
   filter: drop-shadow(0 0 2em #61dafbaa);
 }
 
+/* Animación del logo */
 @keyframes logo-spin {
   from {
     transform: rotate(0deg);
@@ -33,10 +37,59 @@
   }
 }
 
+/* Estilo para tarjetas */
 .card {
   padding: 2em;
 }
 
+/* Estilo de enlaces */
 .read-the-docs {
   color: #888;
+}
+
+/* Media Queries para responsividad */
+@media (max-width: 1280px) {
+  #root {
+    padding: 1rem;
+  }
+  
+  .logo {
+    height: 5em; /* Disminuir el tamaño del logo */
+  }
+  
+  .card {
+    padding: 1.5em; /* Ajustar el padding de las tarjetas */
+  }
+}
+
+@media (max-width: 768px) {
+  #root {
+    padding: 1rem;
+  }
+  
+  .logo {
+    height: 4em; /* Disminuir aún más el tamaño del logo */
+  }
+  
+  .card {
+    padding: 1em; /* Ajustar aún más el padding de las tarjetas */
+  }
+
+  .read-the-docs {
+    font-size: 0.8rem; /* Disminuir el tamaño de la fuente */
+  }
+}
+
+@media (max-width: 480px) {
+  .logo {
+    height: 3em; /* Logo pequeño para pantallas muy pequeñas */
+  }
+  
+  .card {
+    padding: 0.5em; /* Padding mínimo en pantallas pequeñas */
+  }
+  
+  .read-the-docs {
+    font-size: 0.7rem; /* Fuente aún más pequeña */
+  }
 }
