@@ -71,6 +71,8 @@
 h1 {
     font-size: 3rem;
     color: #333;
+    text-align: center;
+    margin-top: 50px;
 }
 
 p {
