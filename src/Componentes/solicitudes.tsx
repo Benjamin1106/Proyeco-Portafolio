@@ -2,12 +2,12 @@ import React, { useState } from 'react';
 import './solicitudes.css';
 
 const Solicitudes: React.FC = () => {
+  const [nombre, setNombre] = useState(''); // Estado para el nombre
   const [tipoSolicitud, setTipoSolicitud] = useState('cancha'); // Estado para el tipo de solicitud
   const [horaInicio, setHoraInicio] = useState('');
   const [horaFin, setHoraFin] = useState('');
   const [datosCertificado, setDatosCertificado] = useState('');
   const [fecha, setFecha] = useState(''); // Estado para la fecha
-
 
   // Obtener la fecha de hoy en formato YYYY-MM-DD
   const today = new Date().toISOString().split('T')[0];
@@ -15,7 +15,15 @@ const Solicitudes: React.FC = () => {
   return (
     <div>
       <h1>Solicitudes</h1>
-      <form >
+      <form>
+        <label>Nombre:</label>
+        <input
+          type="text"
+          value={nombre}
+          onChange={(e) => setNombre(e.target.value)}
+          required
+        />
+
         <label>Tipo de Solicitud:</label>
         <select
           value={tipoSolicitud}
@@ -36,16 +44,16 @@ const Solicitudes: React.FC = () => {
         </select>
 
         {tipoSolicitud !== 'certificadoResidencia' && (
-        <div>
-          <label>Fecha:</label>
-          <input
-            type="date"
-            value={fecha}
-            onChange={(e) => setFecha(e.target.value)}
-            min={today} // Establecer la fecha mínima como hoy
-            required
-          />
-        </div>
+          <div>
+            <label>Fecha:</label>
+            <input
+              type="date"
+              value={fecha}
+              onChange={(e) => setFecha(e.target.value)}
+              min={today} // Establecer la fecha mínima como hoy
+              required
+            />
+          </div>
         )}
 
         {tipoSolicitud !== 'certificadoResidencia' && (
