@@ -35,7 +35,8 @@ body {
   select,
   input[type="date"],
   input[type="time"],
-  input[type="text"] {
+  input[type="text"],
+  input[type="file"] {
     width: 100%; /* Ancho completo para mejor adaptabilidad */
     max-width: 400px; /* Ancho máximo para dispositivos más grandes */
     padding: 10px; /* Espaciado interno */
@@ -61,6 +62,7 @@ body {
     margin-left: auto; /* Centrando en el contenedor */
     margin-right: auto; /* Centrando en el contenedor */
   }
+  
   
   button:hover {
     background-color: #218838; /* Color verde más oscuro al pasar el ratón */
