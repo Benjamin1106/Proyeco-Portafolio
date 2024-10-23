@@ -20,7 +20,7 @@ const Solicitudes: React.FC = () => {
   return (
     <div>
       <h1>Solicitudes</h1>
-      <form onSubmit={handleSubmit}>
+      <form>
         <label>Tipo de Solicitud:</label>
         <select
           value={tipoSolicitud}
