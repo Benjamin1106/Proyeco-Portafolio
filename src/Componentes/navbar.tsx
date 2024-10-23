@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { Link } from 'react-router-dom';
-import './navbar.css'; // Asegúrate de que el CSS esté correctamente importado
+import './navbar.css'; 
 
 const Navbar: React.FC = () => {
   const [isActive, setIsActive] = useState(false);
@@ -23,7 +23,7 @@ const Navbar: React.FC = () => {
             <Link to="/" className="nav-links" onClick={toggleMenu}>Home</Link>
           </li>
           <li className="nav-item">
-            <Link to="/about" className="nav-links" onClick={toggleMenu}>About</Link>
+            <Link to="/solicitudes" className="nav-links" onClick={toggleMenu}>Solicitudes</Link>
           </li>
           <li className="nav-item">
             <Link to="/services" className="nav-links" onClick={toggleMenu}>Services</Link>
