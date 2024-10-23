@@ -8,14 +8,37 @@ const Solicitudes: React.FC = () => {
   const [horaFin, setHoraFin] = useState('');
   const [datosCertificado, setDatosCertificado] = useState('');
   const [fecha, setFecha] = useState(''); // Estado para la fecha
+  const [archivo, setArchivo] = useState<File | null>(null); // Estado para el archivo
 
   // Obtener la fecha de hoy en formato YYYY-MM-DD
   const today = new Date().toISOString().split('T')[0];
 
+  const handleSubmit = (e: React.FormEvent) => {
+    e.preventDefault(); // Prevenir el comportamiento por defecto del formulario
+
+    // Crear un FormData para enviar los datos
+    const formData = new FormData();
+    formData.append('nombre', nombre);
+    formData.append('tipoSolicitud', tipoSolicitud);
+    if (tipoSolicitud !== 'certificadoResidencia') {
+      formData.append('fecha', fecha);
+      formData.append('horaInicio', horaInicio);
+      formData.append('horaFin', horaFin);
+    } else {
+      formData.append('datosCertificado', datosCertificado);
+      if (archivo) {
+        formData.append('archivo', archivo); // Adjuntar el archivo si existe
+      }
+    }
+
+    // Aquí podrías enviar `formData` a tu API o backend
+    console.log('Datos enviados:', formData);
+  };
+
   return (
     <div>
       <h1>Solicitudes</h1>
-      <form>
+      <form onSubmit={handleSubmit}>
         <label>Nombre:</label>
         <input
           type="text"
@@ -34,6 +57,7 @@ const Solicitudes: React.FC = () => {
             setHoraFin('');
             setDatosCertificado('');
             setFecha(''); // Resetear fecha al cambiar tipo
+            setArchivo(null); // Resetear archivo al cambiar tipo
           }}
           required
         >
@@ -84,6 +108,17 @@ const Solicitudes: React.FC = () => {
               type="text"
               value={datosCertificado}
               onChange={(e) => setDatosCertificado(e.target.value)}
+              required
+            />
+            <label>Adjuntar Archivo:</label>
+            <input
+              type="file"
+              accept=".pdf,.doc,.docx,.jpg,.png" // Tipos de archivos permitidos
+              onChange={(e) => {
+                if (e.target.files) {
+                  setArchivo(e.target.files[0]); // Guardar el archivo seleccionado
+                }
+              }}
               required
             />
           </div>
