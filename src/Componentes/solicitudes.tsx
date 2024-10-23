@@ -8,11 +8,6 @@ const Solicitudes: React.FC = () => {
   const [datosCertificado, setDatosCertificado] = useState('');
   const [fecha, setFecha] = useState(''); // Estado para la fecha
 
-  const handleSubmit = (e: React.FormEvent) => {
-    e.preventDefault();
-    alert(`Solicitud enviada con éxito!\nTipo de Solicitud: ${tipoSolicitud}\nFecha: ${fecha}`);
-    // Aquí podrías manejar el envío de datos según el tipo de solicitud
-  };
 
   // Obtener la fecha de hoy en formato YYYY-MM-DD
   const today = new Date().toISOString().split('T')[0];
@@ -20,7 +15,7 @@ const Solicitudes: React.FC = () => {
   return (
     <div>
       <h1>Solicitudes</h1>
-      <form>
+      <form >
         <label>Tipo de Solicitud:</label>
         <select
           value={tipoSolicitud}
