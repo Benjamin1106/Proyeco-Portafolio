@@ -14,7 +14,7 @@ const App: React.FC = () => {
       <Navbar />
       <Routes>
         <Route path="/" element={<Home />} />
-        <Route path="/solicitudes" element={<FormularioSolicitudes />} /> {/* Usamos el nombre correcto */}
+        <Route path="/solicitudes" element={<FormularioSolicitudes />} />
         <Route path="/services" element={<Services />} />
         <Route path="/contact" element={<Contact />} />
       </Routes>
