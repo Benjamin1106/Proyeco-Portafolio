@@ -2,24 +2,31 @@ import React, { useState } from 'react';
 import './solicitudes.css';
 
 const Solicitudes: React.FC = () => {
-  const [nombre, setNombre] = useState(''); // Estado para el nombre
-  const [tipoSolicitud, setTipoSolicitud] = useState('cancha'); // Estado para el tipo de solicitud
+  const [nombre, setNombre] = useState(''); 
+  const [rut, setRut] = useState('');
+  const [direccion, setDireccion] = useState('');
+  const [telefono, setTelefono] = useState('');
+  const [correo, setCorreo] = useState('');
+  const [tipoSolicitud, setTipoSolicitud] = useState('cancha');
   const [horaInicio, setHoraInicio] = useState('');
   const [horaFin, setHoraFin] = useState('');
   const [datosCertificado, setDatosCertificado] = useState('');
-  const [fecha, setFecha] = useState(''); // Estado para la fecha
-  const [archivo, setArchivo] = useState<File | null>(null); // Estado para el archivo
+  const [fecha, setFecha] = useState('');
+  const [archivo, setArchivo] = useState<File | null>(null);
 
-  // Obtener la fecha de hoy en formato YYYY-MM-DD
   const today = new Date().toISOString().split('T')[0];
 
   const handleSubmit = (e: React.FormEvent) => {
-    e.preventDefault(); // Prevenir el comportamiento por defecto del formulario
+    e.preventDefault();
 
-    // Crear un FormData para enviar los datos
     const formData = new FormData();
     formData.append('nombre', nombre);
+    formData.append('rut', rut);
+    formData.append('direccion', direccion);
+    formData.append('telefono', telefono);
+    formData.append('correo', correo);
     formData.append('tipoSolicitud', tipoSolicitud);
+
     if (tipoSolicitud !== 'certificadoResidencia') {
       formData.append('fecha', fecha);
       formData.append('horaInicio', horaInicio);
@@ -27,16 +34,18 @@ const Solicitudes: React.FC = () => {
     } else {
       formData.append('datosCertificado', datosCertificado);
       if (archivo) {
-        formData.append('archivo', archivo); // Adjuntar el archivo si existe
+        formData.append('archivo', archivo);
       }
     }
 
-    // Aquí podrías enviar `formData` a tu API o backend
-    console.log('Datos enviados:', formData);
+    console.log('Datos enviados:');
+    formData.forEach((value, key) => {
+      console.log(key, value);
+    });
   };
 
   return (
-    <div>
+    <div className="container">
       <h1>Solicitudes</h1>
       <form onSubmit={handleSubmit}>
         <label>Nombre:</label>
@@ -47,17 +56,48 @@ const Solicitudes: React.FC = () => {
           required
         />
 
+        <label>Rut:</label>
+        <input
+          type="text"
+          value={rut}
+          onChange={(e) => setRut(e.target.value)}
+          required
+        />
+
+        <label>Dirección:</label>
+        <input
+          type="text"
+          value={direccion}
+          onChange={(e) => setDireccion(e.target.value)}
+          required
+        />
+
+        <label>Teléfono:</label>
+        <input
+          type="tel"
+          value={telefono}
+          onChange={(e) => setTelefono(e.target.value)}
+          required
+        />
+
+        <label>Correo Electrónico:</label>
+        <input
+          type="email"
+          value={correo}
+          onChange={(e) => setCorreo(e.target.value)}
+          required
+        />
+
         <label>Tipo de Solicitud:</label>
         <select
           value={tipoSolicitud}
           onChange={(e) => {
             setTipoSolicitud(e.target.value);
-            // Limpiar los campos de horas y datos cuando se cambia el tipo
             setHoraInicio('');
             setHoraFin('');
             setDatosCertificado('');
-            setFecha(''); // Resetear fecha al cambiar tipo
-            setArchivo(null); // Resetear archivo al cambiar tipo
+            setFecha('');
+            setArchivo(null);
           }}
           required
         >
@@ -74,7 +114,7 @@ const Solicitudes: React.FC = () => {
               type="date"
               value={fecha}
               onChange={(e) => setFecha(e.target.value)}
-              min={today} // Establecer la fecha mínima como hoy
+              min={today}
               required
             />
           </div>
@@ -113,10 +153,10 @@ const Solicitudes: React.FC = () => {
             <label>Adjuntar Archivo:</label>
             <input
               type="file"
-              accept=".pdf,.doc,.docx,.jpg,.png" // Tipos de archivos permitidos
+              accept=".pdf,.doc,.docx,.jpg,.png"
               onChange={(e) => {
                 if (e.target.files) {
-                  setArchivo(e.target.files[0]); // Guardar el archivo seleccionado
+                  setArchivo(e.target.files[0]);
                 }
               }}
               required
