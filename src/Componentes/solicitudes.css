@@ -36,7 +36,9 @@ body {
   input[type="date"],
   input[type="time"],
   input[type="text"],
-  input[type="file"] {
+  input[type="file"],
+  input[type="tel"],
+  input[type="email"] {
     width: 100%; /* Ancho completo para mejor adaptabilidad */
     max-width: 400px; /* Ancho máximo para dispositivos más grandes */
     padding: 10px; /* Espaciado interno */
