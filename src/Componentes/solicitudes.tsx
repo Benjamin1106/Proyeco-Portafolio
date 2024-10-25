@@ -2,7 +2,8 @@ import React, { useState } from 'react';
 import './solicitudes.css';
 
 const Solicitudes: React.FC = () => {
-  const [nombre, setNombre] = useState(''); 
+  const [nombre, setNombre] = useState('');
+  const [apellido, setApellido] = useState('');
   const [rut, setRut] = useState('');
   const [direccion, setDireccion] = useState('');
   const [telefono, setTelefono] = useState('');
@@ -21,6 +22,7 @@ const Solicitudes: React.FC = () => {
 
     const formData = new FormData();
     formData.append('nombre', nombre);
+    formData.append('apellido', apellido)
     formData.append('rut', rut);
     formData.append('direccion', direccion);
     formData.append('telefono', telefono);
@@ -48,11 +50,19 @@ const Solicitudes: React.FC = () => {
     <div className="container">
       <h1>Solicitudes</h1>
       <form onSubmit={handleSubmit}>
-        <label>Nombre:</label>
+        <label>Nombres:</label>
         <input
           type="text"
           value={nombre}
           onChange={(e) => setNombre(e.target.value)}
+          required
+        />
+
+        <label>Apellidos:</label>
+        <input
+          type="text"
+          value={apellido}
+          onChange={(e) => setApellido(e.target.value)}
           required
         />
 
