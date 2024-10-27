@@ -4,69 +4,123 @@
     padding: 20px;
   }
   
-  .home-header {
+  /* Hero section */
+  .hero-section {
+    background-image: url('https://via.placeholder.com/1500x800'); /* Reemplaza con la URL de tu imagen */
+    background-size: cover;
+    background-position: center;
+    color: white;
     text-align: center;
-    margin-bottom: 40px;
+    padding: 150px 20px;
   }
   
-  .home-header h1 {
-    font-size: 2.5rem;
-    color: #2c3e50;
+  .hero-content {
+    background-color: rgba(0, 0, 0, 0.5); /* Fondo semi-transparente */
+    padding: 30px;
+    border-radius: 8px;
   }
   
-  .home-header p {
-    font-size: 1.2rem;
-    color: #7f8c8d;
+  .hero-content h1 {
+    font-size: 3rem;
+    margin-bottom: 20px;
   }
   
-  .about-section, .goal-section {
+  .hero-content p {
+    font-size: 1.5rem;
     margin-bottom: 30px;
   }
   
-  .about-section h2, .goal-section h2 {
-    font-size: 1.8rem;
-    color: #2980b9;
+  .cta-button {
+    background-color: #28a745;
+    color: white;
+    padding: 15px 30px;
+    border: none;
+    border-radius: 5px;
+    font-size: 1.2rem;
+    text-decoration: none;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
   }
   
-  .about-section p, .goal-section p {
-    font-size: 1rem;
+  .cta-button:hover {
+    background-color: #218838;
+  }
+  
+  /* Sección de Quiénes Somos */
+  .about-section {
+    text-align: center;
+    padding: 50px 20px;
+  }
+  
+  .about-section h2 {
+    font-size: 2rem;
+    margin-bottom: 20px;
+  }
+  
+  .about-section p {
+    font-size: 1.2rem;
     color: #34495e;
   }
   
-  /* Responsive design */
+  /* Sección de Objetivos */
+  .goal-section {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-between;
+    padding: 50px 20px;
+  }
+  
+  .goal-content {
+    flex: 1;
+    padding-right: 20px;
+  }
+  
+  .goal-image {
+    flex: 1;
+    text-align: center;
+  }
+  
+  .goal-image img {
+    max-width: 100%;
+    border-radius: 8px;
+  }
+  
+  /* Responsive Design */
   @media (max-width: 768px) {
-    .home-header h1 {
-      font-size: 2rem;
+    .hero-content h1 {
+      font-size: 2.5rem;
     }
   
-    .home-header p {
-      font-size: 1rem;
+    .hero-content p {
+      font-size: 1.2rem;
     }
   
-    .about-section h2, .goal-section h2 {
-      font-size: 1.5rem;
+    .goal-section {
+      flex-direction: column;
     }
   
-    .about-section p, .goal-section p {
-      font-size: 0.9rem;
+    .goal-content {
+      padding-right: 0;
+      margin-bottom: 20px;
+    }
+  
+    .goal-image img {
+      width: 100%;
     }
   }
   
   @media (max-width: 480px) {
-    .home-header h1 {
-      font-size: 1.5rem;
+    .hero-content h1 {
+      font-size: 2rem;
     }
   
-    .home-header p {
-      font-size: 0.9rem;
+    .hero-content p {
+      font-size: 1rem;
     }
   
-    .about-section h2, .goal-section h2 {
-      font-size: 1.3rem;
-    }
-  
-    .about-section p, .goal-section p {
-      font-size: 0.8rem;
+    .cta-button {
+      font-size: 1rem;
+      padding: 10px 20px;
     }
   }
   

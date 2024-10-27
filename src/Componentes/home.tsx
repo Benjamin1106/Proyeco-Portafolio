@@ -4,31 +4,37 @@ import './home.css';
 const Home: React.FC = () => {
   return (
     <div className="home-container">
-      <header className="home-header">
-        <h1>Bienvenidos a la Plataforma de Junta de Vecinos</h1>
-        <p>Un espacio para conectar y mejorar nuestra comunidad.</p>
-      </header>
-      
-      <section className="about-section">
+      {/* Hero section con imagen de fondo */}
+      <section className="hero-section">
+        <div className="hero-content">
+          <h1>Bienvenidos a la Plataforma de Junta de Vecinos</h1>
+          <p>Conectando a nuestra comunidad por un futuro mejor</p>
+          <a href="#about" className="cta-button">Conoce Más</a>
+        </div>
+      </section>
+
+      {/* Sección de Quiénes Somos */}
+      <section className="about-section" id="about">
         <h2>¿Quiénes Somos?</h2>
         <p>
-          Somos la junta de vecinos de la Villa Los Lagos, comprometidos con la participación
-          activa de nuestros habitantes. Nuestro objetivo es unir a la comunidad y trabajar juntos 
-          para mejorar la calidad de vida de todos.
-        </p>
-        <p>
-          Esta plataforma está diseñada para gestionar solicitudes, eventos y discusiones comunitarias 
-          de manera eficiente. Comenzamos en la Villa Los Lagos, pero nuestro sueño es expandir esta 
-          plataforma para que todas las juntas de vecinos del país puedan beneficiarse de esta herramienta.
+          Somos la junta de vecinos de la Villa Los Lagos, comprometidos con la participación activa 
+          de nuestros habitantes. Nuestra misión es construir una comunidad unida y colaborativa. Esta 
+          plataforma será el punto de partida para expandirnos a todas las juntas de vecinos del país.
         </p>
       </section>
 
+      {/* Sección de Nuestro Objetivo con imagen */}
       <section className="goal-section">
-        <h2>Nuestro Objetivo</h2>
-        <p>
-          Crear una red digital que facilite la comunicación y el trabajo colaborativo entre los 
-          vecinos y las juntas de distintas comunidades en todo el país.
-        </p>
+        <div className="goal-content">
+          <h2>Nuestro Objetivo</h2>
+          <p>
+            Crear una red digital que conecte a las comunidades de todo el país, facilitando la comunicación 
+            y la colaboración entre vecinos y juntas.
+          </p>
+        </div>
+        <div className="goal-image">
+          <img src="https://via.placeholder.com/600x400" alt="Comunidad Unida" />
+        </div>
       </section>
     </div>
   );
