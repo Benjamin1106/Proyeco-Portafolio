@@ -6,7 +6,7 @@
   
   /* Hero section */
   .hero-section {
-    background-image: url('https://via.placeholder.com/1500x800'); /* Reemplaza con la URL de tu imagen */
+    background-image: url('../img/Foto2.jpg'); /* Reemplaza con la URL de tu imagen */
     background-size: cover;
     background-position: center;
     color: white;
