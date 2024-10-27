@@ -20,16 +20,16 @@ const Navbar: React.FC = () => {
         </div>
         <ul className={`nav-menu ${isActive ? 'active' : ''}`}>
           <li className="nav-item">
-            <Link to="/" className="nav-links" onClick={toggleMenu}>Home</Link>
+            <Link to="/" className="nav-links" onClick={toggleMenu}>Inicio</Link>
           </li>
           <li className="nav-item">
             <Link to="/solicitudes" className="nav-links" onClick={toggleMenu}>Solicitudes</Link>
           </li>
           <li className="nav-item">
-            <Link to="/services" className="nav-links" onClick={toggleMenu}>Services</Link>
+            <Link to="/services" className="nav-links" onClick={toggleMenu}>Actividades</Link>
           </li>
           <li className="nav-item">
-            <Link to="/contact" className="nav-links" onClick={toggleMenu}>Contact</Link>
+            <Link to="/contact" className="nav-links" onClick={toggleMenu}>Videos <Tutoriales></Tutoriales></Link>
           </li>
         </ul>
       </div>
