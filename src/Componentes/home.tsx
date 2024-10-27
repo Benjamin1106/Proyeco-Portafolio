@@ -33,7 +33,7 @@ const Home: React.FC = () => {
           </p>
         </div>
         <div className="goal-image">
-          <img src="https://via.placeholder.com/600x400" alt="Comunidad Unida" />
+          <img src="../img/Foto1.jpg" alt="Comunidad Unida" />
         </div>
       </section>
     </div>
