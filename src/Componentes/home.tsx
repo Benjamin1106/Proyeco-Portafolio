@@ -1,5 +1,6 @@
 import React from 'react';
 import './home.css';
+import foto1 from "../img/Foto1.jpg"
 
 const Home: React.FC = () => {
   return (
@@ -33,7 +34,7 @@ const Home: React.FC = () => {
           </p>
         </div>
         <div className="goal-image">
-          <img src="../img/Foto1.jpg" alt="Comunidad Unida" />
+          <img src={foto1} alt="Comunidad Unida" />
         </div>
       </section>
     </div>
