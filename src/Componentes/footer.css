@@ -20,24 +20,6 @@
     margin: 20px;
   }
   
-  .footer-links ul {
-    list-style: none;
-    padding: 0;
-  }
-  
-  .footer-links ul li {
-    margin-bottom: 10px;
-  }
-  
-  .footer-links ul li a {
-    color: white;
-    text-decoration: none;
-  }
-  
-  .footer-links ul li a:hover {
-    text-decoration: underline;
-  }
-  
   .footer-contact p {
     margin: 5px 0;
   }
