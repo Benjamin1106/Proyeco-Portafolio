@@ -6,8 +6,8 @@ import FormularioSolicitudes from './Componentes/solicitudes.tsx';
 import Home from './Componentes/home.tsx';
 import Footer from './Componentes/footer.tsx';
 
-const Services: React.FC = () => <h1>Hola Mundo 1</h1>;
-const Contact: React.FC = () => <h1>Hola Mundo 2</h1>;
+const Services: React.FC = () => <h1>Cambiar nombre</h1>;
+const Contact: React.FC = () => <h1>Cambiar nombre</h1>;
 
 const App: React.FC = () => {
   return (
