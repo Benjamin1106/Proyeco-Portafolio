@@ -1,5 +1,6 @@
 import React from 'react';
 import './footer.css';
+import { FaFacebookF, FaTwitter, FaInstagram } from 'react-icons/fa';
 
 const Footer: React.FC = () => {
   return (
@@ -21,9 +22,9 @@ const Footer: React.FC = () => {
         </div>
         <div className="footer-section footer-social">
           <h4>Síguenos</h4>
-          <a href="#"><i className="fab fa-facebook-f"></i></a>
-          <a href="#"><i className="fab fa-twitter"></i></a>
-          <a href="#"><i className="fab fa-instagram"></i></a>
+          <a href="#"><FaFacebookF /></a>
+          <a href="#"><FaTwitter /></a>
+          <a href="#"><FaInstagram/></a>
         </div>
       </div>
       <div className="footer-bottom">
