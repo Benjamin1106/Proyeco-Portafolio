@@ -20,6 +20,21 @@
     margin: 20px;
   }
   
+  .footer-num ul {
+    list-style: none;
+    padding: 0;
+  }
+  
+  .footer-num ul li {
+    margin-top: 10px;
+  }
+  
+  .footer-num ul li a {
+    color: white;
+    text-decoration: none;
+  }
+  
+  
   .footer-contact p {
     margin: 5px 0;
   }
