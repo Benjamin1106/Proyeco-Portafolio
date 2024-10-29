@@ -1,49 +1,70 @@
 import React, { useState } from 'react';
+import { db } from '../firebaseConfig'
 import './solicitudes.css';
 
+// Define tipos de datos
+interface FormData {
+  nombre: string;
+  apellido: string;
+  rut: string;
+  direccion: string;
+  telefono: string;
+  correo: string;
+  tipoSolicitud: string;
+  fecha?: string;
+  horaInicio?: string;
+  horaFin?: string;
+  datosCertificado?: string;
+  archivoUrl?: string | null;
+}
+
 const Solicitudes: React.FC = () => {
-  const [nombre, setNombre] = useState('');
-  const [apellido, setApellido] = useState('');
-  const [rut, setRut] = useState('');
-  const [direccion, setDireccion] = useState('');
-  const [telefono, setTelefono] = useState('');
-  const [correo, setCorreo] = useState('');
-  const [tipoSolicitud, setTipoSolicitud] = useState('cancha');
-  const [horaInicio, setHoraInicio] = useState('');
-  const [horaFin, setHoraFin] = useState('');
-  const [datosCertificado, setDatosCertificado] = useState('');
-  const [fecha, setFecha] = useState('');
+  // Estados para el formulario
+  const [nombre, setNombre] = useState<string>('');
+  const [apellido, setApellido] = useState<string>('');
+  const [rut, setRut] = useState<string>('');
+  const [direccion, setDireccion] = useState<string>('');
+  const [telefono, setTelefono] = useState<string>('');
+  const [correo, setCorreo] = useState<string>('');
+  const [tipoSolicitud, setTipoSolicitud] = useState<string>('cancha');
+  const [horaInicio, setHoraInicio] = useState<string>('');
+  const [horaFin, setHoraFin] = useState<string>('');
+  const [datosCertificado, setDatosCertificado] = useState<string>('');
+  const [fecha, setFecha] = useState<string>('');
   const [archivo, setArchivo] = useState<File | null>(null);
 
   const today = new Date().toISOString().split('T')[0];
 
-  const handleSubmit = (e: React.FormEvent) => {
+  // Función para manejar el envío de la solicitud
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
 
-    const formData = new FormData();
-    formData.append('nombre', nombre);
-    formData.append('apellido', apellido)
-    formData.append('rut', rut);
-    formData.append('direccion', direccion);
-    formData.append('telefono', telefono);
-    formData.append('correo', correo);
-    formData.append('tipoSolicitud', tipoSolicitud);
+    const data: FormData = {
+      nombre,
+      apellido,
+      rut,
+      direccion,
+      telefono,
+      correo,
+      tipoSolicitud,
+      fecha: tipoSolicitud !== 'certificadoResidencia' ? fecha : undefined,
+      horaInicio: tipoSolicitud !== 'certificadoResidencia' ? horaInicio : undefined,
+      horaFin: tipoSolicitud !== 'certificadoResidencia' ? horaFin : undefined,
+      datosCertificado: tipoSolicitud === 'certificadoResidencia' ? datosCertificado : undefined,
+      archivoUrl: archivo ? URL.createObjectURL(archivo) : null,
+    };
 
-    if (tipoSolicitud !== 'certificadoResidencia') {
-      formData.append('fecha', fecha);
-      formData.append('horaInicio', horaInicio);
-      formData.append('horaFin', horaFin);
-    } else {
-      formData.append('datosCertificado', datosCertificado);
-      if (archivo) {
-        formData.append('archivo', archivo);
+    try {
+      // Detecta la colección adecuada
+      if (tipoSolicitud === 'certificadoResidencia') {
+        await db.collection('certificadoResidencia').add(data);
+      } else {
+        await db.collection('solicitudes').add(data);
       }
+      console.log('Solicitud enviada correctamente');
+    } catch (error) {
+      console.error('Error al enviar la solicitud:', error);
     }
-
-    console.log('Datos enviados:');
-    formData.forEach((value, key) => {
-      console.log(key, value);
-    });
   };
 
   return (
@@ -57,7 +78,6 @@ const Solicitudes: React.FC = () => {
           onChange={(e) => setNombre(e.target.value)}
           required
         />
-
         <label>Apellidos:</label>
         <input
           type="text"
@@ -65,7 +85,6 @@ const Solicitudes: React.FC = () => {
           onChange={(e) => setApellido(e.target.value)}
           required
         />
-
         <label>Rut:</label>
         <input
           type="text"
@@ -73,7 +92,6 @@ const Solicitudes: React.FC = () => {
           onChange={(e) => setRut(e.target.value)}
           required
         />
-
         <label>Dirección:</label>
         <input
           type="text"
@@ -81,7 +99,6 @@ const Solicitudes: React.FC = () => {
           onChange={(e) => setDireccion(e.target.value)}
           required
         />
-
         <label>Teléfono:</label>
         <input
           type="tel"
@@ -89,7 +106,6 @@ const Solicitudes: React.FC = () => {
           onChange={(e) => setTelefono(e.target.value)}
           required
         />
-
         <label>Correo Electrónico:</label>
         <input
           type="email"
@@ -97,18 +113,10 @@ const Solicitudes: React.FC = () => {
           onChange={(e) => setCorreo(e.target.value)}
           required
         />
-
         <label>Tipo de Solicitud:</label>
         <select
           value={tipoSolicitud}
-          onChange={(e) => {
-            setTipoSolicitud(e.target.value);
-            setHoraInicio('');
-            setHoraFin('');
-            setDatosCertificado('');
-            setFecha('');
-            setArchivo(null);
-          }}
+          onChange={(e) => setTipoSolicitud(e.target.value)}
           required
         >
           <option value="cancha">Cancha</option>
@@ -127,12 +135,6 @@ const Solicitudes: React.FC = () => {
               min={today}
               required
             />
-          </div>
-        )}
-
-        {tipoSolicitud !== 'certificadoResidencia' && (
-          <div>
-            <h3>Horarios de Uso</h3>
             <label>Desde:</label>
             <input
               type="time"
@@ -152,7 +154,6 @@ const Solicitudes: React.FC = () => {
 
         {tipoSolicitud === 'certificadoResidencia' && (
           <div>
-            <h3>Datos para Certificado de Residencia</h3>
             <label>Razón:</label>
             <input
               type="text"
@@ -173,7 +174,6 @@ const Solicitudes: React.FC = () => {
             />
           </div>
         )}
-
         <button type="submit">Enviar Solicitud</button>
       </form>
     </div>
