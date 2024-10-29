@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
-import { db } from '../firebaseConfig'
+import { collection, addDoc } from 'firebase/firestore';
+import { db } from '../firebaseConfig';
 import './solicitudes.css';
 
 // Define tipos de datos
@@ -32,6 +33,7 @@ const Solicitudes: React.FC = () => {
   const [datosCertificado, setDatosCertificado] = useState<string>('');
   const [fecha, setFecha] = useState<string>('');
   const [archivo, setArchivo] = useState<File | null>(null);
+  const [mensaje, setMensaje] = useState<string>(''); // Nuevo estado para el mensaje de confirmación
 
   const today = new Date().toISOString().split('T')[0];
 
@@ -55,15 +57,18 @@ const Solicitudes: React.FC = () => {
     };
 
     try {
-      // Detecta la colección adecuada
+      // Detecta la colección adecuada y envía la solicitud
       if (tipoSolicitud === 'certificadoResidencia') {
-        await db.collection('certificadoResidencia').add(data);
+        await addDoc(collection(db, 'certificadoResidencia'), data);
+        setMensaje('Solicitud enviada. A la brevedad recibirá el documento por correo.'); // Mensaje para certificado de residencia
       } else {
-        await db.collection('solicitudes').add(data);
+        await addDoc(collection(db, 'solicitudes'), data);
+        setMensaje('Solicitud enviada. A la brevedad recibirá un mensaje de aprobación.'); // Mensaje para otras solicitudes
       }
       console.log('Solicitud enviada correctamente');
     } catch (error) {
       console.error('Error al enviar la solicitud:', error);
+      setMensaje('Error al enviar la solicitud. Intente nuevamente.');
     }
   };
 
@@ -176,6 +181,9 @@ const Solicitudes: React.FC = () => {
         )}
         <button type="submit">Enviar Solicitud</button>
       </form>
+
+      {/* Mensaje de confirmación */}
+      {mensaje && <p className="mensaje-confirmacion">{mensaje}</p>}
     </div>
   );
 };
