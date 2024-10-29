@@ -37,16 +37,27 @@ const Solicitudes: React.FC = () => {
 
   const today = new Date().toISOString().split('T')[0];
 
+  // Función para validar el formato de RUT
+  const isRutValid = (rut: string) => {
+    const rutPattern = /^[0-9]{2}\.[0-9]{3}\.[0-9]{3}-[0-9kK]$/;
+    return rutPattern.test(rut);
+  };
+
   // Función para manejar el envío de la solicitud
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
+
+    if (!isRutValid(rut)) {
+      setMensaje('El RUT ingresado no es válido.');
+      return;
+    }
 
     const data: FormData = {
       nombre,
       apellido,
       rut,
       direccion,
-      telefono,
+      telefono: `+56${telefono}`, // Agregar prefijo +56
       correo,
       tipoSolicitud,
       fecha: tipoSolicitud !== 'certificadoResidencia' ? fecha : undefined,
@@ -60,10 +71,10 @@ const Solicitudes: React.FC = () => {
       // Detecta la colección adecuada y envía la solicitud
       if (tipoSolicitud === 'certificadoResidencia') {
         await addDoc(collection(db, 'certificadoResidencia'), data);
-        setMensaje('Solicitud enviada. A la brevedad recibirá el documento por correo.'); // Mensaje para certificado de residencia
+        setMensaje('Solicitud enviada. A la brevedad recibirá el documento por correo.');
       } else {
         await addDoc(collection(db, 'solicitudes'), data);
-        setMensaje('Solicitud enviada. A la brevedad recibirá un mensaje de aprobación.'); // Mensaje para otras solicitudes
+        setMensaje('Solicitud enviada. A la brevedad recibirá un mensaje de aprobación.');
       }
       console.log('Solicitud enviada correctamente');
     } catch (error) {
@@ -90,12 +101,15 @@ const Solicitudes: React.FC = () => {
           onChange={(e) => setApellido(e.target.value)}
           required
         />
-        <label>Rut:</label>
+        <label>RUT:</label>
         <input
           type="text"
           value={rut}
           onChange={(e) => setRut(e.target.value)}
           required
+          placeholder="XX.XXX.XXX-?"
+          pattern="^[0-9]{2}\.[0-9]{3}\.[0-9]{3}-[0-9kK]$"
+          title="El RUT debe tener el formato XX.XXX.XXX-? y puede terminar en un número o 'k'."
         />
         <label>Dirección:</label>
         <input
@@ -105,12 +119,19 @@ const Solicitudes: React.FC = () => {
           required
         />
         <label>Teléfono:</label>
-        <input
-          type="tel"
-          value={telefono}
-          onChange={(e) => setTelefono(e.target.value)}
-          required
-        />
+        <div>
+          <span>+56</span>
+          <input
+            type="tel"
+            value={telefono}
+            onChange={(e) => setTelefono(e.target.value)}
+            required
+            placeholder="912345678"
+            pattern="[0-9]{9}"
+            maxLength={9}
+            title="El teléfono debe tener 9 dígitos después de +56."
+          />
+        </div>
         <label>Correo Electrónico:</label>
         <input
           type="email"
