@@ -107,9 +107,9 @@ const Solicitudes: React.FC = () => {
           value={rut}
           onChange={(e) => setRut(e.target.value)}
           required
-          placeholder="XX.XXX.XXX-?"
+          placeholder="12.345.678-X"
           pattern="^[0-9]{2}\.[0-9]{3}\.[0-9]{3}-[0-9kK]$"
-          title="El RUT debe tener el formato XX.XXX.XXX-? y puede terminar en un número o 'k'."
+          title="El RUT debe tener el formato 12.345.678-X y puede terminar en un número o 'k'."
         />
         <label>Dirección:</label>
         <input
@@ -119,8 +119,8 @@ const Solicitudes: React.FC = () => {
           required
         />
         <label>Teléfono:</label>
-        <div>
-          <span>+56</span>
+        <div style={{ display: 'flex', alignItems: 'center' }}>
+          <span style={{ marginRight: '8px' }}>+56</span>
           <input
             type="tel"
             value={telefono}
