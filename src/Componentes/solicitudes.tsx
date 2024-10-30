@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import { collection, addDoc } from 'firebase/firestore';
+import { getStorage, ref, uploadBytes, getDownloadURL } from 'firebase/storage';
 import { db } from '../firebaseConfig';
 import './solicitudes.css';
 
@@ -64,10 +65,23 @@ const Solicitudes: React.FC = () => {
       horaInicio: tipoSolicitud !== 'certificadoResidencia' ? horaInicio : undefined,
       horaFin: tipoSolicitud !== 'certificadoResidencia' ? horaFin : undefined,
       datosCertificado: tipoSolicitud === 'certificadoResidencia' ? datosCertificado : undefined,
-      archivoUrl: archivo ? URL.createObjectURL(archivo) : null,
+      archivoUrl: null, // Inicializa como null
     };
 
     try {
+      // Carga el archivo si se proporciona uno
+      if (archivo) {
+        const storage = getStorage();
+        const storageRef = ref(storage, `uploads/${archivo.name}`); // Crea una referencia para el archivo
+
+        // Carga el archivo
+        await uploadBytes(storageRef, archivo);
+
+        // Obtén la URL de descarga
+        const archivoUrl = await getDownloadURL(storageRef);
+        data.archivoUrl = archivoUrl; // Asigna la URL del archivo al objeto de datos
+      }
+
       // Detecta la colección adecuada y envía la solicitud
       if (tipoSolicitud === 'certificadoResidencia') {
         await addDoc(collection(db, 'certificadoResidencia'), data);
@@ -180,16 +194,16 @@ const Solicitudes: React.FC = () => {
 
         {tipoSolicitud === 'certificadoResidencia' && (
           <div>
-          <label>Razón:</label>
-          <select
-            value={datosCertificado}
-            onChange={(e) => setDatosCertificado(e.target.value)}
-            required
-          >
-            <option value="" disabled hidden>Seleccione una razón</option> {/* Placeholder option */}
-            <option value="razon1">Para fines particulares</option>
-            <option value="razon2">Para fines especiales</option>
-          </select>
+            <label>Razón:</label>
+            <select
+              value={datosCertificado}
+              onChange={(e) => setDatosCertificado(e.target.value)}
+              required
+            >
+              <option value="" disabled hidden>Seleccione una razón</option> {/* Placeholder option */}
+              <option value="razon1">Para fines particulares</option>
+              <option value="razon2">Para fines especiales</option>
+            </select>
             <label>Adjuntar Archivo:</label>
             <input
               type="file"
