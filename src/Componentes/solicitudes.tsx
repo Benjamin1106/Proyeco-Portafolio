@@ -119,8 +119,7 @@ const Solicitudes: React.FC = () => {
           required
         />
         <label>Teléfono:</label>
-        <div style={{ display: 'flex', alignItems: 'center' }}>
-          <span style={{ marginRight: '8px' }}>+56</span>
+        <div>
           <input
             type="tel"
             value={telefono}
@@ -129,7 +128,7 @@ const Solicitudes: React.FC = () => {
             placeholder="912345678"
             pattern="[0-9]{9}"
             maxLength={9}
-            title="El teléfono debe tener 9 dígitos después de +56."
+            title="El teléfono debe tener 9 dígitos."
           />
         </div>
         <label>Correo Electrónico:</label>
@@ -145,6 +144,7 @@ const Solicitudes: React.FC = () => {
           onChange={(e) => setTipoSolicitud(e.target.value)}
           required
         >
+          <option value="" disabled hidden>Seleccione tipo de Solicitud</option> {/* Placeholder option */}
           <option value="cancha">Cancha</option>
           <option value="salas">Salas</option>
           <option value="plazas">Plazas</option>
@@ -180,13 +180,16 @@ const Solicitudes: React.FC = () => {
 
         {tipoSolicitud === 'certificadoResidencia' && (
           <div>
-            <label>Razón:</label>
-            <input
-              type="text"
-              value={datosCertificado}
-              onChange={(e) => setDatosCertificado(e.target.value)}
-              required
-            />
+          <label>Razón:</label>
+          <select
+            value={datosCertificado}
+            onChange={(e) => setDatosCertificado(e.target.value)}
+            required
+          >
+            <option value="" disabled hidden>Seleccione una razón</option> {/* Placeholder option */}
+            <option value="razon1">Para fines particulares</option>
+            <option value="razon2">Para fines especiales</option>
+          </select>
             <label>Adjuntar Archivo:</label>
             <input
               type="file"
