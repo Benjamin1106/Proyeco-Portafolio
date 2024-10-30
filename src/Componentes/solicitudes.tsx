@@ -67,7 +67,12 @@ const Solicitudes: React.FC = () => {
     setArchivo(null);
   };
 
-  // Manejo de envío de la solicitud
+  // Validación de horario operativo y secuencia de horas
+  const isHorarioValido = (hora: string) => {
+    const [hours, minutes] = hora.split(':').map(Number);
+    return (hours > 10 || (hours === 10 && minutes === 0)) && (hours < 22);
+  };
+
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
 
@@ -84,6 +89,28 @@ const Solicitudes: React.FC = () => {
     if (!isOnlyLetters(formData.apellido)) {
       alert('El apellido debe contener solo letras.');
       return;
+    }
+
+    if (formData.tipoSolicitud !== 'certificadoResidencia') {
+      if (formData.horaInicio === formData.horaFin) {
+        alert('La hora de inicio y la hora de fin no pueden ser iguales.');
+        return;
+      }
+
+      if (formData.horaInicio && formData.horaFin) {
+        const horaInicio = new Date(`1970-01-01T${formData.horaInicio}:00`);
+        const horaFin = new Date(`1970-01-01T${formData.horaFin}:00`);
+
+        if (horaInicio >= horaFin) {
+          alert('La hora de fin debe ser posterior a la hora de inicio.');
+          return;
+        }
+
+        if (!isHorarioValido(formData.horaInicio) || !isHorarioValido(formData.horaFin)) {
+          alert('La reserva solo puede realizarse entre las 10:00 y las 22:00 horas.');
+          return;
+        }
+      }
     }
 
     const data: FormData = {
@@ -247,7 +274,8 @@ const Solicitudes: React.FC = () => {
             />
           </div>
         )}
-        <button type="submit">Enviar Solicitud</button>
+
+        <button type="submit">Enviar</button>
       </form>
     </div>
   );
