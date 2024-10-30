@@ -41,10 +41,10 @@ const Solicitudes: React.FC = () => {
   const today = new Date().toISOString().split('T')[0];
 
   // Función para validar el formato de RUT
-  const isRutValid = (rut: string) => {
-    const rutPattern = /^[0-9]{2}\.[0-9]{3}\.[0-9]{3}-[0-9kK]$/;
-    return rutPattern.test(rut);
-  };
+  const isRutValid = (rut: string) => /^[0-9]{2}\.[0-9]{3}\.[0-9]{3}-[0-9kK]$/.test(rut);
+
+  // Función para validar solo letras
+  const isOnlyLetters = (value: string) => /^[A-Za-zÀ-ÿ\s]+$/.test(value);
 
   // Función para manejar cambios en el formulario
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>) => {
@@ -78,6 +78,16 @@ const Solicitudes: React.FC = () => {
 
     if (!isRutValid(formData.rut)) {
       setMensaje('El RUT ingresado no es válido.');
+      return;
+    }
+
+    if (!isOnlyLetters(formData.nombre)) {
+      setMensaje('El nombre debe contener solo letras.');
+      return;
+    }
+
+    if (!isOnlyLetters(formData.apellido)) {
+      setMensaje('El apellido debe contener solo letras.');
       return;
     }
 
@@ -128,6 +138,8 @@ const Solicitudes: React.FC = () => {
           value={formData.nombre}
           onChange={handleInputChange}
           required
+          pattern="^[A-Za-zÀ-ÿ\s]+$"
+          title="El nombre debe contener solo letras."
         />
         <label>Apellidos:</label>
         <input
@@ -136,6 +148,8 @@ const Solicitudes: React.FC = () => {
           value={formData.apellido}
           onChange={handleInputChange}
           required
+          pattern="^[A-Za-zÀ-ÿ\s]+$"
+          title="El apellido debe contener solo letras."
         />
         <label>RUT:</label>
         <input
