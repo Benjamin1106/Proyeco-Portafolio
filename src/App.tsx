@@ -6,8 +6,8 @@ import FormularioSolicitudes from './Componentes/solicitudes.tsx';
 import Home from './Componentes/home.tsx';
 import Footer from './Componentes/footer.tsx';
 
-const Services: React.FC = () => <h1>Cambiar nombre</h1>;
-const Contact: React.FC = () => <h1>Cambiar nombre</h1>;
+const Actividades: React.FC = () => <h1>Cambiar nombre</h1>;
+const Videos: React.FC = () => <h1>Cambiar nombre</h1>;
 
 const App: React.FC = () => {
   return (
@@ -16,8 +16,8 @@ const App: React.FC = () => {
       <Routes>
         <Route path="/" element={<Home />} />
         <Route path="/solicitudes" element={<FormularioSolicitudes />} />
-        <Route path="/services" element={<Services />} />
-        <Route path="/contact" element={<Contact />} />
+        <Route path="/actividades" element={<Actividades />} />
+        <Route path="/videos" element={<Videos />} />
       </Routes>
       <Footer/>
     </Router>
