@@ -113,7 +113,7 @@ const Solicitudes: React.FC = () => {
 
       // Detecta la colección adecuada y envía la solicitud
       const collectionName = formData.tipoSolicitud === 'certificadoResidencia' 
-        ? 'certificadoResidencia' 
+        ? 'certificadosResidencia' 
         : 'solicitudes';
 
       await addDoc(collection(db, collectionName), data);
