@@ -21,7 +21,6 @@ interface FormData {
 }
 
 const Solicitudes: React.FC = () => {
-  // Estado para el formulario
   const [formData, setFormData] = useState<FormData>({
     nombre: '',
     apellido: '',
@@ -29,7 +28,7 @@ const Solicitudes: React.FC = () => {
     direccion: '',
     telefono: '',
     correo: '',
-    tipoSolicitud: 'cancha',
+    tipoSolicitud: '',
     fecha: '',
     horaInicio: '',
     horaFin: '',
@@ -37,22 +36,19 @@ const Solicitudes: React.FC = () => {
     archivoUrl: null,
   });
   const [archivo, setArchivo] = useState<File | null>(null);
-  const [mensaje, setMensaje] = useState<string>('');
   const today = new Date().toISOString().split('T')[0];
 
-  // Función para validar el formato de RUT
+  // Validaciones
   const isRutValid = (rut: string) => /^[0-9]{2}\.[0-9]{3}\.[0-9]{3}-[0-9kK]$/.test(rut);
-
-  // Función para validar solo letras
   const isOnlyLetters = (value: string) => /^[A-Za-zÀ-ÿ\s]+$/.test(value);
 
-  // Función para manejar cambios en el formulario
+  // Manejo de cambios en el formulario
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>) => {
     const { name, value } = e.target;
     setFormData((prev) => ({ ...prev, [name]: value }));
   };
 
-  // Función para reiniciar el formulario
+  // Reiniciar formulario
   const resetForm = () => {
     setFormData({
       nombre: '',
@@ -61,7 +57,7 @@ const Solicitudes: React.FC = () => {
       direccion: '',
       telefono: '',
       correo: '',
-      tipoSolicitud: 'cancha',
+      tipoSolicitud: '',
       fecha: '',
       horaInicio: '',
       horaFin: '',
@@ -69,61 +65,52 @@ const Solicitudes: React.FC = () => {
       archivoUrl: null,
     });
     setArchivo(null);
-    setMensaje('');
   };
 
-  // Función para manejar el envío de la solicitud
+  // Manejo de envío de la solicitud
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
 
     if (!isRutValid(formData.rut)) {
-      setMensaje('El RUT ingresado no es válido.');
+      alert('El RUT ingresado no es válido.');
       return;
     }
 
     if (!isOnlyLetters(formData.nombre)) {
-      setMensaje('El nombre debe contener solo letras.');
+      alert('El nombre debe contener solo letras.');
       return;
     }
 
     if (!isOnlyLetters(formData.apellido)) {
-      setMensaje('El apellido debe contener solo letras.');
+      alert('El apellido debe contener solo letras.');
       return;
     }
 
     const data: FormData = {
       ...formData,
-      telefono: `+56${formData.telefono}`, // Agregar prefijo +56
-      archivoUrl: null, // Inicializa como null
+      telefono: `+56${formData.telefono}`,
+      archivoUrl: null,
     };
 
     try {
-      // Carga el archivo si se proporciona uno
       if (archivo) {
         const storage = getStorage();
         const storageRef = ref(storage, `uploads/${archivo.name}`);
-
-        // Carga el archivo
         await uploadBytes(storageRef, archivo);
-
-        // Obtén la URL de descarga
         const archivoUrl = await getDownloadURL(storageRef);
-        data.archivoUrl = archivoUrl; // Asigna la URL del archivo al objeto de datos
+        data.archivoUrl = archivoUrl;
       }
 
-      // Detecta la colección adecuada y envía la solicitud
       const collectionName = formData.tipoSolicitud === 'certificadoResidencia' 
-        ? 'certificadosResidencia' 
+        ? 'certificadoResidencia' 
         : 'solicitudes';
 
       await addDoc(collection(db, collectionName), data);
-      setMensaje('Solicitud enviada. A la brevedad recibirá un mensaje de aprobación.');
-
-      // Reiniciar el formulario después de enviar
+      alert('Solicitud enviada. A la brevedad recibirá un mensaje de aprobación.');
       resetForm();
     } catch (error) {
       console.error('Error al enviar la solicitud:', error);
-      setMensaje('Error al enviar la solicitud. Intente nuevamente.');
+      alert('Error al enviar la solicitud. Intente nuevamente.');
     }
   };
 
@@ -197,7 +184,7 @@ const Solicitudes: React.FC = () => {
           onChange={handleInputChange}
           required
         >
-          <option value="" disabled hidden>Seleccione tipo de Solicitud</option>
+          <option value="" disabled>Seleccione tipo de Solicitud</option>
           <option value="cancha">Cancha</option>
           <option value="salas">Salas</option>
           <option value="plazas">Plazas</option>
@@ -262,9 +249,6 @@ const Solicitudes: React.FC = () => {
         )}
         <button type="submit">Enviar Solicitud</button>
       </form>
-
-      {/* Mensaje de confirmación */}
-      {mensaje && <p className="mensaje-confirmacion">{mensaje}</p>}
     </div>
   );
 };
