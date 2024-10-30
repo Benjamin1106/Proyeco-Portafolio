@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { collection, addDoc } from 'firebase/firestore';
 import { getStorage, ref, uploadBytes, getDownloadURL } from 'firebase/storage';
-import { db } from '../firebaseConfig';
+import { db } from '../firebase/firebaseConfig';
 import './solicitudes.css';
 
 // Define tipos de datos
@@ -42,6 +42,23 @@ const Solicitudes: React.FC = () => {
   const isRutValid = (rut: string) => {
     const rutPattern = /^[0-9]{2}\.[0-9]{3}\.[0-9]{3}-[0-9kK]$/;
     return rutPattern.test(rut);
+  };
+
+  // Función para reiniciar el formulario
+  const resetForm = () => {
+    setNombre('');
+    setApellido('');
+    setRut('');
+    setDireccion('');
+    setTelefono('');
+    setCorreo('');
+    setTipoSolicitud('cancha');
+    setHoraInicio('');
+    setHoraFin('');
+    setDatosCertificado('');
+    setFecha('');
+    setArchivo(null);
+    setMensaje('');
   };
 
   // Función para manejar el envío de la solicitud
@@ -91,6 +108,9 @@ const Solicitudes: React.FC = () => {
         setMensaje('Solicitud enviada. A la brevedad recibirá un mensaje de aprobación.');
       }
       console.log('Solicitud enviada correctamente');
+
+      // Reiniciar el formulario después de enviar
+      resetForm();
     } catch (error) {
       console.error('Error al enviar la solicitud:', error);
       setMensaje('Error al enviar la solicitud. Intente nuevamente.');

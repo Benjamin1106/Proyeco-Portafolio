@@ -1,6 +1,9 @@
+// src/firebase/firebaseConfig.ts
+
 import { initializeApp } from 'firebase/app';
 import { getFirestore } from 'firebase/firestore';
 
+// Configuración de Firebase
 const firebaseConfig = {
   apiKey: process.env.REACT_APP_API_KEY,
   authDomain: process.env.REACT_APP_AUTH_DOMAIN,
@@ -16,4 +19,6 @@ const app = initializeApp(firebaseConfig);
 // Inicializar Firestore
 const db = getFirestore(app);
 
+// Exportar la instancia de Firestore
 export { db };
+
