@@ -21,21 +21,23 @@ interface FormData {
 }
 
 const Solicitudes: React.FC = () => {
-  // Estados para el formulario
-  const [nombre, setNombre] = useState<string>('');
-  const [apellido, setApellido] = useState<string>('');
-  const [rut, setRut] = useState<string>('');
-  const [direccion, setDireccion] = useState<string>('');
-  const [telefono, setTelefono] = useState<string>('');
-  const [correo, setCorreo] = useState<string>('');
-  const [tipoSolicitud, setTipoSolicitud] = useState<string>('cancha');
-  const [horaInicio, setHoraInicio] = useState<string>('');
-  const [horaFin, setHoraFin] = useState<string>('');
-  const [datosCertificado, setDatosCertificado] = useState<string>('');
-  const [fecha, setFecha] = useState<string>('');
+  // Estado para el formulario
+  const [formData, setFormData] = useState<FormData>({
+    nombre: '',
+    apellido: '',
+    rut: '',
+    direccion: '',
+    telefono: '',
+    correo: '',
+    tipoSolicitud: 'cancha',
+    fecha: '',
+    horaInicio: '',
+    horaFin: '',
+    datosCertificado: '',
+    archivoUrl: null,
+  });
   const [archivo, setArchivo] = useState<File | null>(null);
-  const [mensaje, setMensaje] = useState<string>(''); // Nuevo estado para el mensaje de confirmación
-
+  const [mensaje, setMensaje] = useState<string>('');
   const today = new Date().toISOString().split('T')[0];
 
   // Función para validar el formato de RUT
@@ -44,19 +46,28 @@ const Solicitudes: React.FC = () => {
     return rutPattern.test(rut);
   };
 
+  // Función para manejar cambios en el formulario
+  const handleInputChange = (e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>) => {
+    const { name, value } = e.target;
+    setFormData((prev) => ({ ...prev, [name]: value }));
+  };
+
   // Función para reiniciar el formulario
   const resetForm = () => {
-    setNombre('');
-    setApellido('');
-    setRut('');
-    setDireccion('');
-    setTelefono('');
-    setCorreo('');
-    setTipoSolicitud('cancha');
-    setHoraInicio('');
-    setHoraFin('');
-    setDatosCertificado('');
-    setFecha('');
+    setFormData({
+      nombre: '',
+      apellido: '',
+      rut: '',
+      direccion: '',
+      telefono: '',
+      correo: '',
+      tipoSolicitud: 'cancha',
+      fecha: '',
+      horaInicio: '',
+      horaFin: '',
+      datosCertificado: '',
+      archivoUrl: null,
+    });
     setArchivo(null);
     setMensaje('');
   };
@@ -65,23 +76,14 @@ const Solicitudes: React.FC = () => {
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
 
-    if (!isRutValid(rut)) {
+    if (!isRutValid(formData.rut)) {
       setMensaje('El RUT ingresado no es válido.');
       return;
     }
 
     const data: FormData = {
-      nombre,
-      apellido,
-      rut,
-      direccion,
-      telefono: `+56${telefono}`, // Agregar prefijo +56
-      correo,
-      tipoSolicitud,
-      fecha: tipoSolicitud !== 'certificadoResidencia' ? fecha : undefined,
-      horaInicio: tipoSolicitud !== 'certificadoResidencia' ? horaInicio : undefined,
-      horaFin: tipoSolicitud !== 'certificadoResidencia' ? horaFin : undefined,
-      datosCertificado: tipoSolicitud === 'certificadoResidencia' ? datosCertificado : undefined,
+      ...formData,
+      telefono: `+56${formData.telefono}`, // Agregar prefijo +56
       archivoUrl: null, // Inicializa como null
     };
 
@@ -89,7 +91,7 @@ const Solicitudes: React.FC = () => {
       // Carga el archivo si se proporciona uno
       if (archivo) {
         const storage = getStorage();
-        const storageRef = ref(storage, `uploads/${archivo.name}`); // Crea una referencia para el archivo
+        const storageRef = ref(storage, `uploads/${archivo.name}`);
 
         // Carga el archivo
         await uploadBytes(storageRef, archivo);
@@ -100,14 +102,12 @@ const Solicitudes: React.FC = () => {
       }
 
       // Detecta la colección adecuada y envía la solicitud
-      if (tipoSolicitud === 'certificadoResidencia') {
-        await addDoc(collection(db, 'certificadoResidencia'), data);
-        setMensaje('Solicitud enviada. A la brevedad recibirá el documento por correo.');
-      } else {
-        await addDoc(collection(db, 'solicitudes'), data);
-        setMensaje('Solicitud enviada. A la brevedad recibirá un mensaje de aprobación.');
-      }
-      console.log('Solicitud enviada correctamente');
+      const collectionName = formData.tipoSolicitud === 'certificadoResidencia' 
+        ? 'certificadoResidencia' 
+        : 'solicitudes';
+
+      await addDoc(collection(db, collectionName), data);
+      setMensaje('Solicitud enviada. A la brevedad recibirá un mensaje de aprobación.');
 
       // Reiniciar el formulario después de enviar
       resetForm();
@@ -124,22 +124,25 @@ const Solicitudes: React.FC = () => {
         <label>Nombres:</label>
         <input
           type="text"
-          value={nombre}
-          onChange={(e) => setNombre(e.target.value)}
+          name="nombre"
+          value={formData.nombre}
+          onChange={handleInputChange}
           required
         />
         <label>Apellidos:</label>
         <input
           type="text"
-          value={apellido}
-          onChange={(e) => setApellido(e.target.value)}
+          name="apellido"
+          value={formData.apellido}
+          onChange={handleInputChange}
           required
         />
         <label>RUT:</label>
         <input
           type="text"
-          value={rut}
-          onChange={(e) => setRut(e.target.value)}
+          name="rut"
+          value={formData.rut}
+          onChange={handleInputChange}
           required
           placeholder="12.345.678-X"
           pattern="^[0-9]{2}\.[0-9]{3}\.[0-9]{3}-[0-9kK]$"
@@ -148,79 +151,85 @@ const Solicitudes: React.FC = () => {
         <label>Dirección:</label>
         <input
           type="text"
-          value={direccion}
-          onChange={(e) => setDireccion(e.target.value)}
+          name="direccion"
+          value={formData.direccion}
+          onChange={handleInputChange}
           required
         />
         <label>Teléfono:</label>
-        <div>
-          <input
-            type="tel"
-            value={telefono}
-            onChange={(e) => setTelefono(e.target.value)}
-            required
-            placeholder="912345678"
-            pattern="[0-9]{9}"
-            maxLength={9}
-            title="El teléfono debe tener 9 dígitos."
-          />
-        </div>
+        <input
+          type="tel"
+          name="telefono"
+          value={formData.telefono}
+          onChange={handleInputChange}
+          required
+          placeholder="912345678"
+          pattern="[0-9]{9}"
+          maxLength={9}
+          title="El teléfono debe tener 9 dígitos."
+        />
         <label>Correo Electrónico:</label>
         <input
           type="email"
-          value={correo}
-          onChange={(e) => setCorreo(e.target.value)}
+          name="correo"
+          value={formData.correo}
+          onChange={handleInputChange}
           required
         />
         <label>Tipo de Solicitud:</label>
         <select
-          value={tipoSolicitud}
-          onChange={(e) => setTipoSolicitud(e.target.value)}
+          name="tipoSolicitud"
+          value={formData.tipoSolicitud}
+          onChange={handleInputChange}
           required
         >
-          <option value="" disabled hidden>Seleccione tipo de Solicitud</option> {/* Placeholder option */}
+          <option value="" disabled hidden>Seleccione tipo de Solicitud</option>
           <option value="cancha">Cancha</option>
           <option value="salas">Salas</option>
           <option value="plazas">Plazas</option>
           <option value="certificadoResidencia">Certificado de Residencia</option>
         </select>
 
-        {tipoSolicitud !== 'certificadoResidencia' && (
+        {formData.tipoSolicitud !== 'certificadoResidencia' && (
           <div>
             <label>Fecha:</label>
             <input
               type="date"
-              value={fecha}
-              onChange={(e) => setFecha(e.target.value)}
+              name="fecha"
+              value={formData.fecha}
+              onChange={handleInputChange}
               min={today}
               required
             />
             <label>Desde:</label>
             <input
               type="time"
-              value={horaInicio}
-              onChange={(e) => setHoraInicio(e.target.value)}
+              name="horaInicio"
+              value={formData.horaInicio}
+              onChange={handleInputChange}
               required
             />
             <label>Hasta:</label>
             <input
               type="time"
-              value={horaFin}
-              onChange={(e) => setHoraFin(e.target.value)}
+              name="horaFin"
+              value={formData.horaFin}
+              onChange={handleInputChange}
               required
             />
           </div>
         )}
 
-        {tipoSolicitud === 'certificadoResidencia' && (
+        {formData.tipoSolicitud === 'certificadoResidencia' && (
           <div>
             <label>Razón:</label>
             <select
-              value={datosCertificado}
-              onChange={(e) => setDatosCertificado(e.target.value)}
+              name="datosCertificado"
+              value={formData.datosCertificado}
+              onChange={handleInputChange}
               required
             >
-              <option value="" disabled hidden>Seleccione una razón</option> {/* Placeholder option */}
+              <option value="" disabled hidden>Seleccione una razón</option>
               <option value="razon1">Para fines particulares</option>
               <option value="razon2">Para fines especiales</option>
             </select>
