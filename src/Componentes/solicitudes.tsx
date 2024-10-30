@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { collection, addDoc } from 'firebase/firestore';
-import { getStorage, ref, uploadBytes, getDownloadURL } from 'firebase/storage';
+import { getStorage, ref, uploadBytes } from 'firebase/storage';
 import { db } from '../firebase/firebaseConfig';
 import './solicitudes.css';
 
@@ -17,7 +17,7 @@ interface FormData {
   horaInicio?: string;
   horaFin?: string;
   datosCertificado?: string;
-  archivoUrl?: string | null;
+  archivoUrl?: string | null; // Se almacenará la referencia del archivo
 }
 
 const Solicitudes: React.FC = () => {
@@ -116,7 +116,7 @@ const Solicitudes: React.FC = () => {
     const data: FormData = {
       ...formData,
       telefono: `+56${formData.telefono}`,
-      archivoUrl: null,
+      archivoUrl: null, // Inicialmente null
     };
 
     try {
@@ -124,8 +124,7 @@ const Solicitudes: React.FC = () => {
         const storage = getStorage();
         const storageRef = ref(storage, `uploads/${archivo.name}`);
         await uploadBytes(storageRef, archivo);
-        const archivoUrl = await getDownloadURL(storageRef);
-        data.archivoUrl = archivoUrl;
+        data.archivoUrl = storageRef.fullPath; // Guarda solo la referencia del archivo
       }
 
       const collectionName = formData.tipoSolicitud === 'certificadoResidencia' 
@@ -261,7 +260,7 @@ const Solicitudes: React.FC = () => {
               <option value="razon1">Para fines particulares</option>
               <option value="razon2">Para fines especiales</option>
             </select>
-            <label>Adjuntar Archivo:</label>
+            <label>Subir Documento:</label>
             <input
               type="file"
               accept=".pdf,.doc,.docx,.jpg,.png"
