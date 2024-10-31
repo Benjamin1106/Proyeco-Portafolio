@@ -134,7 +134,7 @@ const Solicitudes: React.FC = () => {
         : 'solicitudes';
 
       await addDoc(collection(db, collectionName), data);
-      setModalMessage('Solicitud enviada. A la brevedad recibirá un mensaje de aprobación.');
+      setModalMessage('Solicitud enviada. A la brevedad recibirá el mensaje correspondiente.');
       setIsModalOpen(true);
       resetForm();
     } catch (error) {
