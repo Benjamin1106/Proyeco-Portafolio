@@ -2,9 +2,9 @@ import React, { useState } from 'react';
 import { collection, addDoc } from 'firebase/firestore';
 import { getStorage, ref, uploadBytes } from 'firebase/storage';
 import { db } from '../firebase/firebaseConfig';
-import Modal from 'react-modal';
 import './solicitudes.css';
 
+// Define tipos de datos
 interface FormData {
   nombre: string;
   apellido: string;
@@ -17,7 +17,7 @@ interface FormData {
   horaInicio?: string;
   horaFin?: string;
   datosCertificado?: string;
-  archivoUrl?: string | null;
+  archivoUrl?: string | null; // Se almacenará la referencia del archivo
 }
 
 const Solicitudes: React.FC = () => {
@@ -36,18 +36,19 @@ const Solicitudes: React.FC = () => {
     archivoUrl: null,
   });
   const [archivo, setArchivo] = useState<File | null>(null);
-  const [modalIsOpen, setModalIsOpen] = useState(false);
-  const [modalMessage, setModalMessage] = useState('');
   const today = new Date().toISOString().split('T')[0];
 
+  // Validaciones
   const isRutValid = (rut: string) => /^[0-9]{2}\.[0-9]{3}\.[0-9]{3}-[0-9kK]$/.test(rut);
   const isOnlyLetters = (value: string) => /^[A-Za-zÀ-ÿ\s]+$/.test(value);
 
+  // Manejo de cambios en el formulario
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>) => {
     const { name, value } = e.target;
     setFormData((prev) => ({ ...prev, [name]: value }));
   };
 
+  // Reiniciar formulario
   const resetForm = () => {
     setFormData({
       nombre: '',
@@ -66,6 +67,7 @@ const Solicitudes: React.FC = () => {
     setArchivo(null);
   };
 
+  // Validación de horario operativo y secuencia de horas
   const isHorarioValido = (hora: string) => {
     const [hours, minutes] = hora.split(':').map(Number);
     return (hours > 10 || (hours === 10 && minutes === 0)) && (hours < 22);
@@ -75,27 +77,23 @@ const Solicitudes: React.FC = () => {
     e.preventDefault();
 
     if (!isRutValid(formData.rut)) {
-      setModalMessage('El RUT ingresado no es válido.');
-      setModalIsOpen(true);
+      alert('El RUT ingresado no es válido.');
       return;
     }
 
     if (!isOnlyLetters(formData.nombre)) {
-      setModalMessage('El nombre debe contener solo letras.');
-      setModalIsOpen(true);
+      alert('El nombre debe contener solo letras.');
       return;
     }
 
     if (!isOnlyLetters(formData.apellido)) {
-      setModalMessage('El apellido debe contener solo letras.');
-      setModalIsOpen(true);
+      alert('El apellido debe contener solo letras.');
       return;
     }
 
     if (formData.tipoSolicitud !== 'certificadoResidencia') {
       if (formData.horaInicio === formData.horaFin) {
-        setModalMessage('La hora de inicio y la hora de fin no pueden ser iguales.');
-        setModalIsOpen(true);
+        alert('La hora de inicio y la hora de fin no pueden ser iguales.');
         return;
       }
 
@@ -104,14 +102,12 @@ const Solicitudes: React.FC = () => {
         const horaFin = new Date(`1970-01-01T${formData.horaFin}:00`);
 
         if (horaInicio >= horaFin) {
-          setModalMessage('La hora de fin debe ser posterior a la hora de inicio.');
-          setModalIsOpen(true);
+          alert('La hora de fin debe ser posterior a la hora de inicio.');
           return;
         }
 
         if (!isHorarioValido(formData.horaInicio) || !isHorarioValido(formData.horaFin)) {
-          setModalMessage('La reserva solo puede realizarse entre las 10:00 y las 22:00 horas.');
-          setModalIsOpen(true);
+          alert('La reserva solo puede realizarse entre las 10:00 y las 22:00 horas.');
           return;
         }
       }
@@ -120,15 +116,16 @@ const Solicitudes: React.FC = () => {
     const data: FormData = {
       ...formData,
       telefono: `+56${formData.telefono}`,
-      archivoUrl: null,
+      archivoUrl: null, // Inicialmente null
     };
 
     try {
       if (archivo) {
         const storage = getStorage();
-        const storageRef = ref(storage, `uploads/${archivo.name}`);
+        const uniqueFileName = `${Date.now()}_${archivo.name}`; // Añade un timestamp único al nombre del archivo
+        const storageRef = ref(storage, `uploads/${uniqueFileName}`);
         await uploadBytes(storageRef, archivo);
-        data.archivoUrl = storageRef.fullPath;
+        data.archivoUrl = storageRef.fullPath; // Guarda solo la referencia del archivo
       }
 
       const collectionName = formData.tipoSolicitud === 'certificadoResidencia' 
@@ -136,33 +133,150 @@ const Solicitudes: React.FC = () => {
         : 'solicitudes';
 
       await addDoc(collection(db, collectionName), data);
-      setModalMessage('Solicitud enviada. A la brevedad recibirá un mensaje de aprobación.');
-      setModalIsOpen(true);
+      alert('Solicitud enviada. A la brevedad recibirá un mensaje de aprobación.');
       resetForm();
     } catch (error) {
       console.error('Error al enviar la solicitud:', error);
-      setModalMessage('Error al enviar la solicitud. Intente nuevamente.');
-      setModalIsOpen(true);
+      alert('Error al enviar la solicitud. Intente nuevamente.');
     }
   };
-
-  // Configuración del modal
-  Modal.setAppElement('#root'); // Asegúrate de que el elemento raíz esté en el DOM
 
   return (
     <div className="container">
       <h1>Solicitudes</h1>
       <form onSubmit={handleSubmit}>
-        {/* Form Fields */}
+        <label>Nombres:</label>
+        <input
+          type="text"
+          name="nombre"
+          value={formData.nombre}
+          onChange={handleInputChange}
+          required
+          pattern="^[A-Za-zÀ-ÿ\s]+$"
+          title="El nombre debe contener solo letras."
+        />
+        <label>Apellidos:</label>
+        <input
+          type="text"
+          name="apellido"
+          value={formData.apellido}
+          onChange={handleInputChange}
+          required
+          pattern="^[A-Za-zÀ-ÿ\s]+$"
+          title="El apellido debe contener solo letras."
+        />
+        <label>RUT:</label>
+        <input
+          type="text"
+          name="rut"
+          value={formData.rut}
+          onChange={handleInputChange}
+          required
+          placeholder="12.345.678-X"
+          pattern="^[0-9]{2}\.[0-9]{3}\.[0-9]{3}-[0-9kK]$"
+          title="El RUT debe tener el formato 12.345.678-X y puede terminar en un número o 'k'."
+        />
+        <label>Dirección:</label>
+        <input
+          type="text"
+          name="direccion"
+          value={formData.direccion}
+          onChange={handleInputChange}
+          required
+        />
+        <label>Teléfono:</label>
+        <input
+          type="tel"
+          name="telefono"
+          value={formData.telefono}
+          onChange={handleInputChange}
+          required
+          placeholder="912345678"
+          pattern="[0-9]{9}"
+          maxLength={9}
+          title="El teléfono debe tener 9 dígitos."
+        />
+        <label>Correo Electrónico:</label>
+        <input
+          type="email"
+          name="correo"
+          value={formData.correo}
+          onChange={handleInputChange}
+          required
+        />
+        <label>Tipo de Solicitud:</label>
+        <select
+          name="tipoSolicitud"
+          value={formData.tipoSolicitud}
+          onChange={handleInputChange}
+          required
+        >
+          <option value="" disabled>Seleccione tipo de Solicitud</option>
+          <option value="cancha">Cancha</option>
+          <option value="salas">Salas</option>
+          <option value="plazas">Plazas</option>
+          <option value="certificadoResidencia">Certificado de Residencia</option>
+        </select>
+
+        {formData.tipoSolicitud !== 'certificadoResidencia' && (
+          <div>
+            <label>Fecha:</label>
+            <input
+              type="date"
+              name="fecha"
+              value={formData.fecha}
+              onChange={handleInputChange}
+              min={today}
+              required
+            />
+            <label>Desde:</label>
+            <input
+              type="time"
+              name="horaInicio"
+              value={formData.horaInicio}
+              onChange={handleInputChange}
+              required
+            />
+            <label>Hasta:</label>
+            <input
+              type="time"
+              name="horaFin"
+              value={formData.horaFin}
+              onChange={handleInputChange}
+              required
+            />
+          </div>
+        )}
+
+        {formData.tipoSolicitud === 'certificadoResidencia' && (
+          <div>
+            <label>Razón:</label>
+            <select
+              name="datosCertificado"
+              value={formData.datosCertificado}
+              onChange={handleInputChange}
+              required
+            >
+              <option value="" disabled hidden>Seleccione una razón</option>
+              <option value="razon1">Para fines particulares</option>
+              <option value="razon2">Para fines especiales</option>
+            </select>
+            <label>Subir Documento:</label>
+            <input
+              type="file"
+              accept=".pdf,.doc,.docx,.jpg,.png"
+              onChange={(e) => {
+                if (e.target.files) {
+                  setArchivo(e.target.files[0]);
+                }
+              }}
+              required
+            />
+          </div>
+        )}
+
         <button type="submit">Enviar</button>
       </form>
-
-      {/* Modal para alertas */}
-      <Modal isOpen={modalIsOpen} onRequestClose={() => setModalIsOpen(false)}>
-        <h2>Notificación</h2>
-        <p>{modalMessage}</p>
-        <button onClick={() => setModalIsOpen(false)}>Cerrar</button>
-      </Modal>
     </div>
   );
 };
