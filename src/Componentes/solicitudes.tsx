@@ -3,6 +3,7 @@ import { collection, addDoc } from 'firebase/firestore';
 import { getStorage, ref, uploadBytes } from 'firebase/storage';
 import { db } from '../firebase/firebaseConfig';
 import './solicitudes.css';
+import Modal from './modal';
 
 // Define tipos de datos
 interface FormData {
@@ -36,11 +37,17 @@ const Solicitudes: React.FC = () => {
     archivoUrl: null,
   });
   const [archivo, setArchivo] = useState<File | null>(null);
+  const [isModalOpen, setIsModalOpen] = useState(false);
+  const [modalMessage, setModalMessage] = useState('');
   const today = new Date().toISOString().split('T')[0];
 
   // Validaciones
   const isRutValid = (rut: string) => /^[0-9]{2}\.[0-9]{3}\.[0-9]{3}-[0-9kK]$/.test(rut);
   const isOnlyLetters = (value: string) => /^[A-Za-zÀ-ÿ\s]+$/.test(value);
+  const isHorarioValido = (hora: string) => {
+    const [hours, minutes] = hora.split(':').map(Number);
+    return (hours > 10 || (hours === 10 && minutes === 0)) && (hours < 22);
+  };
 
   // Manejo de cambios en el formulario
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>) => {
@@ -67,27 +74,18 @@ const Solicitudes: React.FC = () => {
     setArchivo(null);
   };
 
-  // Validación de horario operativo y secuencia de horas
-  const isHorarioValido = (hora: string) => {
-    const [hours, minutes] = hora.split(':').map(Number);
-    return (hours > 10 || (hours === 10 && minutes === 0)) && (hours < 22);
-  };
-
+  // Validación del envío del formulario
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
 
+    // Validar campos
     if (!isRutValid(formData.rut)) {
       alert('El RUT ingresado no es válido.');
       return;
     }
 
-    if (!isOnlyLetters(formData.nombre)) {
-      alert('El nombre debe contener solo letras.');
-      return;
-    }
-
-    if (!isOnlyLetters(formData.apellido)) {
-      alert('El apellido debe contener solo letras.');
+    if (!isOnlyLetters(formData.nombre) || !isOnlyLetters(formData.apellido)) {
+      alert('El nombre y el apellido deben contener solo letras.');
       return;
     }
 
@@ -113,6 +111,7 @@ const Solicitudes: React.FC = () => {
       }
     }
 
+    // Preparar datos para envío
     const data: FormData = {
       ...formData,
       telefono: `+56${formData.telefono}`,
@@ -120,24 +119,28 @@ const Solicitudes: React.FC = () => {
     };
 
     try {
+      // Subir archivo si se ha seleccionado
       if (archivo) {
         const storage = getStorage();
-        const uniqueFileName = `${Date.now()}_${archivo.name}`; // Añade un timestamp único al nombre del archivo
+        const uniqueFileName = `${Date.now()}_${archivo.name}`; // Añadir un timestamp único
         const storageRef = ref(storage, `uploads/${uniqueFileName}`);
         await uploadBytes(storageRef, archivo);
         data.archivoUrl = storageRef.fullPath; // Guarda solo la referencia del archivo
       }
 
+      // Elegir la colección adecuada
       const collectionName = formData.tipoSolicitud === 'certificadoResidencia' 
         ? 'certificadoResidencia' 
         : 'solicitudes';
 
       await addDoc(collection(db, collectionName), data);
-      alert('Solicitud enviada. A la brevedad recibirá un mensaje de aprobación.');
+      setModalMessage('Solicitud enviada. A la brevedad recibirá un mensaje de aprobación.');
+      setIsModalOpen(true);
       resetForm();
     } catch (error) {
       console.error('Error al enviar la solicitud:', error);
-      alert('Error al enviar la solicitud. Intente nuevamente.');
+      setModalMessage('Error al enviar la solicitud. Intente nuevamente.');
+      setIsModalOpen(true);
     }
   };
 
@@ -155,6 +158,7 @@ const Solicitudes: React.FC = () => {
           pattern="^[A-Za-zÀ-ÿ\s]+$"
           title="El nombre debe contener solo letras."
         />
+        
         <label>Apellidos:</label>
         <input
           type="text"
@@ -165,6 +169,7 @@ const Solicitudes: React.FC = () => {
           pattern="^[A-Za-zÀ-ÿ\s]+$"
           title="El apellido debe contener solo letras."
         />
+        
         <label>RUT:</label>
         <input
           type="text"
@@ -176,6 +181,7 @@ const Solicitudes: React.FC = () => {
           pattern="^[0-9]{2}\.[0-9]{3}\.[0-9]{3}-[0-9kK]$"
           title="El RUT debe tener el formato 12.345.678-X y puede terminar en un número o 'k'."
         />
+        
         <label>Dirección:</label>
         <input
           type="text"
@@ -184,6 +190,7 @@ const Solicitudes: React.FC = () => {
           onChange={handleInputChange}
           required
         />
+        
         <label>Teléfono:</label>
         <input
           type="tel"
@@ -196,6 +203,7 @@ const Solicitudes: React.FC = () => {
           maxLength={9}
           title="El teléfono debe tener 9 dígitos."
         />
+        
         <label>Correo Electrónico:</label>
         <input
           type="email"
@@ -204,6 +212,7 @@ const Solicitudes: React.FC = () => {
           onChange={handleInputChange}
           required
         />
+        
         <label>Tipo de Solicitud:</label>
         <select
           name="tipoSolicitud"
@@ -264,19 +273,16 @@ const Solicitudes: React.FC = () => {
             <label>Subir Documento:</label>
             <input
               type="file"
-              accept=".pdf,.doc,.docx,.jpg,.png"
-              onChange={(e) => {
-                if (e.target.files) {
-                  setArchivo(e.target.files[0]);
-                }
-              }}
+              accept=".pdf, .doc, .docx"
+              onChange={(e) => e.target.files && setArchivo(e.target.files[0])}
               required
             />
           </div>
         )}
-
-        <button type="submit">Enviar</button>
+        
+        <button type="submit">Enviar Solicitud</button>
       </form>
+      {isModalOpen && <Modal isOpen={isModalOpen} message={modalMessage} onClose={() => setIsModalOpen(false)} />}
     </div>
   );
 };
