@@ -1,0 +1,59 @@
+.actividades-grid {
+    display: flex;
+    gap: 20px;
+    flex-wrap: wrap;
+    justify-content: center;
+  }
+  
+  .actividad-card {
+    width: 300px;
+    border: 1px solid #ddd;
+    border-radius: 8px;
+    overflow: hidden;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    background-color: #fff;
+    transition: transform 0.3s;
+  }
+  
+  .actividad-card:hover {
+    transform: translateY(-5px);
+  }
+  
+  .actividad-image {
+    width: 100%;
+    height: 150px;
+    object-fit: cover;
+  }
+  
+  .actividad-content {
+    padding: 15px;
+  }
+  
+  h3 {
+    font-size: 1.2rem;
+    margin: 10px 0;
+  }
+  
+  p {
+    font-size: 1rem;
+    color: #555;
+  }
+  
+  .inscribete-button {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 10px;
+    border: none;
+    background-color: #4CAF50;
+    color: white;
+    font-size: 1rem;
+    cursor: pointer;
+    border-radius: 4px;
+    transition: background-color 0.3s;
+    width: 100%;
+  }
+  
+  .inscribete-button:hover {
+    background-color: #45a049;
+  }

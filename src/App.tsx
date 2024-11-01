@@ -6,8 +6,9 @@ import FormularioSolicitudes from './Componentes/solicitudes.tsx';
 import Home from './Componentes/home.tsx';
 import Footer from './Componentes/footer.tsx';
 import CrearActividades from './Componentes/crearActividades.tsx';
+import Actividades from './Componentes/actividades.tsx';
 
-const Actividades: React.FC = () => <h1>Cambiar nombre</h1>;
+
 const Videos: React.FC = () => <h1>Cambiar nombre</h1>;
 
 const App: React.FC = () => {
