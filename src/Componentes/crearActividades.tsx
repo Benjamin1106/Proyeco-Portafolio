@@ -10,6 +10,7 @@ const CrearActividades: React.FC = () => {
   const [foto, setFoto] = useState<File | null>(null);
 
   const crearActividad = async () => {
+    // Verificar que los campos no estén vacíos
     if (nombre.trim() && descripcion.trim()) {
       try {
         let fotoURL = '';
@@ -59,7 +60,7 @@ const CrearActividades: React.FC = () => {
       />
       <input
         type="file"
-        accept="image/*"
+        accept="image/*" // Asegura que solo se acepten archivos de imagen
         onChange={(e) => setFoto(e.target.files ? e.target.files[0] : null)}
         className="actividad-file-input"
       />
