@@ -1,29 +1,4 @@
-body {
-    margin: 0;
-    padding: 0;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    min-height: 100vh;
-    background-color: #f5f5f5;
-  }
-  
-  .actividad-container {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    width: 100%;
-    max-width: 400px;
-    margin-top: 40px; /* Margen superior para espacio entre navbar */
-    padding: 30px;
-    border: 1px solid #ddd;
-    border-radius: 8px;
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-    background-color: #f9f9f9;
-    box-sizing: border-box; /* Asegúrate de que el padding se incluya en el ancho total */
-  }
-  
-  .actividad-title {
+    .actividad-title {
     font-size: 1.5rem;
     margin-bottom: 20px;
     color: #333;
@@ -67,5 +42,36 @@ body {
   footer {
     margin-top: 40px; /* Margen entre el contenedor y el footer */
     text-align: center; /* Centrar el footer */
+  }
+  
+  /* Consultas de medios para hacer el diseño más adaptable */
+  @media (max-width: 768px) {
+    .actividad-container {
+      padding: 20px; /* Reducir el padding en pantallas más pequeñas */
+    }
+  
+    .actividad-title {
+      font-size: 1.3rem; /* Ajustar el tamaño de fuente del título */
+    }
+  
+    .actividad-button {
+      max-width: 100%; /* Hacer que el botón ocupe el ancho completo */
+    }
+  }
+  
+  @media (max-width: 480px) {
+    .actividad-title {
+      font-size: 1.2rem; /* Ajustar aún más el tamaño de fuente del título */
+    }
+  
+    .actividad-input,
+    .actividad-textarea,
+    .actividad-file-input {
+      font-size: 0.9rem; /* Reducir el tamaño de fuente de los campos de entrada */
+    }
+  
+    .actividad-button {
+      padding: 10px; /* Ajustar el padding del botón */
+    }
   }
   
