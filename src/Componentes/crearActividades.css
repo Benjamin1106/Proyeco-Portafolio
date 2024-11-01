@@ -1,4 +1,19 @@
-    .actividad-title {
+  .actividad-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    width: 90%; /* Cambiado a un porcentaje para ser más adaptable */
+    max-width: 400px;
+    margin-top: 40px; /* Margen superior para espacio entre navbar */
+    padding: 30px;
+    border: 1px solid #ddd;
+    border-radius: 8px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    background-color: #f9f9f9;
+    box-sizing: border-box; /* Asegúrate de que el padding se incluya en el ancho total */
+  }
+  
+  .actividad-title {
     font-size: 1.5rem;
     margin-bottom: 20px;
     color: #333;
