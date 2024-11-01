@@ -1,72 +1,60 @@
-/* Solicitudes.css */
-body {
-    display: flex; /* Usar flexbox para el centrado */
-    justify-content: center; /* Centrar horizontalmente */
-    align-items: center; /* Centrar verticalmente */
-    height: 100vh; /* Altura completa de la ventana */
-    margin: 0; /* Quitar márgenes del body */
-    background-color: #f0f0f0; /* Color de fondo para el body */
-  }
-  
-  .container {
-    max-width: 600px; /* Ancho máximo del formulario */
-    width: 100%; /* Asegurar que sea responsive */
-    margin: 0 auto; /* Centrar el formulario */
-    padding: 20px; /* Espaciado interno */
-    border: 1px solid #ccc; /* Borde gris */
-    border-radius: 8px; /* Bordes redondeados */
-    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1); /* Sombra suave */
-    background-color: #f9f9f9; /* Color de fondo claro */
-  }
-  
-  h3 {
-    text-align: center; /* Centrar el título */
-    color: #333; /* Color del texto */
-    margin-bottom: 20px;
-  }
-  
-  label {
-    display: block; /* Mostrar etiquetas en bloque */
-    margin-bottom: 5px; /* Espaciado debajo de las etiquetas */
-    font-weight: bold; /* Texto en negrita */
-    text-align: center; /* Centrar etiquetas */
-  }
-  
-  select,
-  input[type="date"],
-  input[type="time"],
-  input[type="text"],
-  input[type="file"],
-  input[type="tel"],
-  input[type="email"] {
-    width: 100%; /* Ancho completo para mejor adaptabilidad */
-    max-width: 400px; /* Ancho máximo para dispositivos más grandes */
-    padding: 10px; /* Espaciado interno */
-    margin-bottom: 15px; /* Espaciado debajo de los campos */
-    border: 1px solid #ccc; /* Borde gris */
-    border-radius: 4px; /* Bordes redondeados */
-    font-size: 16px; /* Tamaño de fuente */
-    display: block; /* Asegura que se muestren como bloques */
-    margin-left: auto; /* Centrando en el contenedor */
-    margin-right: auto; /* Centrando en el contenedor */
-  }
-  
-  button {
-    width: 25%; /* Ancho ajustado */
-    padding: 10px; /* Espaciado interno */
-    background-color: #28a745; /* Color de fondo verde */
-    color: white; /* Color del texto */
-    border: none; /* Sin borde */
-    border-radius: 4px; /* Bordes redondeados */
-    font-size: 16px; /* Tamaño de fuente */
-    cursor: pointer; /* Cambiar cursor a puntero */
-    display: block; /* Asegura que se muestren como bloques */
-    margin-left: auto; /* Centrando en el contenedor */
-    margin-right: auto; /* Centrando en el contenedor */
-  }
-  
-  
-  button:hover {
-    background-color: #218838; /* Color verde más oscuro al pasar el ratón */
-  }
-  
+.container {
+  max-width: 600px;
+  width: 100%;
+  margin: 50px auto; /* Agrega margen superior e inferior */
+  padding: 20px;
+  border: 1px solid #ccc;
+  border-radius: 8px;
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+  background-color: #f9f9f9;
+}
+
+h3 {
+  text-align: center;
+  color: #333;
+  margin-bottom: 20px;
+}
+
+label {
+  display: block;
+  margin-bottom: 5px;
+  font-weight: bold;
+  text-align: center;
+}
+
+select,
+input[type="date"],
+input[type="time"],
+input[type="text"],
+input[type="file"],
+input[type="tel"],
+input[type="email"] {
+  width: 100%;
+  max-width: 400px;
+  padding: 10px;
+  margin-bottom: 15px;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  font-size: 16px;
+  display: block;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+button {
+  width: 25%;
+  padding: 10px;
+  background-color: #28a745;
+  color: white;
+  border: none;
+  border-radius: 4px;
+  font-size: 16px;
+  cursor: pointer;
+  display: block;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+button:hover {
+  background-color: #218838;
+}
