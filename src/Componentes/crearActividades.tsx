@@ -8,6 +8,7 @@ const CrearActividades: React.FC = () => {
   const [nombre, setNombre] = useState<string>('');
   const [descripcion, setDescripcion] = useState<string>('');
   const [foto, setFoto] = useState<File | null>(null);
+  const [mensaje, setMensaje] = useState<string>(''); // State for alerts
 
   const crearActividad = async () => {
     // Verificar que los campos no estén vacíos
@@ -36,15 +37,23 @@ const CrearActividades: React.FC = () => {
         setNombre('');
         setDescripcion('');
         setFoto(null);
+        setMensaje('Actividad creada exitosamente!'); // Success alert
       } catch (error) {
         console.error("Error al crear la actividad: ", error);
+        setMensaje('Error al crear la actividad. Por favor intenta nuevamente.'); // Error alert
       }
+    } else {
+      setMensaje('Por favor, completa todos los campos.'); // Alert for empty fields
     }
+
+    // Clear the alert message after a few seconds
+    setTimeout(() => setMensaje(''), 3000);
   };
 
   return (
     <div className="actividad-container">
       <h2 className="actividad-title">Crear Nueva Actividad</h2>
+      {mensaje && <div className="alert">{mensaje}</div>} {/* Display alert message */}
       <input
         type="text"
         value={nombre}

@@ -1,3 +1,4 @@
+  
   .actividad-container {
     display: flex;
     flex-direction: column;
@@ -58,6 +59,18 @@
     margin-top: 40px; /* Margen entre el contenedor y el footer */
     text-align: center; /* Centrar el footer */
   }
+  .alert {
+    padding: 10px;
+    margin: 10px 0;
+    color: #fff;
+    background-color: #4caf50; /* Green for success */
+    border-radius: 4px;
+    text-align: center;
+  }
+  
+  .alert.error {
+    background-color: #f44336; /* Red for errors */
+  }  
   
   /* Consultas de medios para hacer el diseño más adaptable */
   @media (max-width: 768px) {
