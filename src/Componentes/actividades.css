@@ -1,12 +1,15 @@
 .actividades-grid {
     display: flex;
-    gap: 20px;
     flex-wrap: wrap;
+    gap: 20px;
     justify-content: center;
+    padding: 20px;
+    margin-bottom: 60px; /* Espacio para el footer */
   }
   
   .actividad-card {
-    width: 300px;
+    width: 100%;
+    max-width: 300px;
     border: 1px solid #ddd;
     border-radius: 8px;
     overflow: hidden;
@@ -27,6 +30,7 @@
   
   .actividad-content {
     padding: 15px;
+    text-align: center;
   }
   
   h3 {
@@ -52,8 +56,30 @@
     border-radius: 4px;
     transition: background-color 0.3s;
     width: 100%;
+    margin-top: 10px;
   }
   
   .inscribete-button:hover {
     background-color: #45a049;
+  }
+  
+  @media (max-width: 768px) {
+    .actividad-card {
+      max-width: 90%;
+    }
+  }
+  
+  @media (max-width: 480px) {
+    h3 {
+      font-size: 1rem;
+    }
+  
+    p {
+      font-size: 0.9rem;
+    }
+  
+    .inscribete-button {
+      font-size: 0.9rem;
+      padding: 8px;
+    }
   }
