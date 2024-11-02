@@ -127,12 +127,14 @@
   .test{
     color: white;
   }
+  
+
   .home-container {
-    overflow-x: hidden;
+    opacity: 1; /* Asegúrate de que esté visible */
   }
   
   .hero-section, .about-section, .goal-section {
-    opacity: 0;
+    opacity: 1;
     transition: opacity 0.3s ease-out;
   }
   
