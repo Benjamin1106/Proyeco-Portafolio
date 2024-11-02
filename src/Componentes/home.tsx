@@ -8,7 +8,7 @@ const Home: React.FC = () => {
       {/* Hero section con imagen de fondo */}
       <section className="hero-section">
         <div className="hero-content">
-          <h1 className='test'>Bienvenidas a la Plataforma de Junta de Vecinos</h1>
+          <h1 className='test'>Bienvenidos a la Plataforma de Junta de Vecinos</h1>
           <p className='test'>Conectando a nuestra comunidad por un futuro mejor</p>
           <a href="#about" className="cta-button">Conoce Más</a>
         </div>
