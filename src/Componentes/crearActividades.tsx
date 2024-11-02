@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useRef } from 'react';
 import { db } from '../firebase/firebaseConfig';
 import { collection, addDoc } from 'firebase/firestore';
 import { getStorage, ref, uploadBytes, getDownloadURL } from 'firebase/storage';
@@ -7,8 +7,8 @@ import './crearActividades.css';
 const CrearActividades: React.FC = () => {
   const [nombre, setNombre] = useState<string>('');
   const [descripcion, setDescripcion] = useState<string>('');
-  const [foto, setFoto] = useState<File | null>(null);
   const [mensaje, setMensaje] = useState<string>(''); // State for alerts
+  const fileInputRef = useRef<HTMLInputElement | null>(null); // Ref for the file input
 
   const crearActividad = async () => {
     // Verificar que los campos no estén vacíos
@@ -17,11 +17,12 @@ const CrearActividades: React.FC = () => {
         let fotoURL = '';
 
         // Subir archivo si se ha seleccionado
-        if (foto) {
+        const file = fileInputRef.current?.files?.[0];
+        if (file) {
           const storage = getStorage();
-          const uniqueFileName = `${Date.now()}_${foto.name}`;
+          const uniqueFileName = `${Date.now()}_${file.name}`;
           const fotoRef = ref(storage, `uploads/${uniqueFileName}`);
-          await uploadBytes(fotoRef, foto);
+          await uploadBytes(fotoRef, file);
           fotoURL = await getDownloadURL(fotoRef);
         }
 
@@ -36,7 +37,7 @@ const CrearActividades: React.FC = () => {
         // Limpiar los campos después de crear la actividad
         setNombre('');
         setDescripcion('');
-        setFoto(null);
+        if (fileInputRef.current) fileInputRef.current.value = ''; // Reset the file input
         setMensaje('Actividad creada exitosamente!'); // Success alert
       } catch (error) {
         console.error("Error al crear la actividad: ", error);
@@ -70,7 +71,7 @@ const CrearActividades: React.FC = () => {
       <input
         type="file"
         accept="image/*" // Asegura que solo se acepten archivos de imagen
-        onChange={(e) => setFoto(e.target.files ? e.target.files[0] : null)}
+        ref={fileInputRef} // Referencia para el input de archivo
         className="actividad-file-input"
       />
       <button onClick={crearActividad} className="actividad-button">Crear Actividad</button>
