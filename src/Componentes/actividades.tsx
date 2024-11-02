@@ -10,7 +10,7 @@ interface Actividad {
   fotoURL: string;
 }
 
-const ActividadesList: React.FC = () => {
+const Actividades: React.FC = () => {
   const [actividades, setActividades] = useState<Actividad[]>([]);
 
   useEffect(() => {
@@ -42,4 +42,4 @@ const ActividadesList: React.FC = () => {
   );
 };
 
-export default ActividadesList;
+export default Actividades;

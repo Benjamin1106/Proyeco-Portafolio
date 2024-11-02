@@ -25,7 +25,7 @@
   .actividad-image {
     width: 100%;
     height: 150px;
-    object-fit: cover;
+    object-fit: cover; /* Ensures the image covers the area without distortion */
   }
   
   .actividad-content {
