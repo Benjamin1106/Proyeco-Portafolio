@@ -9,7 +9,7 @@ const Footer: React.FC = () => {
         <div className="footer-section footer-num">
           <h4>Fonos de Emergencia </h4>
           <ul>
-            <li>Fono 1</li>
+            <li>Fono1</li>
             <li>Fono 2</li>
             <li>Fono 3</li>
           </ul>
@@ -18,7 +18,7 @@ const Footer: React.FC = () => {
           <h4>Contacto</h4>
           <p className='test'>Villa Los Lagos, Chile</p>
           <p className='test'>Teléfono: +56 9 1234 5678</p>
-          <p className='test'>Email: contacto@juntaloslagos.cl</p>
+          <p className='mailto'>Email: contacto@juntaloslagos.cl</p>
         </div>
         <div className="footer-section footer-social">
           <h4>Síguenos</h4>
