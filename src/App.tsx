@@ -7,6 +7,7 @@ import Home from './Componentes/home.tsx';
 import Footer from './Componentes/footer.tsx';
 import CrearActividades from './Componentes/crearActividades.tsx';
 import Actividades from './Componentes/actividades.tsx';
+import Videos from './Componentes/videos.tsx';
 
 
 const Videos: React.FC = () => <h1>Cambiar nombre</h1>;
