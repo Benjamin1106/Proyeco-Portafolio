@@ -10,7 +10,7 @@ import Actividades from './Componentes/actividades.tsx';
 import Videos from './Componentes/videos.tsx';
 
 
-const Videos: React.FC = () => <h1>Cambiar nombre</h1>;
+//const Videos: React.FC = () => <h1>Cambiar nombre</h1>;
 
 const App: React.FC = () => {
   return (
