@@ -14,8 +14,53 @@ const Contacto: React.FC = () => {
     mensaje: ''
   });
 
+  const formatRUT = (rut: string) => {
+    // Remover caracteres no válidos
+    let cleanRUT = rut.replace(/[^0-9K]/g, '');
+    
+    // Validar longitud del RUT
+    if (cleanRUT.length > 8) {
+      cleanRUT = cleanRUT.slice(0, 8); // Limitar a 8 dígitos
+    }
+    
+    // Formatear el RUT
+    if (cleanRUT.length > 0) {
+      let formattedRUT = cleanRUT;
+      if (cleanRUT.length > 6) {
+        formattedRUT = cleanRUT.replace(/(\d{1,2})(\d{3})(\d{3})/, '$1.$2.$3'); // Agregar puntos
+      } else if (cleanRUT.length > 3) {
+        formattedRUT = cleanRUT.replace(/(\d{1})(\d{3})(\d{0,3})/, '$1.$2$3'); // Agregar el primer punto
+      }
+      if (cleanRUT.length > 0) {
+        formattedRUT += '-'; // Agregar guion al final
+      }
+      return formattedRUT;
+    }
+    return '';
+  };
+
   const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement | HTMLTextAreaElement>) => {
-    setFormData({ ...formData, [e.target.name]: e.target.value });
+    const { name, value } = e.target;
+
+    // Validaciones para RUT
+    if (name === 'rut') {
+      // Formatear el RUT
+      const formattedRUT = formatRUT(value);
+      setFormData({ ...formData, [name]: formattedRUT });
+    }
+
+    // Validaciones para Nombre
+    if (name === 'nombre') {
+      const regex = /^[a-zA-Z\s]*$/; // Solo letras y espacios
+      if (value.length <= 50 && regex.test(value)) {
+        setFormData({ ...formData, [name]: value });
+      }
+    }
+
+    // Actualizar otros campos
+    if (name !== 'rut' && name !== 'nombre') {
+      setFormData({ ...formData, [name]: value });
+    }
   };
 
   const handleSubmit = async (e: React.FormEvent) => {
@@ -55,28 +100,57 @@ const Contacto: React.FC = () => {
       <form onSubmit={handleSubmit}>
         <div className="mb-3">
           <label className="form-label">RUT</label>
-          <input type="text" name="rut" value={formData.rut} onChange={handleChange} className="form-control" required />
+          <input 
+            type="text" 
+            name="rut" 
+            value={formData.rut} 
+            onChange={handleChange} 
+            className="form-control" 
+            required 
+            maxLength={12} // Limitar a longitud máxima que incluye guiones y puntos
+          />
         </div>
         <div className="mb-3">
           <label className="form-label">Nombre</label>
-          <input type="text" name="nombre" value={formData.nombre} onChange={handleChange} className="form-control" required />
+          <input 
+            type="text" 
+            name="nombre" 
+            value={formData.nombre} 
+            onChange={handleChange} 
+            className="form-control" 
+            required 
+          />
         </div>
         <div className="mb-3">
           <label className="form-label">Correo</label>
-          <input type="email" name="correo" value={formData.correo} onChange={handleChange} className="form-control" required />
+          <input 
+            type="email" 
+            name="correo" 
+            value={formData.correo} 
+            onChange={handleChange} 
+            className="form-control" 
+            required 
+          />
         </div>
         <div className="mb-3">
           <label className="form-label">Teléfono</label>
-          <input type="tel" name="telefono" value={formData.telefono} onChange={handleChange} className="form-control" required />
+          <input 
+            type="tel" 
+            name="telefono" 
+            value={formData.telefono} 
+            onChange={handleChange} 
+            className="form-control" 
+            required 
+          />
         </div>
         <div className="form-group mb-3">
           <label htmlFor="motivo" className="form-label">Motivo</label>
           <select 
             id="motivo" 
-            name="motivo" // Agrega la propiedad name aquí
+            name="motivo" 
             className="form-select" 
-            value={formData.motivo} // Asegúrate de que el valor esté controlado
-            onChange={handleChange} // Conéctalo a handleChange
+            value={formData.motivo} 
+            onChange={handleChange} 
             required
           >
             <option value="">Seleccione un motivo</option>
@@ -89,7 +163,14 @@ const Contacto: React.FC = () => {
 
         <div className="mb-3">
           <label className="form-label">Mensaje</label>
-          <textarea name="mensaje" value={formData.mensaje} onChange={handleChange} className="form-control" rows={3} required></textarea>
+          <textarea 
+            name="mensaje" 
+            value={formData.mensaje} 
+            onChange={handleChange} 
+            className="form-control" 
+            rows={3} 
+            required
+          ></textarea>
         </div>
         <button type="submit" className="btn btn-primary me-2">Enviar</button>
         <button type="button" onClick={handleClear} className="btn btn-secondary">Limpiar</button>

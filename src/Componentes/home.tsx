@@ -6,20 +6,20 @@ import foto1 from "../img/Foto1.jpg";
 const Home: React.FC = () => {
   useEffect(() => {
     ScrollReveal().reveal('.hero-section', {
-      duration: 1200,
+      duration: 3000,
       origin: 'bottom',
       distance: '50px',
       opacity: 0,
     });
     ScrollReveal().reveal('.about-section', {
-      duration: 1200,
+      duration: 2000,
       origin: 'left',
       distance: '50px',
       delay: 200,
       opacity: 0,
     });
     ScrollReveal().reveal('.goal-section', {
-      duration: 1200,
+      duration: 1500,
       origin: 'right',
       distance: '50px',
       delay: 400,
