@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { Link } from 'react-router-dom';
 import './navbar.css'; 
+import logo from '../img/imglogo.png'; // Asegúrate de la ruta correcta
 
 const Navbar: React.FC = () => {
   const [isActive, setIsActive] = useState(false);
@@ -13,6 +14,7 @@ const Navbar: React.FC = () => {
     <nav className="navbar">
       <div className="navbar-container">
         <Link to="/" className="navbar-logo">
+          <img src={logo} alt="Logo Junta de Vecinos" className="logo-image" />
           Junta de Vecinos
         </Link>
         <div className="menu-icon" onClick={toggleMenu}>
@@ -30,6 +32,9 @@ const Navbar: React.FC = () => {
           </li>
           <li className="nav-item">
             <Link to="/videos" className="nav-links" onClick={toggleMenu}>Videos Tutoriales</Link>
+          </li>
+          <li className="nav-item">
+            <Link to="/contacto" className="nav-links" onClick={toggleMenu}>Contacto</Link>
           </li>
         </ul>
       </div>

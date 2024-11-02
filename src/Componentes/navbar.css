@@ -6,9 +6,9 @@
     font-family: 'Arial', sans-serif;
 }
 
-/* Estilos de la Navbar */
+/* Navbar Styles */
 .navbar {
-    background-color: #333;
+    background-color: #2a9d8f; /* Un verde agradable */
     height: 80px;
     display: flex;
     justify-content: center;
@@ -27,9 +27,18 @@
 }
 
 .navbar-logo {
+    display: flex;
+    align-items: center;
     color: white;
     text-decoration: none;
-    font-size: 2rem;
+    font-size: 1.8rem;
+    font-weight: bold;
+}
+
+.logo-image {
+    width: 40px;
+    height: 40px;
+    margin-right: 10px;
 }
 
 .menu-icon {
@@ -52,55 +61,32 @@
 .nav-links {
     color: white;
     text-decoration: none;
-    font-size: 1.5rem;
+    font-size: 1.2rem;
     padding: 10px 15px;
     transition: 0.3s ease;
 }
 
 .nav-links:hover {
-    background-color: #575757;
+    background-color: #264653;
     border-radius: 5px;
 }
 
-/* Main content */
-.main-content {
-    padding: 50px 20px;
-    text-align: center;
-}
-
-h1 {
-    font-size: 3rem;
-    color: #333;
-    text-align: center;
-    margin-top: 50px;
-}
-
-p {
-    font-size: 1.2rem;
-    color: #666;
-    max-width: 800px;
-    margin: 20px auto;
-    line-height: 1.6;
-}
-
-/* Responsive Design */
+/* Responsive Styles */
 @media screen and (max-width: 768px) {
     .menu-icon {
         display: block;
     }
 
     .nav-menu {
-        display: flex;
         flex-direction: column;
         position: absolute;
         top: 80px;
         left: -100%;
         width: 100%;
         height: 100vh;
-        background-color: #333;
+        background-color: #2a9d8f;
         transition: all 0.5s ease;
         align-items: center;
-        padding: 20px 0; /* Espaciado en la parte superior e inferior */
     }
 
     .nav-menu.active {
@@ -108,49 +94,10 @@ p {
     }
 
     .nav-item {
-        margin: 20px 0; /* Espacio vertical entre elementos */
+        margin: 20px 0;
     }
 
     .nav-links {
-        font-size: 2rem;
-    }
-
-    h1 {
-        font-size: 2.5rem;
-    }
-
-    p {
-        font-size: 1rem;
-        padding: 0 10px;
-    }
-}
-
-/* Estilos adicionales para tabletas y pantallas medianas */
-@media screen and (min-width: 768px) and (max-width: 1024px) {
-    .navbar-container {
-        padding: 0 30px;
-    }
-
-    h1 {
-        font-size: 2.8rem;
-    }
-
-    p {
-        font-size: 1.1rem;
-    }
-}
-
-/* Estilos adicionales para pantallas grandes */
-@media screen and (min-width: 1025px) {
-    .navbar-container {
-        padding: 0 50px;
-    }
-
-    h1 {
-        font-size: 3.5rem;
-    }
-
-    p {
-        font-size: 1.3rem;
+        font-size: 1.5rem;
     }
 }

@@ -1,0 +1,82 @@
+/* Estilos generales */
+.container {
+    max-width: 600px;
+    margin: 0 auto;
+    padding: 20px;
+    background-color: #f9f9f9; /* Fondo claro para resaltar */
+    border-radius: 8px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  }
+  
+  /* Campos de formulario */
+  .form-label {
+    font-weight: bold;
+    color: #333;
+    display: block; /* Asegura que el label ocupe toda la línea */
+    margin-bottom: 8px; /* Espaciado entre el label y el input */
+    text-align: center; /* Centrar el texto del label */
+  }
+  
+  .form-control {
+    border-radius: 5px;
+    border: 1px solid #ccc;
+    padding: 10px;
+    transition: border-color 0.3s ease;
+    text-align: center; /* Centrar el texto dentro de los inputs */
+  }
+  
+  .form-control:focus {
+    border-color: #2a5d2f; /* Resaltar en color institucional */
+    box-shadow: 0 0 5px rgba(42, 93, 47, 0.3);
+  }
+  
+  /* Estilos específicos para el combobox */
+  .form-select {
+    border-radius: 5px;
+    border: 1px solid #ccc;
+    padding: 10px;
+    transition: border-color 0.3s ease;
+    text-align: center; /* Centrar el texto dentro del combobox */
+  }
+  
+  .form-select:focus {
+    border-color: #2a5d2f; /* Resaltar en color institucional */
+    box-shadow: 0 0 5px rgba(42, 93, 47, 0.3);
+  }
+  
+  /* Botones */
+  .btn-primary {
+    background-color: #2a5d2f; /* Color verde principal */
+    border-color: #2a5d2f;
+  }
+  
+  .btn-primary:hover {
+    background-color: #216428; /* Verde más oscuro */
+    border-color: #216428;
+  }
+  
+  .btn-secondary {
+    background-color: #333; /* Color oscuro para el botón de limpiar */
+    border-color: #333;
+    color: white;
+  }
+  
+  .btn-secondary:hover {
+    background-color: #575757;
+    border-color: #575757;
+  }
+  
+  /* Espaciado */
+  .mb-3 {
+    margin-bottom: 1rem;
+  }
+  
+  .me-2 {
+    margin-right: 0.5rem;
+  }
+  
+  /* Centrar el formulario */
+  .form-group {
+    text-align: center; /* Centrar el contenido de cada grupo de formulario */
+  }
+  
