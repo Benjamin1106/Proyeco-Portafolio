@@ -15,32 +15,44 @@ const Actividades: React.FC = () => {
   const [actividades, setActividades] = useState<Actividad[]>([]);
   const [nombreUsuario, setNombreUsuario] = useState<string>('');
   const [mensaje, setMensaje] = useState<string>('');
-  const [loading, setLoading] = useState<boolean>(true); // Estado para la carga
+  const [loading, setLoading] = useState<boolean>(true);
+  const [isModalOpen, setIsModalOpen] = useState<boolean>(false);
+  const [selectedActividadId, setSelectedActividadId] = useState<string | null>(null);
 
   useEffect(() => {
-    // Usar onSnapshot para obtener cambios en tiempo real y mejorar el rendimiento
     const unsubscribe = onSnapshot(collection(db, 'actividades'), (snapshot) => {
       const actividadesData = snapshot.docs.map(doc => ({
         id: doc.id,
         ...doc.data()
       })) as Actividad[];
       setActividades(actividadesData);
-      setLoading(false); // Una vez que los datos se cargan, quitar el estado de carga
+      setLoading(false);
     });
 
-    return () => unsubscribe(); // Limpiar suscripción cuando el componente se desmonte
+    return () => unsubscribe();
   }, []);
 
-  const inscribirse = async (actividadId: string) => {
-    if (!nombreUsuario.trim()) {
+  const openModal = (actividadId: string) => {
+    setSelectedActividadId(actividadId);
+    setIsModalOpen(true);
+  };
+
+  const closeModal = () => {
+    setIsModalOpen(false);
+    setNombreUsuario('');
+    setMensaje('');
+  };
+
+  const inscribirse = async () => {
+    if (!nombreUsuario.trim() || !selectedActividadId) {
       setMensaje('Por favor, ingresa tu nombre para inscribirte.');
       setTimeout(() => setMensaje(''), 3000);
       return;
     }
 
     try {
-      const actividadRef = doc(db, 'actividades', actividadId);
-      const actividad = actividades.find(actividad => actividad.id === actividadId);
+      const actividadRef = doc(db, 'actividades', selectedActividadId);
+      const actividad = actividades.find(act => act.id === selectedActividadId);
 
       if (actividad && actividad.inscritos.includes(nombreUsuario)) {
         setMensaje('Ya estás inscrito en esta actividad.');
@@ -52,30 +64,22 @@ const Actividades: React.FC = () => {
       await updateDoc(actividadRef, { inscritos: nuevosInscritos });
 
       setActividades(prev =>
-        prev.map(actividad =>
-          actividad.id === actividadId ? { ...actividad, inscritos: nuevosInscritos } : actividad
+        prev.map(act =>
+          act.id === selectedActividadId ? { ...act, inscritos: nuevosInscritos } : act
         )
       );
       setMensaje('¡Inscripción exitosa!');
+      closeModal();
     } catch (error) {
       console.error('Error al inscribirse:', error);
       setMensaje('Error al inscribirse. Inténtalo nuevamente.');
     }
-
-    setTimeout(() => setMensaje(''), 3000);
   };
 
   return (
     <div className="actividades-grid">
       {mensaje && <div className="alert">{mensaje}</div>}
-      <input
-        type="text"
-        placeholder="Tu nombre"
-        value={nombreUsuario}
-        onChange={(e) => setNombreUsuario(e.target.value)}
-        className="nombre-input"
-      />
-      {loading ? ( // Mostrar indicador de carga
+      {loading ? (
         <div className="loading">Cargando actividades...</div>
       ) : (
         actividades.map(actividad => (
@@ -85,16 +89,37 @@ const Actividades: React.FC = () => {
               <h3>{actividad.nombre}</h3>
               <p>{actividad.descripcion}</p>
               <p>Inscritos: {actividad.inscritos.length}</p>
-              <button onClick={() => inscribirse(actividad.id)} className="inscribete-button">
+              <button onClick={() => openModal(actividad.id)} className="inscribete-button">
                 Inscríbete aquí
               </button>
             </div>
           </div>
         ))
       )}
+      {/* Modal para inscripción */}
+      {isModalOpen && (
+        <div className="modal">
+          <div className="modal-content">
+            <h2>Inscribirse en la actividad</h2>
+            <input
+              type="text"
+              placeholder="Tu nombre"
+              value={nombreUsuario}
+              onChange={(e) => setNombreUsuario(e.target.value)}
+              className="nombre-input"
+            />
+            <button onClick={inscribirse} className="submit-button">
+              Confirmar Inscripción
+            </button>
+            <button onClick={closeModal} className="close-button">
+              Cancelar
+            </button>
+            {mensaje && <p className="modal-mensaje">{mensaje}</p>}
+          </div>
+        </div>
+      )}
     </div>
   );
 };
 
 export default Actividades;
-
