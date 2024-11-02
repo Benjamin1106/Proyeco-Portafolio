@@ -7,7 +7,7 @@ import Footer from './Componentes/footer';
 import CrearActividades from './Componentes/crearActividades';
 import Contacto from './Componentes/contacto';
 import Actividades from './Componentes/actividades';
-import Videos from './Componentes/videos';
+import Videos from './Componentes/videos'; // Asegúrate de que este componente exista
 
 const NotFound: React.FC = () => (
   <div style={{
@@ -50,6 +50,7 @@ const Layout: React.FC<LayoutProps> = ({ children }) => {
                           location.pathname !== '/solicitudes' && 
                           location.pathname !== '/actividades' && 
                           location.pathname !== '/videos' && 
+                          location.pathname !== '/contacto' && 
                           location.pathname !== '/crearActividades';
 
   return (
@@ -64,15 +65,18 @@ const Layout: React.FC<LayoutProps> = ({ children }) => {
 const App: React.FC = () => {
   return (
     <Router>
-      <Navbar />
-      <Routes>
-        <Route path="/" element={<Home />} />
-        <Route path="/solicitudes" element={<FormularioSolicitudes />} />
-        <Route path="/actividades" element={<Actividades />} />
-        <Route path="/videos" element={<Videos />} />
-        <Route path="/crearActividades" element={<CrearActividades />} />
-      </Routes>
-      <Footer/>
+      <Layout>
+        <Routes>
+          <Route path="/" element={<Home />} />
+          <Route path="/solicitudes" element={<FormularioSolicitudes />} />
+          <Route path="/actividades" element={<Actividades />} />
+          <Route path="/videos" element={<Videos />} />
+          <Route path="/crearActividades" element={<CrearActividades />} />
+          <Route path="/contacto" element={<Contacto />} />
+          {/* Ruta para capturar todas las rutas no existentes */}
+          <Route path="*" element={<NotFound />} />
+        </Routes>
+      </Layout>
     </Router>
   );
 }
