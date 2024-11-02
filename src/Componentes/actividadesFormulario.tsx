@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { doc, updateDoc } from 'firebase/firestore';
 import { db } from '../firebase/firebaseConfig';
-import './formularioInscripcion.css';
+import './actividadesFormulario.css';
 
 interface Actividad {
   id: string;
