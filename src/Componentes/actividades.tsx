@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { db } from '../firebase/firebaseConfig';
-import { collection, getDocs, updateDoc, doc } from 'firebase/firestore';
+import { collection, onSnapshot, updateDoc, doc } from 'firebase/firestore';
 import './actividades.css';
 
 interface Actividad {
@@ -8,25 +8,27 @@ interface Actividad {
   nombre: string;
   descripcion: string;
   fotoURL: string;
-  inscritos: string[]; // Array para almacenar los nombres de los inscritos
+  inscritos: string[];
 }
 
 const Actividades: React.FC = () => {
   const [actividades, setActividades] = useState<Actividad[]>([]);
-  const [nombreUsuario, setNombreUsuario] = useState<string>(''); // Estado para el nombre del usuario
-  const [mensaje, setMensaje] = useState<string>(''); // Estado para mostrar mensajes
+  const [nombreUsuario, setNombreUsuario] = useState<string>('');
+  const [mensaje, setMensaje] = useState<string>('');
+  const [loading, setLoading] = useState<boolean>(true); // Estado para la carga
 
   useEffect(() => {
-    const fetchActividades = async () => {
-      const querySnapshot = await getDocs(collection(db, 'actividades'));
-      const actividadesData = querySnapshot.docs.map(doc => ({
+    // Usar onSnapshot para obtener cambios en tiempo real y mejorar el rendimiento
+    const unsubscribe = onSnapshot(collection(db, 'actividades'), (snapshot) => {
+      const actividadesData = snapshot.docs.map(doc => ({
         id: doc.id,
         ...doc.data()
       })) as Actividad[];
       setActividades(actividadesData);
-    };
+      setLoading(false); // Una vez que los datos se cargan, quitar el estado de carga
+    });
 
-    fetchActividades();
+    return () => unsubscribe(); // Limpiar suscripción cuando el componente se desmonte
   }, []);
 
   const inscribirse = async (actividadId: string) => {
@@ -40,18 +42,15 @@ const Actividades: React.FC = () => {
       const actividadRef = doc(db, 'actividades', actividadId);
       const actividad = actividades.find(actividad => actividad.id === actividadId);
 
-      // Verificar si el usuario ya está inscrito
       if (actividad && actividad.inscritos.includes(nombreUsuario)) {
         setMensaje('Ya estás inscrito en esta actividad.');
         setTimeout(() => setMensaje(''), 3000);
         return;
       }
 
-      // Actualizar la lista de inscritos en Firestore
       const nuevosInscritos = actividad ? [...actividad.inscritos, nombreUsuario] : [nombreUsuario];
       await updateDoc(actividadRef, { inscritos: nuevosInscritos });
 
-      // Actualizar el estado local
       setActividades(prev =>
         prev.map(actividad =>
           actividad.id === actividadId ? { ...actividad, inscritos: nuevosInscritos } : actividad
@@ -63,12 +62,12 @@ const Actividades: React.FC = () => {
       setMensaje('Error al inscribirse. Inténtalo nuevamente.');
     }
 
-    setTimeout(() => setMensaje(''), 3000); // Limpiar mensaje después de unos segundos
+    setTimeout(() => setMensaje(''), 3000);
   };
 
   return (
     <div className="actividades-grid">
-      {mensaje && <div className="alert">{mensaje}</div>} {/* Mostrar mensaje */}
+      {mensaje && <div className="alert">{mensaje}</div>}
       <input
         type="text"
         placeholder="Tu nombre"
@@ -76,21 +75,26 @@ const Actividades: React.FC = () => {
         onChange={(e) => setNombreUsuario(e.target.value)}
         className="nombre-input"
       />
-      {actividades.map(actividad => (
-        <div key={actividad.id} className="actividad-card">
-          <img src={actividad.fotoURL} alt={actividad.nombre} className="actividad-image" />
-          <div className="actividad-content">
-            <h3>{actividad.nombre}</h3>
-            <p>{actividad.descripcion}</p>
-            <p>Inscritos: {actividad.inscritos.length}</p>
-            <button onClick={() => inscribirse(actividad.id)} className="inscribete-button">
-              Inscríbete aquí
-            </button>
+      {loading ? ( // Mostrar indicador de carga
+        <div className="loading">Cargando actividades...</div>
+      ) : (
+        actividades.map(actividad => (
+          <div key={actividad.id} className="actividad-card">
+            <img src={actividad.fotoURL} alt={actividad.nombre} className="actividad-image" />
+            <div className="actividad-content">
+              <h3>{actividad.nombre}</h3>
+              <p>{actividad.descripcion}</p>
+              <p>Inscritos: {actividad.inscritos.length}</p>
+              <button onClick={() => inscribirse(actividad.id)} className="inscribete-button">
+                Inscríbete aquí
+              </button>
+            </div>
           </div>
-        </div>
-      ))}
+        ))
+      )}
     </div>
   );
 };
 
 export default Actividades;
+
