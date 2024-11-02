@@ -838,6 +838,11 @@
     "@types/prop-types" "*"
     csstype "^3.0.2"
 
+"@types/scrollreveal@^0.0.11":
+  version "0.0.11"
+  resolved "https://registry.npmjs.org/@types/scrollreveal/-/scrollreveal-0.0.11.tgz"
+  integrity sha512-GDOESLkVNyd5FIS980N9rDtp45L7jfyvbDuumtaMXMPfJOFOk/7ADNvXaL/NBggXJHQJSgNNHsJBrQ2mTE7+cA==
+
 "@typescript-eslint/eslint-plugin@8.5.0":
   version "8.5.0"
   resolved "https://registry.npmjs.org/@typescript-eslint/eslint-plugin/-/eslint-plugin-8.5.0.tgz"
