@@ -70,14 +70,21 @@ const Contacto: React.FC = () => {
           <input type="tel" name="telefono" value={formData.telefono} onChange={handleChange} className="form-control" required />
         </div>
         <div className="form-group mb-3">
-            <label htmlFor="motivo" className="form-label">Motivo</label>
-            <select id="motivo" className="form-select" required>
-                <option value="">Seleccione un motivo</option>
-                <option value="consulta">Consulta</option>
-                <option value="sugerencia">Sugerencia</option>
-                <option value="reclamo">Reclamo</option>
-                <option value="otros">Otros</option>
-            </select>
+          <label htmlFor="motivo" className="form-label">Motivo</label>
+          <select 
+            id="motivo" 
+            name="motivo" // Agrega la propiedad name aquí
+            className="form-select" 
+            value={formData.motivo} // Asegúrate de que el valor esté controlado
+            onChange={handleChange} // Conéctalo a handleChange
+            required
+          >
+            <option value="">Seleccione un motivo</option>
+            <option value="consulta">Consulta</option>
+            <option value="sugerencia">Sugerencia</option>
+            <option value="reclamo">Reclamo</option>
+            <option value="otros">Otros</option>
+          </select>
         </div>
 
         <div className="mb-3">
