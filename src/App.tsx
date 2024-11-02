@@ -1,13 +1,13 @@
 // src/App.tsx
 import React from 'react';
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
-import Navbar from './Componentes/navbar.tsx';
-import FormularioSolicitudes from './Componentes/solicitudes.tsx';
-import Home from './Componentes/home.tsx';
-import Footer from './Componentes/footer.tsx';
-import CrearActividades from './Componentes/crearActividades.tsx';
-import Actividades from './Componentes/actividades.tsx';
-import Videos from './Componentes/videos.tsx';
+import Navbar from './Componentes/navbar';
+import FormularioSolicitudes from './Componentes/solicitudes';
+import Home from './Componentes/home';
+import Footer from './Componentes/footer';
+import CrearActividades from './Componentes/crearActividades';
+import Actividades from './Componentes/actividades';
+import Videos from './Componentes/videos'; //Me genero conflicto el jenkins por lo de cambiar los acrhivos .json asi que borre lo de .tsx
 
 
 //const Videos: React.FC = () => <h1>Cambiar nombre</h1>;
