@@ -1,8 +1,32 @@
-import React from 'react';
+import React, { useEffect } from 'react';
+import ScrollReveal from 'scrollreveal';
 import './home.css';
-import foto1 from "../img/Foto1.jpg"
+import foto1 from "../img/Foto1.jpg";
 
 const Home: React.FC = () => {
+  useEffect(() => {
+    ScrollReveal().reveal('.hero-section', {
+      duration: 1200,
+      origin: 'bottom',
+      distance: '50px',
+      opacity: 0,
+    });
+    ScrollReveal().reveal('.about-section', {
+      duration: 1200,
+      origin: 'left',
+      distance: '50px',
+      delay: 200,
+      opacity: 0,
+    });
+    ScrollReveal().reveal('.goal-section', {
+      duration: 1200,
+      origin: 'right',
+      distance: '50px',
+      delay: 400,
+      opacity: 0,
+    });
+  }, []);
+
   return (
     <div className="home-container">
       {/* Hero section con imagen de fondo */}

@@ -127,4 +127,12 @@
   .test{
     color: white;
   }
+  .home-container {
+    overflow-x: hidden;
+  }
+  
+  .hero-section, .about-section, .goal-section {
+    opacity: 0;
+    transition: opacity 0.3s ease-out;
+  }
   
