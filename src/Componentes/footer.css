@@ -1,77 +1,96 @@
 .footer {
-    background-color: #34495e;
-    color: white;
-    padding: 40px 20px;
-    text-align: center;
-  }
-  
+  background-color: #2d6a4f; /* Verde bonito */
+  color: white;
+  padding: 40px 20px;
+  text-align: center;
+  font-family: Arial, sans-serif;
+}
+
+.footer-content {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-between;
+  align-items: flex-start;
+  max-width: 1200px;
+  margin: 0 auto;
+}
+
+.footer-section {
+  flex: 1;
+  min-width: 220px;
+  margin: 20px;
+}
+
+.footer h4 {
+  font-size: 1.5rem;
+  margin-bottom: 15px;
+  color: #e8f5e9;
+}
+
+.footer ul {
+  list-style: none;
+  padding: 0;
+}
+
+.footer ul li a {
+  color: #cdeacd;
+  text-decoration: none;
+  font-size: 1rem;
+}
+
+.footer ul li a:hover {
+  text-decoration: underline;
+}
+
+.footer-contact p,
+.footer-contact a {
+  margin: 5px 0;
+  color: #cdeacd;
+}
+
+.footer-social a {
+  color: white;
+  margin: 0 10px;
+  font-size: 1.5rem;
+  transition: color 0.3s;
+}
+
+.footer-social a:hover {
+  color: #cdeacd;
+}
+
+.footer-bottom {
+  border-top: 1px solid #cdeacd;
+  padding-top: 20px;
+}
+
+.footer-bottom p {
+  margin: 0;
+  font-size: 0.9rem;
+  color: #e8f5e9;
+}
+
+.footer a {
+  color: #cdeacd;
+}
+
+.footer a:hover {
+  color: #f1faee;
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
   .footer-content {
-    display: flex;
-    flex-wrap: wrap;
-    justify-content: space-between;
-    align-items: flex-start;
-    max-width: 1200px;
-    margin: 0 auto;
-  }
-  
-  .footer-section {
-    flex: 1;
-    min-width: 200px;
-    margin: 20px;
-  }
-  
-  .footer-num ul {
-    list-style: none;
-    padding: 0;
-  }
-  
-  .footer-num ul li {
-    margin-top: 10px;
-  }
-  
-  .footer-num ul li a {
-    color: white;
-    text-decoration: none;
-  }
-  
-  
-  .footer-contact p {
-    margin: 5px 0;
-  }
-  
-  .footer-social a {
-    color: white;
-    margin: 0 10px;
-    font-size: 1.5rem;
-    display: inline-block;
-  }
-  
-  .footer-bottom {
-    border-top: 1px solid #576574;
-    padding-top: 20px;
-  }
-  
-  .footer-bottom p {
-    margin: 0;
-  }
-  
-  /* Responsive Design */
-  @media (max-width: 768px) {
-    .footer-content {
       flex-direction: column;
       align-items: center;
-    }
-  
-    .footer-section {
+  }
+
+  .footer-section {
       margin: 10px 0;
       text-align: center;
-    }
-  
-    .footer-social a {
+  }
+
+  .footer-social a {
       margin: 5px;
-    }
   }
-  .test{
-    color: white;
-  }
-  
+}
