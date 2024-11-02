@@ -9,7 +9,7 @@ const Footer: React.FC = () => {
         <div className="footer-section footer-num">
           <h4>Fonos de Emergencia </h4>
           <ul>
-            <li>Fono1</li>
+            <li>Fono 1</li>
             <li>Fono 2</li>
             <li>Fono 3</li>
           </ul>
