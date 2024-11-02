@@ -219,6 +219,7 @@ const Solicitudes: React.FC = () => {
           value={formData.tipoSolicitud}
           onChange={handleInputChange}
           required
+          className='centrar-select'
         >
           <option value="" disabled>Seleccione tipo de Solicitud</option>
           <option value="cancha">Cancha</option>
@@ -261,6 +262,7 @@ const Solicitudes: React.FC = () => {
           <div>
             <label>Razón:</label>
             <select
+              className='centrar-select'
               name="datosCertificado"
               value={formData.datosCertificado}
               onChange={handleInputChange}
@@ -276,6 +278,7 @@ const Solicitudes: React.FC = () => {
               accept=".pdf, .doc, .docx"
               onChange={(e) => e.target.files && setArchivo(e.target.files[0])}
               required
+              className='centrar'
             />
           </div>
         )}

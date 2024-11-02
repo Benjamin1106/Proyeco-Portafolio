@@ -58,3 +58,13 @@ button {
 button:hover {
   background-color: #218838;
 }
+
+.centrar{
+  align-items: center;
+}
+
+
+.centrar-select{
+  display: block; /* Hace que el select se comporte como un bloque */
+  margin: 0 auto; /* Centra el select horizontalmente */
+}
