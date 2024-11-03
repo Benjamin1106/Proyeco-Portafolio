@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { db } from '../firebase/firebaseConfig';
-import { doc, addDoc, updateDoc, collection } from 'firebase/firestore';
+import { doc, addDoc, updateDoc, collection, query, where, getDocs } from 'firebase/firestore';
 import './formulario.css';
 
 interface FormularioProps {
@@ -10,10 +10,12 @@ interface FormularioProps {
 
 const Formulario: React.FC<FormularioProps> = ({ actividad, onClose }) => {
   const [formData, setFormData] = useState({ name: '', email: '', address: '' });
-  const [successMessage, setSuccessMessage] = useState<string | null>(null); // Estado para el mensaje de éxito
+  const [successMessage, setSuccessMessage] = useState<string | null>(null);
+  const [errorMessage, setErrorMessage] = useState<string | null>(null); // Estado para el mensaje de error
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setFormData({ ...formData, [e.target.name]: e.target.value });
+    setErrorMessage(null); // Limpiar mensaje de error al cambiar el campo
   };
 
   const handleSubmit = async (e: React.FormEvent) => {
@@ -23,6 +25,15 @@ const Formulario: React.FC<FormularioProps> = ({ actividad, onClose }) => {
       try {
         const actividadRef = doc(db, 'actividades', actividad.id);
         const inscritosRef = collection(actividadRef, 'inscritos');
+
+        // Verificar si el correo ya está inscrito
+        const q = query(inscritosRef, where("email", "==", formData.email));
+        const querySnapshot = await getDocs(q);
+
+        if (!querySnapshot.empty) {
+          setErrorMessage('¡Correo ya inscrito!'); // Establecer mensaje de error
+          return; // Detener el proceso si el correo ya está inscrito
+        }
 
         // Guardar los datos del inscrito en la subcolección 'inscritos'
         await addDoc(inscritosRef, formData);
@@ -90,6 +101,7 @@ const Formulario: React.FC<FormularioProps> = ({ actividad, onClose }) => {
           </div>
         </form>
         {successMessage && <div className="success-message">{successMessage}</div>} {/* Mostrar mensaje de éxito */}
+        {errorMessage && <div className="error-message">{errorMessage}</div>} {/* Mostrar mensaje de error */}
       </div>
     </div>
   );
