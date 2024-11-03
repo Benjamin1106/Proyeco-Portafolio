@@ -1,9 +1,14 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 import ScrollReveal from 'scrollreveal';
 import './home.css';
 import foto1 from "../img/Foto1.jpg";
+import presidente from "../img/presidente.jpg";
+import secretaria from "../img/secretaria.jpg";
+import tesorera from "../img/tesorera.jpg";
 
 const Home: React.FC = () => {
+  const [visitorsOnline, setVisitorsOnline] = useState<number>(0);
+
   useEffect(() => {
     ScrollReveal().reveal('.hero-section', {
       duration: 3000,
@@ -25,6 +30,16 @@ const Home: React.FC = () => {
       delay: 400,
       opacity: 0,
     });
+    ScrollReveal().reveal('.directiva-section', {
+      duration: 2000,
+      origin: 'bottom',
+      distance: '50px',
+      delay: 600,
+      opacity: 0,
+    });
+
+    // Simulación de visitantes en línea
+    setVisitorsOnline(Math.floor(Math.random() * 50) + 1);
   }, []);
 
   return (
@@ -60,6 +75,43 @@ const Home: React.FC = () => {
         <div className="goal-image">
           <img src={foto1} alt="Comunidad Unida" />
         </div>
+      </section>
+
+      {/* Sección de Nuestra Directiva */}
+      <section className="directiva-section">
+        <h2>Nuestra Directiva</h2>
+        <p>Nuestra directiva está constituida por diversos dirigentes de la junta de vecinos de Villa Los Lagos.</p>
+        <div className="directiva-members">
+          <div className="member">
+            <img src={presidente} alt="Jesús Navarro" />
+            <h3>Jesús Navarro</h3>
+            <p>Presidente de la junta de vecinos, 38 años.</p>
+          </div>
+          <div className="member">
+            <img src={secretaria} alt="Nancy Lueta" />
+            <h3>Nancy Lueta</h3>
+            <p>Secretaria de la junta de vecinos, 55 años.</p>
+          </div>
+          <div className="member">
+            <img src={tesorera} alt="Eugenia Zapa" />
+            <h3>Eugenia Zapa</h3>
+            <p>Tesorera, 63 años.</p>
+          </div>
+        </div>
+      </section>
+
+      {/* Huincha de Contacto */}
+      <section className="contact-banner">
+        <h2 className="contact-title">¿Necesitas Contactarnos?</h2>
+        <h3>
+          Presiona el botón que está acá y podrás llenar el formulario de contacto, en cuanto podamos te contestaremos.
+        </h3>
+        <a href="/contacto" className="contact-button">CONTÁCTANOS</a>
+      </section>
+
+      {/* Contador de visitantes */}
+      <section className="visitor-count">
+        La cantidad de {visitorsOnline} vecinos han visitado nuestra página.
       </section>
     </div>
   );

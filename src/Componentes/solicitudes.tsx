@@ -78,6 +78,11 @@ const Solicitudes: React.FC = () => {
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
 
+    if (!isRutValid(formData.rut)) {
+      alert('El RUT ingresado no es válido.');
+      return;
+    }
+
     // Validar campos
     if (!isRutValid(formData.rut)) {
       alert('El RUT ingresado no es válido.');

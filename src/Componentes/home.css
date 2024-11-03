@@ -137,4 +137,87 @@
     opacity: 1;
     transition: opacity 0.3s ease-out;
   }
-  
+  .directiva-section {
+    text-align: center;
+    padding: 50px 20px;
+}
+
+.directiva-section h2 {
+    font-size: 2rem;
+    margin-bottom: 20px;
+}
+
+.directiva-section p {
+    font-size: 1.2rem;
+    color: #34495e;
+    margin-bottom: 40px;
+}
+
+.directiva-members {
+    display: flex;
+    justify-content: center;
+    gap: 20px;
+}
+
+.member {
+    text-align: center;
+    max-width: 200px;
+}
+
+.member img {
+    width: 100%;
+    border-radius: 50%;
+    box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.2);
+    margin-bottom: 10px;
+}
+
+.member h3 {
+    font-size: 1.2rem;
+    margin: 10px 0 5px;
+}
+
+.member p {
+    font-size: 1rem;
+    color: #555;
+}
+/* Estilos para la huincha de contacto */
+.contact-banner {
+  background-color: #004c8c; /* Color de fondo celeste */
+  color: white;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 20px;
+  width: 100%;
+  text-align: center;
+}
+
+.contact-title {
+  font-size: 1.5rem; /* Ajusta el tamaño del título */
+  font-weight: bold; /* Título en negrita */
+}
+
+.contact-button {
+  background-color: white;
+  color: #004c8c;
+  padding: 10px 20px;
+  text-decoration: none;
+  font-weight: bold;
+  border-radius: 5px;
+  transition: background-color 0.3s;
+}
+
+.contact-button:hover {
+  background-color: #e0e0e0;
+}
+
+/* Estilos para el contador de visitantes */
+.visitor-count {
+  background-color: #f0f0f0;
+  color: #333;
+  text-align: center;
+  padding: 10px;
+  font-size: 1rem;
+  width: 100%;
+}
