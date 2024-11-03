@@ -10,6 +10,7 @@ interface FormularioProps {
 
 const Formulario: React.FC<FormularioProps> = ({ actividad, onClose }) => {
   const [formData, setFormData] = useState({ name: '', email: '', address: '' });
+  const [successMessage, setSuccessMessage] = useState<string | null>(null); // Estado para el mensaje de éxito
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setFormData({ ...formData, [e.target.name]: e.target.value });
@@ -32,7 +33,14 @@ const Formulario: React.FC<FormularioProps> = ({ actividad, onClose }) => {
         });
 
         console.log('Inscripción realizada:', formData);
-        onClose();
+        setSuccessMessage('¡Te has inscrito exitosamente!'); // Establecer el mensaje de éxito
+
+        // Esperar 5 segundos antes de refrescar la página
+        setTimeout(() => {
+          window.location.reload(); // Refrescar la página
+        }, 5000);
+
+        // No cerrar el modal aquí para que el mensaje se muestre
       } catch (error) {
         console.error('Error al inscribir:', error);
       }
@@ -81,6 +89,7 @@ const Formulario: React.FC<FormularioProps> = ({ actividad, onClose }) => {
             <button type="button" onClick={onClose}>Cerrar</button>
           </div>
         </form>
+        {successMessage && <div className="success-message">{successMessage}</div>} {/* Mostrar mensaje de éxito */}
       </div>
     </div>
   );
