@@ -16,25 +16,23 @@ const Contacto: React.FC = () => {
 
   const formatRUT = (rut: string) => {
     // Remover caracteres no válidos
-    let cleanRUT = rut.replace(/[^0-9K]/g, '');
-    
+    let cleanRUT = rut.replace(/[^0-9K]/gi, ''); // Permitir solo números y K
+
     // Validar longitud del RUT
-    if (cleanRUT.length > 8) {
-      cleanRUT = cleanRUT.slice(0, 8); // Limitar a 8 dígitos
+    if (cleanRUT.length > 9) {
+      cleanRUT = cleanRUT.slice(0, 9); // Limitar a 8 caracteres
     }
-    
-    // Formatear el RUT
+
+    // Formatear el RUT con puntos y guion
     if (cleanRUT.length > 0) {
-      let formattedRUT = cleanRUT;
-      if (cleanRUT.length > 6) {
-        formattedRUT = cleanRUT.replace(/(\d{1,2})(\d{3})(\d{3})/, '$1.$2.$3'); // Agregar puntos
-      } else if (cleanRUT.length > 3) {
-        formattedRUT = cleanRUT.replace(/(\d{1})(\d{3})(\d{0,3})/, '$1.$2$3'); // Agregar el primer punto
-      }
-      if (cleanRUT.length > 0) {
-        formattedRUT += '-'; // Agregar guion al final
-      }
-      return formattedRUT;
+      const digits = cleanRUT.slice(0, -1); // Todos los dígitos menos el último
+      const verifier = cleanRUT.charAt(cleanRUT.length - 1); // Último dígito (verificador)
+
+      // Formatear los dígitos en grupos de 3
+      const formattedDigits = digits.replace(/(\d)(?=(\d{3})+(?!\d))/g, '$1.'); 
+
+      // Retornar el formato correcto
+      return `${formattedDigits}-${verifier.toUpperCase()}`; // Agregar guion y verificador
     }
     return '';
   };
@@ -44,7 +42,6 @@ const Contacto: React.FC = () => {
 
     // Validaciones para RUT
     if (name === 'rut') {
-      // Formatear el RUT
       const formattedRUT = formatRUT(value);
       setFormData({ ...formData, [name]: formattedRUT });
     }
