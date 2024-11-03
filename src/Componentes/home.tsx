@@ -94,7 +94,7 @@ const Home: React.FC = () => {
           </div>
           <div className="member">
             <img src={tesorera} alt="Eugenia Zapa" />
-            <h3>Eugenia Zapa</h3>
+            <h3>Eugenia Zappa</h3>
             <p>Tesorera, 63 años.</p>
           </div>
         </div>
