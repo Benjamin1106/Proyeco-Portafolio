@@ -8,11 +8,12 @@ import './crearActividades.css';
 const CrearActividades: React.FC = () => {
   const [nombre, setNombre] = useState<string>('');
   const [descripcion, setDescripcion] = useState<string>('');
+  const [cupos, setCupos] = useState<number>(0); // Estado para cupos
   const [mensaje, setMensaje] = useState<string>(''); // Estado para alertas
   const fileInputRef = useRef<HTMLInputElement | null>(null); // Referencia para el input de archivo
 
   const crearActividad = async () => {
-    if (nombre.trim() && descripcion.trim()) {
+    if (nombre.trim() && descripcion.trim() && cupos > 0) {
       try {
         let fotoURL = '';
 
@@ -33,15 +34,18 @@ const CrearActividades: React.FC = () => {
           fotoURL = await getDownloadURL(fotoRef);
         }
 
+        // Agregar la actividad con el campo de cupos
         await addDoc(collection(db, 'actividades'), {
           nombre,
           descripcion,
+          cupos,  // Añadimos el número de cupos
           fotoURL,
           inscritos: [], // Campo de inscripción como array vacío
         });
 
         setNombre('');
         setDescripcion('');
+        setCupos(0);
         if (fileInputRef.current) fileInputRef.current.value = '';
         setMensaje('Actividad creada exitosamente!');
       } catch (error) {
@@ -49,7 +53,7 @@ const CrearActividades: React.FC = () => {
         setMensaje('Error al crear la actividad. Por favor intenta nuevamente.');
       }
     } else {
-      setMensaje('Por favor, completa todos los campos.');
+      setMensaje('Por favor, completa todos los campos y asegúrate de que los cupos sean mayores a 0.');
     }
 
     setTimeout(() => setMensaje(''), 3000);
@@ -71,6 +75,14 @@ const CrearActividades: React.FC = () => {
         onChange={(e) => setDescripcion(e.target.value)}
         placeholder="Descripción de la actividad"
         className="actividad-textarea"
+      />
+      <input
+        type="number"
+        value={cupos}
+        onChange={(e) => setCupos(Number(e.target.value))}
+        placeholder="Cantidad de cupos"
+        className="actividad-input"
+        min={1}
       />
       <input
         type="file"

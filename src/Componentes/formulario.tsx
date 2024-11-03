@@ -1,23 +1,44 @@
 import React, { useState } from 'react';
+import { db } from '../firebase/firebaseConfig';
+import { doc, addDoc, updateDoc, collection } from 'firebase/firestore';
 import './formulario.css';
 
 interface FormularioProps {
-  actividad: { id: string; nombre: string };
+  actividad: { id: string; nombre: string; cupos: number };
   onClose: () => void;
 }
 
 const Formulario: React.FC<FormularioProps> = ({ actividad, onClose }) => {
-  const [formData, setFormData] = useState({ name: '', email: '' });
+  const [formData, setFormData] = useState({ name: '', email: '', address: '' });
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setFormData({ ...formData, [e.target.name]: e.target.value });
   };
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    // Handle form submission logic here
-    console.log('Formulario enviado:', formData);
-    onClose();
+
+    if (actividad.cupos > 0) {
+      try {
+        const actividadRef = doc(db, 'actividades', actividad.id);
+        const inscritosRef = collection(actividadRef, 'inscritos');
+
+        // Guardar los datos del inscrito en la subcolección 'inscritos'
+        await addDoc(inscritosRef, formData);
+
+        // Actualizar el número de cupos
+        await updateDoc(actividadRef, {
+          cupos: actividad.cupos - 1,
+        });
+
+        console.log('Inscripción realizada:', formData);
+        onClose();
+      } catch (error) {
+        console.error('Error al inscribir:', error);
+      }
+    } else {
+      alert('Lo sentimos, no hay cupos disponibles.');
+    }
   };
 
   return (
@@ -45,8 +66,20 @@ const Formulario: React.FC<FormularioProps> = ({ actividad, onClose }) => {
               required 
             />
           </label>
-          <button type="submit">Enviar</button>
-          <button type="button" onClick={onClose}>Cerrar</button>
+          <label>
+            Dirección de Domicilio:
+            <input 
+              type="text" 
+              name="address" 
+              value={formData.address} 
+              onChange={handleChange} 
+              required 
+            />
+          </label>
+          <div className="button-group">
+            <button type="submit">Enviar</button>
+            <button type="button" onClick={onClose}>Cerrar</button>
+          </div>
         </form>
       </div>
     </div>

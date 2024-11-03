@@ -9,6 +9,7 @@ interface Actividad {
   nombre: string;
   descripcion: string;
   fotoURL: string;
+  cupos: number;
 }
 
 const Actividades: React.FC = () => {
@@ -42,11 +43,13 @@ const Actividades: React.FC = () => {
           <div className="actividad-content">
             <h3>{actividad.nombre}</h3>
             <p>{actividad.descripcion}</p>
+            <p>Cupos disponibles: {actividad.cupos}</p>
             <button 
               className="inscribete-button"
               onClick={() => handleInscribeteClick(actividad)}
+              disabled={actividad.cupos === 0}
             >
-              Inscríbete aquí
+              {actividad.cupos > 0 ? 'Inscríbete aquí' : 'Cupos llenos'}
             </button>
           </div>
         </div>
