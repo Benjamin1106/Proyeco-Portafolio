@@ -20,7 +20,7 @@ const Contacto: React.FC = () => {
 
     // Validar longitud del RUT
     if (cleanRUT.length > 9) {
-      cleanRUT = cleanRUT.slice(0, 9); // Limitar a 8 caracteres
+      cleanRUT = cleanRUT.slice(0, 9); // Limitar a 9 caracteres
     }
 
     // Formatear el RUT con puntos y guion
