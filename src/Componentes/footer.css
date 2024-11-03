@@ -94,3 +94,14 @@
       margin: 5px;
   }
 }
+.footer-logo {
+  display: flex;
+  justify-content: center;
+  margin-bottom: 20px;
+}
+
+.logo-image1 {
+  width: 140px; /* Ajusta el tamaño del logo según prefieras */
+  height: auto;
+}
+
