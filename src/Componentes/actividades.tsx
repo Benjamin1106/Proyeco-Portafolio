@@ -45,7 +45,7 @@ const Actividades: React.FC = () => {
             <p>{actividad.descripcion}</p>
             <p>Cupos disponibles: {actividad.cupos}</p>
             <button 
-              className="inscribete-button"
+              className={`inscribete-button ${actividad.cupos === 0 ? 'cupos-llenos' : ''}`}
               onClick={() => handleInscribeteClick(actividad)}
               disabled={actividad.cupos === 0}
             >
