@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { Link } from 'react-router-dom';
 import './navbar.css'; 
-import logo from '../img/imglogo.png'; // Asegúrate de la ruta correcta
+import logo from '../img/imglogo.png'; 
 
 const Navbar: React.FC = () => {
   const [isActive, setIsActive] = useState(false);
