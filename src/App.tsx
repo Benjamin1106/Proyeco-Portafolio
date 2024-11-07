@@ -8,6 +8,7 @@ import CrearActividades from './Componentes/crearActividades';
 import Contacto from './Componentes/contacto';
 import Actividades from './Componentes/actividades';
 import Videos from './Componentes/videos'; // Asegúrate de que este componente exista
+import Register from './Componentes/register';
 
 const NotFound: React.FC = () => (
   <div style={{
@@ -51,7 +52,8 @@ const Layout: React.FC<LayoutProps> = ({ children }) => {
                           location.pathname !== '/actividades' && 
                           location.pathname !== '/videos' && 
                           location.pathname !== '/contacto' && 
-                          location.pathname !== '/crearActividades';
+                          location.pathname !== '/crearActividades' &&
+                          location.pathname !== '/register';
 
   return (
     <>
@@ -73,6 +75,7 @@ const App: React.FC = () => {
           <Route path="/videos" element={<Videos />} />
           <Route path="/crearActividades" element={<CrearActividades />} />
           <Route path="/contacto" element={<Contacto />} />
+          <Route path="/register" element={<Register />} />
           {/* Ruta para capturar todas las rutas no existentes */}
           <Route path="*" element={<NotFound />} />
         </Routes>

@@ -24,7 +24,7 @@ const Login: React.FC<LoginProps> = ({ isOpen, onClose }) => {
 
         <button className="login-button">Iniciar sesión</button>
         
-        <p className="register-text">¿Eres nuevo? <a href="#">Regístrate aquí</a></p>
+        <p className="register-text">¿Eres nuevo? <a href="/register">Regístrate aquí</a></p>
       </div>
     </div>
   );

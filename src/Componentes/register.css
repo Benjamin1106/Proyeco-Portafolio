@@ -1,0 +1,62 @@
+/* Contenedor principal del formulario de registro */
+.register-container {
+    width: 100%;
+    max-width: 400px;
+    margin: 50px auto;
+    padding: 20px;
+    background-color: #f9f9f9;
+    border-radius: 8px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  }
+  
+  /* Título principal */
+  .register-container h2 {
+    text-align: center;
+    margin-bottom: 20px;
+    font-size: 24px;
+    color: #333;
+  }
+  
+  /* Estilo para los campos de entrada */
+  .input-field {
+    width: 100%;
+    padding: 10px;
+    margin: 10px 0;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    font-size: 16px;
+    box-sizing: border-box;
+  }
+  
+  /* Estilo para el botón de registro */
+  .register-button {
+    width: 100%;
+    padding: 12px;
+    background-color: #4CAF50;
+    color: white;
+    border: none;
+    border-radius: 4px;
+    font-size: 16px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+  }
+  
+  .register-button:hover {
+    background-color: #45a049;
+  }
+  
+  /* Estilo para el enlace (si es necesario añadir uno para redirigir) */
+  .register-container .login-link {
+    text-align: center;
+    margin-top: 15px;
+  }
+  
+  .register-container .login-link a {
+    color: #007BFF;
+    text-decoration: none;
+  }
+  
+  .register-container .login-link a:hover {
+    text-decoration: underline;
+  }
+  
