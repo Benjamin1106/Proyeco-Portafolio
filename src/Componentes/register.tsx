@@ -10,7 +10,7 @@ const Register: React.FC = () => {
   const [password, setPassword] = useState('');
   const [address, setAddress] = useState('');
   const [phone, setPhone] = useState('');
-  const [role, setRole] = useState('');
+  const role = 'vecino'; // Rol predeterminado oculto
 
   // Función para guardar los datos en Firestore
   const handleSubmit = async (e: React.FormEvent) => {
@@ -85,19 +85,6 @@ const Register: React.FC = () => {
           onChange={(e) => setPhone(e.target.value)}
           className="input-field"
         />
-
-        {/* Campo de rol */}
-        <label htmlFor="role">Rol</label>
-        <select
-          id="role"
-          value={role}
-          onChange={(e) => setRole(e.target.value)}
-          className="input-field"
-        >
-          <option value="" disabled>Selecciona un rol</option>
-          <option value="directiva">Directiva</option>
-          <option value="vecino">Vecino</option>
-        </select>
 
         <button type="submit" className="register-button">Registrarse</button>
       </form>
