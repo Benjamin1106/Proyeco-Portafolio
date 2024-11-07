@@ -1,6 +1,8 @@
 import React, { useState, useEffect } from 'react';
 import { db } from '../firebase/firebaseConfig';
-import { collection, getDocs, doc, updateDoc } from 'firebase/firestore';
+import { collection, getDocs, doc, updateDoc, deleteDoc } from 'firebase/firestore';
+import EditUserForm from './editUserForm'; // Importamos el componente de formulario
+import './usersList.css';
 
 // Componente para mostrar y editar usuarios
 const UserList: React.FC = () => {
@@ -64,6 +66,14 @@ const UserList: React.FC = () => {
     }
   };
 
+  // Eliminar usuario
+  const handleDeleteUser = async (userId: string) => {
+    const userRef = doc(db, 'users', userId);
+    await deleteDoc(userRef);
+    // Actualizamos la lista de usuarios después de eliminar
+    getUsers();
+  };
+
   // Cargar los usuarios cuando el componente se monta
   useEffect(() => {
     getUsers();
@@ -96,6 +106,7 @@ const UserList: React.FC = () => {
                 <td>{user.role}</td>
                 <td>
                   <button onClick={() => handleSelectUser(user)} className="edit-btn">Editar</button>
+                  <button onClick={() => handleDeleteUser(user.id)} className="delete-btn">Eliminar</button>
                 </td>
               </tr>
             ))
@@ -109,77 +120,16 @@ const UserList: React.FC = () => {
 
       {/* Formulario de edición de usuario */}
       {selectedUser && (
-        <div className="edit-user-form">
-          <h3>Editar Usuario</h3>
-          <form onSubmit={handleUpdateUser}>
-            <label htmlFor="name">Nombre</label>
-            <input
-              type="text"
-              id="name"
-              value={name}
-              onChange={(e) => setName(e.target.value)}
-              className="input-field"
-            />
-
-            <label htmlFor="rut">RUT</label>
-            <input
-              type="text"
-              id="rut"
-              value={rut}
-              onChange={(e) => setRut(e.target.value)}
-              className="input-field"
-            />
-
-            <label htmlFor="email">Correo electrónico</label>
-            <input
-              type="email"
-              id="email"
-              value={email}
-              onChange={(e) => setEmail(e.target.value)}
-              className="input-field"
-            />
-
-            <label htmlFor="password">Contraseña</label>
-            <input
-              type="password"
-              id="password"
-              value={password}
-              onChange={(e) => setPassword(e.target.value)}
-              className="input-field"
-            />
-
-            <label htmlFor="address">Dirección</label>
-            <input
-              type="text"
-              id="address"
-              value={address}
-              onChange={(e) => setAddress(e.target.value)}
-              className="input-field"
-            />
-
-            <label htmlFor="phone">Teléfono</label>
-            <input
-              type="tel"
-              id="phone"
-              value={phone}
-              onChange={(e) => setPhone(e.target.value)}
-              className="input-field"
-            />
-
-            <label htmlFor="role">Rol</label>
-            <select
-              id="role"
-              value={role}
-              onChange={(e) => setRole(e.target.value)}
-              className="input-field"
-            >
-              <option value="directiva">Directiva</option>
-              <option value="vecino">Vecino</option>
-            </select>
-
-            <button type="submit" className="update-button">Actualizar Usuario</button>
-          </form>
-        </div>
+        <EditUserForm
+          name={name} setName={setName}
+          rut={rut} setRut={setRut}
+          email={email} setEmail={setEmail}
+          password={password} setPassword={setPassword}
+          address={address} setAddress={setAddress}
+          phone={phone} setPhone={setPhone}
+          role={role} setRole={setRole}
+          handleSubmit={handleUpdateUser}
+        />
       )}
     </div>
   );

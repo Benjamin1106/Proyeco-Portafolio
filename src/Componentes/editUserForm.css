@@ -1,0 +1,75 @@
+/* Estilos para el formulario de edición de usuario */
+.edit-user-form {
+    margin-top: 20px;
+    padding: 20px;
+    border: 1px solid #ddd;
+    max-width: 600px;
+    margin-left: auto;
+    margin-right: auto;
+    background-color: #f9f9f9;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+    border-radius: 8px;
+  }
+  
+  .edit-user-form h3 {
+    text-align: center;
+    margin-bottom: 20px;
+    color: #333;
+  }
+  
+  .edit-user-form label {
+    font-weight: bold;
+    margin-bottom: 5px;
+    display: block;
+    color: #333;
+  }
+  
+  .edit-user-form .input-field {
+    width: 100%;
+    padding: 8px;
+    margin-bottom: 10px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    font-size: 16px;
+    color: #333;
+  }
+  
+  .edit-user-form .input-field:focus {
+    border-color: #4CAF50;
+    outline: none;
+  }
+  
+  .edit-user-form select {
+    width: 100%;
+    padding: 8px;
+    margin-bottom: 10px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    font-size: 16px;
+    color: #333;
+  }
+  
+  .edit-user-form button {
+    width: 100%;
+    padding: 12px;
+    background-color: #4CAF50;
+    color: white;
+    border: none;
+    border-radius: 4px;
+    font-size: 16px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+  }
+  
+  .edit-user-form button:hover {
+    background-color: #45a049;
+  }
+  
+  .edit-user-form .update-button {
+    background-color: #2196F3;
+  }
+  
+  .edit-user-form .update-button:hover {
+    background-color: #1e88e5;
+  }
+  
