@@ -1,5 +1,7 @@
 import React, { useState } from 'react';
 import './register.css';
+import { db } from '../firebase/firebaseConfig'; 
+import { collection, addDoc } from 'firebase/firestore';
 
 const Register: React.FC = () => {
   const [name, setName] = useState('');
@@ -10,10 +12,20 @@ const Register: React.FC = () => {
   const [phone, setPhone] = useState('');
   const [role, setRole] = useState('');
 
-  const handleSubmit = (e: React.FormEvent) => {
+  // Función para guardar los datos en Firestore
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    // Aquí puedes agregar la lógica para manejar el registro
-    console.log('Registro exitoso', { name, rut, email, password, address, phone, role });
+    
+    // Crear un objeto con los datos del formulario
+    const userData = { name, rut, email, password, address, phone, role };
+
+    try {
+      // Agregar el nuevo documento a la colección 'users' en Firestore
+      const docRef = await addDoc(collection(db, 'users'), userData);
+      console.log('Registro exitoso con ID: ', docRef.id);
+    } catch (e) {
+      console.error('Error al registrar el usuario: ', e);
+    }
   };
 
   return (
@@ -82,8 +94,7 @@ const Register: React.FC = () => {
           onChange={(e) => setRole(e.target.value)}
           className="input-field"
         >
-          <option value="">Selecciona un rol</option>
-          <option value="admin">Admin</option>
+          <option value="" disabled>Selecciona un rol</option>
           <option value="directiva">Directiva</option>
           <option value="vecino">Vecino</option>
         </select>

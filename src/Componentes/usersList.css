@@ -1,0 +1,86 @@
+
+.user-list-container {
+    padding: 20px;
+    font-family: Arial, sans-serif;
+  }
+  
+  h2 {
+    text-align: center;
+  }
+  
+  /* Tabla */
+  .user-table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-top: 20px;
+  }
+  
+  .user-table th, .user-table td {
+    padding: 12px;
+    border: 1px solid #ddd;
+    text-align: left;
+  }
+  
+  .user-table th {
+    background-color: #4CAF50;
+    color: white;
+  }
+  
+  .user-table tr:nth-child(even) {
+    background-color: #f2f2f2;
+  }
+  
+  .edit-btn {
+    padding: 8px 12px;
+    background-color: #2196F3;
+    color: white;
+    border: none;
+    cursor: pointer;
+  }
+  
+  .edit-btn:hover {
+    background-color: #0b7dda;
+  }
+  
+  /* Formulario de edición */
+  .edit-user-form {
+    margin-top: 20px;
+    padding: 20px;
+    border: 1px solid #ddd;
+    max-width: 600px;
+    margin-left: auto;
+    margin-right: auto;
+    background-color: #f9f9f9;
+  }
+  
+  input, select {
+    width: 100%;
+    padding: 8px;
+    margin-bottom: 10px;
+    border: 1px solid #ccc;
+  }
+  
+  button {
+    width: 100%;
+    padding: 12px;
+    background-color: #4CAF50;
+    color: white;
+    border: none;
+    border-radius: 4px;
+    font-size: 16px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+  }
+  
+  button:hover {
+    background-color: #45a049;
+  }
+  
+  .update-button {
+    background-color: #2196F3;
+  }
+  
+  .update-button:hover {
+    background-color: #1e88e5;
+  }
+  

@@ -9,6 +9,7 @@ import Contacto from './Componentes/contacto';
 import Actividades from './Componentes/actividades';
 import Videos from './Componentes/videos'; // Asegúrate de que este componente exista
 import Register from './Componentes/register';
+import UserList from './Componentes/usersList';
 
 const NotFound: React.FC = () => (
   <div style={{
@@ -53,7 +54,8 @@ const Layout: React.FC<LayoutProps> = ({ children }) => {
                           location.pathname !== '/videos' && 
                           location.pathname !== '/contacto' && 
                           location.pathname !== '/crearActividades' &&
-                          location.pathname !== '/register';
+                          location.pathname !== '/register' &&
+                          location.pathname !== '/userList';
 
   return (
     <>
@@ -76,6 +78,7 @@ const App: React.FC = () => {
           <Route path="/crearActividades" element={<CrearActividades />} />
           <Route path="/contacto" element={<Contacto />} />
           <Route path="/register" element={<Register />} />
+          <Route path="/userList" element={<UserList />} />
           {/* Ruta para capturar todas las rutas no existentes */}
           <Route path="*" element={<NotFound />} />
         </Routes>
