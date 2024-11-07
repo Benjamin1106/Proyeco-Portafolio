@@ -36,23 +36,21 @@ const NotFound: React.FC = () => (
         borderRadius: '5px',
         cursor: 'pointer'
       }}
-      onClick={() => window.location.href = '/'}
-    >
-      Go Home
-    </button>
+      onClick={() => window.location.href = '/'}>Go Home</button>
   </div>
 );
 
 const App: React.FC = () => {
   const [isAuthenticated, setIsAuthenticated] = useState(false); // Estado de autenticación
+  const [role, setRole] = useState<string>('vecino'); // Estado de rol del usuario
 
   return (
     <Router>
-      {/* Pasamos isAuthenticated y setIsAuthenticated a Navbar */}
-      <Navbar isAuthenticated={isAuthenticated} setIsAuthenticated={setIsAuthenticated} />
+      <Navbar isAuthenticated={isAuthenticated} setIsAuthenticated={setIsAuthenticated} role={role} setRole={setRole} />
 
       <Routes>
         <Route path="/" element={<Home />} />
+        <Route path="/register" element={<Register />} />
         
         {/* Rutas protegidas */}
         <Route element={<ProtectedRoute isAuthenticated={isAuthenticated} />}>
@@ -61,13 +59,13 @@ const App: React.FC = () => {
           <Route path="/videos" element={<Videos />} />
           <Route path="/crearActividades" element={<CrearActividades />} />
           <Route path="/contacto" element={<Contacto />} />
-          <Route path="/register" element={<Register />} />
           <Route path="/usersList" element={<UsersList />} />
         </Route>
 
         {/* Ruta para capturar todas las rutas no existentes */}
         <Route path="*" element={<NotFound />} />
       </Routes>
+
       <Footer />
     </Router>
   );

@@ -4,25 +4,30 @@ import './navbar.css';
 import logo from '../img/imglogo.png';
 import Login from './login';
 
-// Definir las propiedades que el componente Navbar va a recibir
 type NavbarProps = {
   isAuthenticated: boolean;
   setIsAuthenticated: React.Dispatch<React.SetStateAction<boolean>>;
+  role: string;
+  setRole: React.Dispatch<React.SetStateAction<string>>;
 };
 
-const Navbar: React.FC<NavbarProps> = ({ isAuthenticated, setIsAuthenticated }) => {
+const Navbar: React.FC<NavbarProps> = ({ isAuthenticated, setIsAuthenticated, role, setRole }) => {
   const [isActive, setIsActive] = useState(false);
   const [isModalOpen, setIsModalOpen] = useState(false);
 
   const toggleMenu = useCallback(() => setIsActive(prevState => !prevState), []);
   const toggleModal = useCallback(() => setIsModalOpen(prevState => !prevState), []);
-  const handleLogin = useCallback(() => {
+  
+  const handleLogin = useCallback((role: string) => {
     setIsAuthenticated(true);
+    setRole(role); // Establecer el rol correcto
     setIsModalOpen(false);
-  }, [setIsAuthenticated]);
+  }, [setIsAuthenticated, setRole]);
+
   const handleLogout = useCallback(() => {
     setIsAuthenticated(false);
-  }, [setIsAuthenticated]);
+    setRole('vecino'); // Resetear rol al cerrar sesión
+  }, [setIsAuthenticated, setRole]);
 
   return (
     <nav className="navbar">
@@ -43,24 +48,34 @@ const Navbar: React.FC<NavbarProps> = ({ isAuthenticated, setIsAuthenticated }) 
 
           {isAuthenticated && (
             <>
-              <li className="nav-item">
-                <Link to="/solicitudes" className="nav-links" onClick={toggleMenu}>Solicitudes</Link>
-              </li>
-              <li className="nav-item">
-                <Link to="/actividades" className="nav-links" onClick={toggleMenu}>Participa</Link>
-              </li>
-              <li className="nav-item">
-                <Link to="/videos" className="nav-links" onClick={toggleMenu}>Videos Tutoriales</Link>
-              </li>
-              <li className="nav-item">
-                <Link to="/contacto" className="nav-links" onClick={toggleMenu}>Contacto</Link>
-              </li>
-              <li className="nav-item">
-                <Link to="/crearActividades" className="nav-links" onClick={toggleMenu}>Crear Actividades</Link>
-              </li>
-              <li className="nav-item">
-                <Link to="/usersList" className="nav-links" onClick={toggleMenu}>Usuarios</Link>
-              </li>
+              {/* Mostrar enlaces según el rol */}
+              {role === 'directiva' && (
+                <>
+                  <li className="nav-item">
+                    <Link to="/crearActividades" className="nav-links" onClick={toggleMenu}>Crear Actividades</Link>
+                  </li>
+                  <li className="nav-item">
+                    <Link to="/usersList" className="nav-links" onClick={toggleMenu}>Usuarios</Link>
+                  </li>
+                </>
+              )}
+
+              {role === 'vecino' && (
+                <>
+                  <li className="nav-item">
+                    <Link to="/solicitudes" className="nav-links" onClick={toggleMenu}>Solicitudes</Link>
+                  </li>
+                  <li className="nav-item">
+                    <Link to="/actividades" className="nav-links" onClick={toggleMenu}>Participa</Link>
+                  </li>
+                  <li className="nav-item">
+                    <Link to="/videos" className="nav-links" onClick={toggleMenu}>Videos Tutoriales</Link>
+                  </li>
+                  <li className="nav-item">
+                    <Link to="/contacto" className="nav-links" onClick={toggleMenu}>Contacto</Link>
+                  </li>
+                </>
+              )}
             </>
           )}
         </ul>
