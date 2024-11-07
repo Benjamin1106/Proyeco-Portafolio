@@ -1,13 +1,19 @@
 import React, { useState } from 'react';
 import { Link } from 'react-router-dom';
 import './navbar.css'; 
-import logo from '../img/imglogo.png'; 
+import logo from '../img/imglogo.png';
+import Login from './login';
 
 const Navbar: React.FC = () => {
   const [isActive, setIsActive] = useState(false);
+  const [isModalOpen, setIsModalOpen] = useState(false); // Estado para el modal
 
   const toggleMenu = () => {
     setIsActive(!isActive);
+  };
+
+  const toggleModal = () => {
+    setIsModalOpen(!isModalOpen);
   };
 
   return (
@@ -37,8 +43,11 @@ const Navbar: React.FC = () => {
             <Link to="/contacto" className="nav-links" onClick={toggleMenu}>Contacto</Link>
           </li>
         </ul>
-        <button className="navbar-button">Conéctate</button>
+        <button className="navbar-button" onClick={toggleModal}>Conéctate</button>
       </div>
+
+      {/* Modal Login */}
+      <Login isOpen={isModalOpen} onClose={toggleModal} />
     </nav>
   );
 };
