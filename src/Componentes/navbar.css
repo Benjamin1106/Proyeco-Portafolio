@@ -71,6 +71,27 @@
     border-radius: 5px;
 }
 
+  
+.navbar-button {
+    width: 9%;
+    padding: 10px;
+    background-color: #1a0ce0;
+    color: white;
+    border: none;
+    border-radius: 10px;
+    font-size: 16px;
+    cursor: pointer;
+    display: block;
+    margin-bottom: 12px;
+}
+
+.navbar-button:hover {
+    background-color: green;
+    color: white;
+}
+
+  
+
 /* Responsive Styles */
 @media screen and (max-width: 768px) {
     .menu-icon {

@@ -28,7 +28,7 @@ const Navbar: React.FC = () => {
             <Link to="/solicitudes" className="nav-links" onClick={toggleMenu}>Solicitudes</Link>
           </li>
           <li className="nav-item">
-            <Link to="/actividades" className="nav-links" onClick={toggleMenu}>Actividades</Link>
+            <Link to="/actividades" className="nav-links" onClick={toggleMenu}>Participa</Link>
           </li>
           <li className="nav-item">
             <Link to="/videos" className="nav-links" onClick={toggleMenu}>Videos Tutoriales</Link>
@@ -37,6 +37,7 @@ const Navbar: React.FC = () => {
             <Link to="/contacto" className="nav-links" onClick={toggleMenu}>Contacto</Link>
           </li>
         </ul>
+        <button className="navbar-button">Conéctate</button>
       </div>
     </nav>
   );
