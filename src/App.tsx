@@ -1,5 +1,5 @@
-import React, { ReactNode } from 'react';
-import { BrowserRouter as Router, Routes, Route, useLocation } from 'react-router-dom';
+import React, { useState } from 'react';
+import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 import Navbar from './Componentes/navbar';
 import FormularioSolicitudes from './Componentes/solicitudes';
 import Home from './Componentes/home';
@@ -7,9 +7,10 @@ import Footer from './Componentes/footer';
 import CrearActividades from './Componentes/crearActividades';
 import Contacto from './Componentes/contacto';
 import Actividades from './Componentes/actividades';
-import Videos from './Componentes/videos'; // Asegúrate de que este componente exista
+import Videos from './Componentes/videos';
 import Register from './Componentes/register';
 import UsersList from './Componentes/usersList';
+import ProtectedRoute from './Componentes/protectedRoute';
 
 const NotFound: React.FC = () => (
   <div style={{
@@ -42,37 +43,19 @@ const NotFound: React.FC = () => (
   </div>
 );
 
-type LayoutProps = {
-  children: ReactNode;
-};
-
-const Layout: React.FC<LayoutProps> = ({ children }) => {
-  const location = useLocation();
-  const isNotFoundPage = location.pathname !== '/' && 
-                        location.pathname !== '/solicitudes' && 
-                        location.pathname !== '/actividades' && 
-                        location.pathname !== '/videos' && 
-                        location.pathname !== '/contacto' && 
-                        location.pathname !== '/crearActividades' &&
-                        location.pathname !== '/register' &&
-                        location.pathname !== '/usersList';
-
-
-  return (
-    <>
-      {!isNotFoundPage && <Navbar />}
-      {children}
-      {!isNotFoundPage && <Footer />}
-    </>
-  );
-}
-
 const App: React.FC = () => {
+  const [isAuthenticated, setIsAuthenticated] = useState(false); // Estado de autenticación
+
   return (
     <Router>
-      <Layout>
-        <Routes>
-          <Route path="/" element={<Home />} />
+      {/* Pasamos isAuthenticated y setIsAuthenticated a Navbar */}
+      <Navbar isAuthenticated={isAuthenticated} setIsAuthenticated={setIsAuthenticated} />
+
+      <Routes>
+        <Route path="/" element={<Home />} />
+        
+        {/* Rutas protegidas */}
+        <Route element={<ProtectedRoute isAuthenticated={isAuthenticated} />}>
           <Route path="/solicitudes" element={<FormularioSolicitudes />} />
           <Route path="/actividades" element={<Actividades />} />
           <Route path="/videos" element={<Videos />} />
@@ -80,12 +63,14 @@ const App: React.FC = () => {
           <Route path="/contacto" element={<Contacto />} />
           <Route path="/register" element={<Register />} />
           <Route path="/usersList" element={<UsersList />} />
-          {/* Ruta para capturar todas las rutas no existentes */}
-          <Route path="*" element={<NotFound />} />
-        </Routes>
-      </Layout>
+        </Route>
+
+        {/* Ruta para capturar todas las rutas no existentes */}
+        <Route path="*" element={<NotFound />} />
+      </Routes>
+      <Footer />
     </Router>
   );
-}
+};
 
 export default App;

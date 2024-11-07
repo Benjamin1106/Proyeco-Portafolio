@@ -91,6 +91,25 @@
     color: white;
 }
 
+.navbar-button-logout {
+    width: 10%;
+    padding: 10px;
+    background-color: #a7282c;
+    color: white;
+    border: none;
+    border-radius: 10px;
+    font-size: 16px;
+    cursor: pointer;
+    display: block;
+    margin-bottom: 18px;
+    margin-right: 30px;
+}
+
+.navbar-button-logout:hover {
+    background-color: red;
+    color: white;
+}
+
   
 
 /* Responsive Styles */

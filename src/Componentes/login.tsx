@@ -1,52 +1,27 @@
 import React, { useState } from 'react';
 import './login.css';
-import { db } from '../firebase/firebaseConfig';
-import { collection, query, where, getDocs } from 'firebase/firestore';
 
 interface LoginProps {
   isOpen: boolean;
   onClose: () => void;
+  onLogin: () => void; // Nueva propiedad para gestionar el inicio de sesión
 }
 
-const Login: React.FC<LoginProps> = ({ isOpen, onClose }) => {
+const Login: React.FC<LoginProps> = ({ isOpen, onClose, onLogin }) => {
   const [rut, setRut] = useState('');
   const [password, setPassword] = useState('');
   const [error, setError] = useState('');
 
   if (!isOpen) return null;
 
-  const handleLogin = async (e: React.FormEvent) => {
+  const handleLogin = (e: React.FormEvent) => {
     e.preventDefault();
 
-    if (!rut || !password) {
+    // Lógica de autenticación simulada
+    if (rut && password) {
+      onLogin(); // Llama a la función de autenticación en `Navbar`
+    } else {
       setError('Por favor, completa todos los campos');
-      return;
-    }
-
-    try {
-      // Crear una consulta para buscar el usuario por RUT
-      const q = query(collection(db, 'users'), where('rut', '==', rut));
-      const querySnapshot = await getDocs(q);
-
-      if (querySnapshot.empty) {
-        setError('Usuario no encontrado');
-        return;
-      }
-
-      const userDoc = querySnapshot.docs[0];
-      const userData = userDoc.data();
-
-      // Validar la contraseña ingresada
-      if (userData.password === password) {
-        setError('');
-        console.log('Inicio de sesión exitoso');
-        onClose(); // Cerrar el modal al iniciar sesión correctamente
-      } else {
-        setError('Contraseña incorrecta');
-      }
-    } catch (error) {
-      console.error('Error al iniciar sesión:', error);
-      setError('Ocurrió un error al iniciar sesión');
     }
   };
 
@@ -81,10 +56,6 @@ const Login: React.FC<LoginProps> = ({ isOpen, onClose }) => {
 
           <button type="submit" className="login-button">Iniciar sesión</button>
         </form>
-
-        <p className="register-text">
-          ¿Eres nuevo? <a href="/register">Regístrate aquí</a>
-        </p>
       </div>
     </div>
   );
