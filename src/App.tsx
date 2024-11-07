@@ -48,14 +48,15 @@ type LayoutProps = {
 
 const Layout: React.FC<LayoutProps> = ({ children }) => {
   const location = useLocation();
-  const isNotFoundPage =  location.pathname !== '/' && 
-                          location.pathname !== '/solicitudes' && 
-                          location.pathname !== '/actividades' && 
-                          location.pathname !== '/videos' && 
-                          location.pathname !== '/contacto' && 
-                          location.pathname !== '/crearActividades' &&
-                          location.pathname !== '/register' &&
-                          location.pathname !== '/usersList';
+  const isNotFoundPage = location.pathname !== '/' && 
+                        location.pathname !== '/solicitudes' && 
+                        location.pathname !== '/actividades' && 
+                        location.pathname !== '/videos' && 
+                        location.pathname !== '/contacto' && 
+                        location.pathname !== '/crearActividades' &&
+                        location.pathname !== '/register' &&
+                        location.pathname !== '/usersList';
+
 
   return (
     <>
