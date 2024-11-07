@@ -75,14 +75,14 @@
 .navbar-button {
     width: 9%;
     padding: 10px;
-    background-color: #1a0ce0;
+    background-color: #28a745;
     color: white;
     border: none;
     border-radius: 10px;
     font-size: 16px;
     cursor: pointer;
     display: block;
-    margin-bottom: 12px;
+    margin-bottom: 18px;
 }
 
 .navbar-button:hover {
