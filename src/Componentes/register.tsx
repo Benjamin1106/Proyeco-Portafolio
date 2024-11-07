@@ -6,11 +6,14 @@ const Register: React.FC = () => {
   const [rut, setRut] = useState('');
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
+  const [address, setAddress] = useState('');
+  const [phone, setPhone] = useState('');
+  const [role, setRole] = useState('');
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
     // Aquí puedes agregar la lógica para manejar el registro
-    console.log('Registro exitoso', { name, rut, email, password });
+    console.log('Registro exitoso', { name, rut, email, password, address, phone, role });
   };
 
   return (
@@ -52,6 +55,38 @@ const Register: React.FC = () => {
           onChange={(e) => setPassword(e.target.value)}
           className="input-field"
         />
+
+        <label htmlFor="address">Dirección</label>
+        <input
+          type="text"
+          id="address"
+          value={address}
+          onChange={(e) => setAddress(e.target.value)}
+          className="input-field"
+        />
+
+        <label htmlFor="phone">Teléfono</label>
+        <input
+          type="tel"
+          id="phone"
+          value={phone}
+          onChange={(e) => setPhone(e.target.value)}
+          className="input-field"
+        />
+
+        {/* Campo de rol */}
+        <label htmlFor="role">Rol</label>
+        <select
+          id="role"
+          value={role}
+          onChange={(e) => setRole(e.target.value)}
+          className="input-field"
+        >
+          <option value="">Selecciona un rol</option>
+          <option value="admin">Admin</option>
+          <option value="directiva">Directiva</option>
+          <option value="vecino">Vecino</option>
+        </select>
 
         <button type="submit" className="register-button">Registrarse</button>
       </form>

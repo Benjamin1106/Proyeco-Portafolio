@@ -28,6 +28,20 @@
     box-sizing: border-box;
   }
   
+  /* Estilo para el select (campo de rol) */
+  select.input-field {
+    -webkit-appearance: none;  /* Para que sea consistente en todos los navegadores */
+    -moz-appearance: none;
+    appearance: none;
+    background-color: #fff;
+    border: 1px solid #ccc;
+    padding: 10px;
+    font-size: 16px;
+    border-radius: 4px;
+    width: 100%;
+    margin: 10px 0;
+  }
+  
   /* Estilo para el botón de registro */
   .register-button {
     width: 100%;
