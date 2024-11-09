@@ -6,7 +6,7 @@ import { collection, query, where, getDocs } from 'firebase/firestore';
 interface LoginProps {
   isOpen: boolean;
   onClose: () => void;
-  onLogin: (role: string) => void; // Ahora esperamos recibir el rol en onLogin
+  onLogin: (role: string) => void;
 }
 
 const Login: React.FC<LoginProps> = ({ isOpen, onClose, onLogin }) => {
@@ -16,6 +16,23 @@ const Login: React.FC<LoginProps> = ({ isOpen, onClose, onLogin }) => {
   const [loading, setLoading] = useState(false);
 
   if (!isOpen) return null;
+
+  const formatRUT = (rut: string) => {
+    let cleanRUT = rut.replace(/[^0-9K]/gi, '');
+    if (cleanRUT.length > 9) cleanRUT = cleanRUT.slice(0, 9);
+    if (cleanRUT.length > 0) {
+      const digits = cleanRUT.slice(0, -1);
+      const verifier = cleanRUT.charAt(cleanRUT.length - 1);
+      const formattedDigits = digits.replace(/(\d)(?=(\d{3})+(?!\d))/g, '$1.');
+      return `${formattedDigits}-${verifier.toUpperCase()}`;
+    }
+    return '';
+  };
+
+  const handleRUTChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const formattedRUT = formatRUT(e.target.value);
+    setRut(formattedRUT);
+  };
 
   const handleLogin = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -29,7 +46,6 @@ const Login: React.FC<LoginProps> = ({ isOpen, onClose, onLogin }) => {
     setError('');
 
     try {
-      // Buscar usuario en Firestore por RUT
       const usersRef = collection(db, 'users');
       const q = query(usersRef, where('rut', '==', rut));
       const querySnapshot = await getDocs(q);
@@ -40,14 +56,13 @@ const Login: React.FC<LoginProps> = ({ isOpen, onClose, onLogin }) => {
         return;
       }
 
-      // Obtener datos del usuario
       const userDoc = querySnapshot.docs[0].data();
       const storedPassword = userDoc.password;
 
-      // Validar la contraseña
       if (password === storedPassword) {
-        onLogin(userDoc.role); // Pasa el rol al componente padre (Navbar)
-        onClose();
+        onLogin(userDoc.role);
+        setRut(''); // Limpiar RUT
+        setPassword(''); // Limpiar contraseña
       } else {
         setError('Contraseña incorrecta');
       }
@@ -73,8 +88,9 @@ const Login: React.FC<LoginProps> = ({ isOpen, onClose, onLogin }) => {
             type="text"
             id="rut"
             value={rut}
-            onChange={(e) => setRut(e.target.value)}
+            onChange={handleRUTChange}
             className="input-field"
+            maxLength={12}
           />
 
           <label htmlFor="password">Contraseña</label>

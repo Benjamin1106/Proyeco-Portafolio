@@ -16,17 +16,18 @@ const Navbar: React.FC<NavbarProps> = ({ isAuthenticated, setIsAuthenticated, ro
   const [isModalOpen, setIsModalOpen] = useState(false);
 
   const toggleMenu = useCallback(() => setIsActive(prevState => !prevState), []);
-  const toggleModal = useCallback(() => setIsModalOpen(prevState => !prevState), []);
+  const openModal = useCallback(() => setIsModalOpen(true), []);
+  const closeModal = useCallback(() => setIsModalOpen(false), []);
   
   const handleLogin = useCallback((role: string) => {
     setIsAuthenticated(true);
-    setRole(role); // Establecer el rol correcto
-    setIsModalOpen(false);
-  }, [setIsAuthenticated, setRole]);
+    setRole(role);
+    closeModal(); // Asegura el cierre del modal tras el inicio de sesión
+  }, [setIsAuthenticated, setRole, closeModal]);
 
   const handleLogout = useCallback(() => {
     setIsAuthenticated(false);
-    setRole('vecino'); // Resetear rol al cerrar sesión
+    setRole('vecino');
   }, [setIsAuthenticated, setRole]);
 
   return (
@@ -51,7 +52,6 @@ const Navbar: React.FC<NavbarProps> = ({ isAuthenticated, setIsAuthenticated, ro
 
           {isAuthenticated && (
             <>
-              {/* Mostrar enlaces según el rol */}
               {role === 'directiva' && (
                 <>
                   <li className="nav-item">
@@ -86,11 +86,11 @@ const Navbar: React.FC<NavbarProps> = ({ isAuthenticated, setIsAuthenticated, ro
         {isAuthenticated ? (
           <button className="navbar-button-logout" onClick={handleLogout}>Cerrar sesión</button>
         ) : (
-          <button className="navbar-button" onClick={toggleModal}>Conéctate</button>
+          <button className="navbar-button" onClick={openModal}>Conéctate</button>
         )}
       </div>
 
-      <Login isOpen={isModalOpen} onClose={toggleModal} onLogin={handleLogin} />
+      <Login isOpen={isModalOpen} onClose={closeModal} onLogin={handleLogin} />
     </nav>
   );
 };
