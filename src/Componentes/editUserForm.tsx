@@ -61,7 +61,7 @@ const EditUserForm: FC<EditUserFormProps> = ({
           id="password"
           value={password}
           onChange={(e) => setPassword(e.target.value)}
-          className="input-field"
+          className="centrar-pass"
         />
 
         <label htmlFor="address">Dirección</label>
@@ -87,7 +87,7 @@ const EditUserForm: FC<EditUserFormProps> = ({
           id="role"
           value={role}
           onChange={(e) => setRole(e.target.value)}
-          className="input-field"
+          className="centrar-select"
         >
           <option value="directiva">Directiva</option>
           <option value="vecino">Vecino</option>

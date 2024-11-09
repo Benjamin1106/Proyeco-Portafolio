@@ -41,7 +41,23 @@
     background-color: #e6f7ff;
   }
   
+  .delete-btn {
+    width: 1500px;
+    padding: 8px 16px;
+    background-color: #f20e0e;
+    color: white;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+  }
+  
+  .delete-btn:hover {
+    background-color: #d61010;
+  }
+
   .accept-btn {
+    width: 100px;
     padding: 8px 16px;
     background-color: #28a745;
     color: white;

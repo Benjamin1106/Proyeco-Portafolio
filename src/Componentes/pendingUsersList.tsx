@@ -1,4 +1,3 @@
-// PendingUsersList.tsx
 import React, { useState, useEffect } from 'react';
 import { db } from '../firebase/firebaseConfig';
 import { collection, getDocs, doc, deleteDoc, addDoc } from 'firebase/firestore';
@@ -35,6 +34,15 @@ const PendingUsersList: React.FC = () => {
     }
   };
 
+  const deleteUser = async (user: any) => {
+    try {
+      await deleteDoc(doc(db, 'registro', user.id));
+      getPendingUsers(); // Refresh the list after deletion
+    } catch (error) {
+      console.error('Error al eliminar usuario:', error);
+    }
+  };
+
   useEffect(() => {
     getPendingUsers();
   }, []);
@@ -60,6 +68,7 @@ const PendingUsersList: React.FC = () => {
                 <td>{user.email}</td>
                 <td>
                   <button onClick={() => acceptUser(user)} className="accept-btn">Aceptar</button>
+                  <button onClick={() => deleteUser(user)} className="delete-btn">Eliminar</button>
                 </td>
               </tr>
             ))

@@ -73,3 +73,8 @@
     background-color: #1e88e5;
   }
   
+  .centrar-pass{
+    display: block; /* Hace que el select se comporte como un bloque */
+    margin: 0 auto; /* Centra el select horizontalmente */
+  }
+  

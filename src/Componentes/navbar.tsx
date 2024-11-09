@@ -28,6 +28,7 @@ const Navbar: React.FC<NavbarProps> = ({ isAuthenticated, setIsAuthenticated, ro
   const handleLogout = useCallback(() => {
     setIsAuthenticated(false);
     setRole('vecino');
+    localStorage.removeItem('userRole');; // Limpiar todo el localStorage
   }, [setIsAuthenticated, setRole]);
 
   return (
@@ -46,9 +47,13 @@ const Navbar: React.FC<NavbarProps> = ({ isAuthenticated, setIsAuthenticated, ro
           <li className="nav-item">
             <Link to="/" className="nav-links" onClick={toggleMenu}>Inicio</Link>
           </li>
-          <li className="nav-item">
-            <Link to="/contacto" className="nav-links" onClick={toggleMenu}>Contacto</Link>
-          </li>
+
+          {/* Contacto siempre visible excepto para la directiva */}
+          {role !== 'directiva' && (
+            <li className="nav-item">
+              <Link to="/contacto" className="nav-links" onClick={toggleMenu}>Contacto</Link>
+            </li>
+          )}
 
           {isAuthenticated && (
             <>

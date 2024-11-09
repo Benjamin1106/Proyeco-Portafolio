@@ -1,6 +1,6 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import './login.css';
-import { db } from '../firebase/firebaseConfig'; 
+import { db } from '../firebase/firebaseConfig';
 import { collection, query, where, getDocs } from 'firebase/firestore';
 
 interface LoginProps {
@@ -14,6 +14,14 @@ const Login: React.FC<LoginProps> = ({ isOpen, onClose, onLogin }) => {
   const [password, setPassword] = useState('');
   const [error, setError] = useState('');
   const [loading, setLoading] = useState(false);
+
+  useEffect(() => {
+    // Verificar si el usuario ya tiene una sesión activa en localStorage
+    const savedRole = localStorage.getItem('userRole');
+    if (savedRole) {
+      onLogin(savedRole); // Llamar a onLogin con el rol guardado para mantener la sesión
+    }
+  }, [onLogin]);
 
   if (!isOpen) return null;
 
@@ -61,8 +69,9 @@ const Login: React.FC<LoginProps> = ({ isOpen, onClose, onLogin }) => {
 
       if (password === storedPassword) {
         onLogin(userDoc.role);
-        setRut(''); // Limpiar RUT
-        setPassword(''); // Limpiar contraseña
+        localStorage.setItem('userRole', userDoc.role); // Guardar el rol en localStorage
+        setRut('');
+        setPassword('');
       } else {
         setError('Contraseña incorrecta');
       }
@@ -74,10 +83,14 @@ const Login: React.FC<LoginProps> = ({ isOpen, onClose, onLogin }) => {
     }
   };
 
+  const handleLogout = () => {
+    onClose(); // Ejecutar la lógica para cerrar sesión en el componente principal
+  };
+
   return (
     <div className="modal">
       <div className="modal-content">
-        <span className="close-button" onClick={onClose}>&times;</span>
+        <span className="close-button" onClick={handleLogout}>&times;</span>
         <h2>¡Bienvenido a la plataforma de Vecinos de Villa Los Lagos!</h2>
 
         {error && <p className="error-message">{error}</p>}
