@@ -45,6 +45,9 @@ const Navbar: React.FC<NavbarProps> = ({ isAuthenticated, setIsAuthenticated, ro
           <li className="nav-item">
             <Link to="/" className="nav-links" onClick={toggleMenu}>Inicio</Link>
           </li>
+          <li className="nav-item">
+            <Link to="/contacto" className="nav-links" onClick={toggleMenu}>Contacto</Link>
+          </li>
 
           {isAuthenticated && (
             <>
@@ -56,6 +59,9 @@ const Navbar: React.FC<NavbarProps> = ({ isAuthenticated, setIsAuthenticated, ro
                   </li>
                   <li className="nav-item">
                     <Link to="/usersList" className="nav-links" onClick={toggleMenu}>Usuarios</Link>
+                  </li>
+                  <li className="nav-item">
+                    <Link to="/pending" className="nav-links" onClick={toggleMenu}>Pendientes</Link>
                   </li>
                 </>
               )}
@@ -70,9 +76,6 @@ const Navbar: React.FC<NavbarProps> = ({ isAuthenticated, setIsAuthenticated, ro
                   </li>
                   <li className="nav-item">
                     <Link to="/videos" className="nav-links" onClick={toggleMenu}>Videos Tutoriales</Link>
-                  </li>
-                  <li className="nav-item">
-                    <Link to="/contacto" className="nav-links" onClick={toggleMenu}>Contacto</Link>
                   </li>
                 </>
               )}

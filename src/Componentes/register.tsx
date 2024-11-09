@@ -1,6 +1,7 @@
+// register.tsx
 import React, { useState } from 'react';
 import './register.css';
-import { db } from '../firebase/firebaseConfig'; 
+import { db } from '../firebase/firebaseConfig';
 import { collection, addDoc } from 'firebase/firestore';
 
 const Register: React.FC = () => {
@@ -10,19 +11,15 @@ const Register: React.FC = () => {
   const [password, setPassword] = useState('');
   const [address, setAddress] = useState('');
   const [phone, setPhone] = useState('');
-  const role = 'vecino'; // Rol predeterminado oculto
+  const role = 'vecino';
 
-  // Función para guardar los datos en Firestore
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    
-    // Crear un objeto con los datos del formulario
     const userData = { name, rut, email, password, address, phone, role };
 
     try {
-      // Agregar el nuevo documento a la colección 'users' en Firestore
-      const docRef = await addDoc(collection(db, 'users'), userData);
-      console.log('Registro exitoso con ID: ', docRef.id);
+      const docRef = await addDoc(collection(db, 'registro'), userData);
+      console.log('Registro pendiente con ID: ', docRef.id);
     } catch (e) {
       console.error('Error al registrar el usuario: ', e);
     }

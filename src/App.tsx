@@ -11,6 +11,7 @@ import Videos from './Componentes/videos';
 import Register from './Componentes/register';
 import UsersList from './Componentes/usersList';
 import ProtectedRoute from './Componentes/protectedRoute';
+import PendingUsersList from './Componentes/pendingUsersList';
 
 const NotFound: React.FC = () => (
   <div style={{
@@ -50,6 +51,7 @@ const App: React.FC = () => {
 
       <Routes>
         <Route path="/" element={<Home />} />
+        <Route path="/contacto" element={<Contacto />} />
         <Route path="/register" element={<Register />} />
         
         {/* Rutas protegidas */}
@@ -58,8 +60,8 @@ const App: React.FC = () => {
           <Route path="/actividades" element={<Actividades />} />
           <Route path="/videos" element={<Videos />} />
           <Route path="/crearActividades" element={<CrearActividades />} />
-          <Route path="/contacto" element={<Contacto />} />
           <Route path="/usersList" element={<UsersList />} />
+          <Route path="/pending" element={<PendingUsersList />} />
         </Route>
 
         {/* Ruta para capturar todas las rutas no existentes */}
