@@ -1,5 +1,6 @@
 import React, { useState, useCallback } from 'react';
 import { Link } from 'react-router-dom';
+import { FaSignInAlt, FaSignOutAlt } from 'react-icons/fa';
 import './navbar.css';
 import logo from '../img/imglogo.png';
 import Login from './login';
@@ -18,17 +19,20 @@ const Navbar: React.FC<NavbarProps> = ({ isAuthenticated, setIsAuthenticated, ro
   const toggleMenu = useCallback(() => setIsActive(prevState => !prevState), []);
   const openModal = useCallback(() => setIsModalOpen(true), []);
   const closeModal = useCallback(() => setIsModalOpen(false), []);
-  
-  const handleLogin = useCallback((role: string) => {
-    setIsAuthenticated(true);
-    setRole(role);
-    closeModal(); // Asegura el cierre del modal tras el inicio de sesión
-  }, [setIsAuthenticated, setRole, closeModal]);
+
+  const handleLogin = useCallback(
+    (role: string) => {
+      setIsAuthenticated(true);
+      setRole(role);
+      closeModal();
+    },
+    [setIsAuthenticated, setRole, closeModal]
+  );
 
   const handleLogout = useCallback(() => {
     setIsAuthenticated(false);
     setRole('vecino');
-    localStorage.removeItem('userRole');; // Limpiar todo el localStorage
+    localStorage.removeItem('userRole');
   }, [setIsAuthenticated, setRole]);
 
   return (
@@ -38,23 +42,20 @@ const Navbar: React.FC<NavbarProps> = ({ isAuthenticated, setIsAuthenticated, ro
           <img src={logo} alt="Logo Junta de Vecinos" className="logo-image" />
           Junta de Vecinos
         </Link>
-        
+
         <div className="menu-icon" onClick={toggleMenu}>
           &#9776;
         </div>
-        
+
         <ul className={`nav-menu ${isActive ? 'active' : ''}`}>
           <li className="nav-item">
             <Link to="/" className="nav-links" onClick={toggleMenu}>Inicio</Link>
           </li>
-
-          {/* Contacto siempre visible excepto para la directiva */}
           {role !== 'directiva' && (
             <li className="nav-item">
               <Link to="/contacto" className="nav-links" onClick={toggleMenu}>Contacto</Link>
             </li>
           )}
-
           {isAuthenticated && (
             <>
               {role === 'directiva' && (
@@ -70,7 +71,6 @@ const Navbar: React.FC<NavbarProps> = ({ isAuthenticated, setIsAuthenticated, ro
                   </li>
                 </>
               )}
-
               {role === 'vecino' && (
                 <>
                   <li className="nav-item">
@@ -86,13 +86,20 @@ const Navbar: React.FC<NavbarProps> = ({ isAuthenticated, setIsAuthenticated, ro
               )}
             </>
           )}
-        </ul>
 
-        {isAuthenticated ? (
-          <button className="navbar-button-logout" onClick={handleLogout}>Cerrar sesión</button>
-        ) : (
-          <button className="navbar-button" onClick={openModal}>Conéctate</button>
-        )}
+          {/* Botón de Conéctate/Cerrar sesión dentro del menú móvil */}
+          <div className="navbar-button-container">
+            {isAuthenticated ? (
+              <button className="navbar-button-logout" onClick={handleLogout}>
+                <FaSignOutAlt className="navbar-icon" /> Cerrar sesión
+              </button>
+            ) : (
+              <button className="navbar-button" onClick={openModal}>
+                <FaSignInAlt className="navbar-icon" /> Conéctate
+              </button>
+            )}
+          </div>
+        </ul>
       </div>
 
       <Login isOpen={isModalOpen} onClose={closeModal} onLogin={handleLogin} />

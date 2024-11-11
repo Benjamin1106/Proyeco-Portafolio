@@ -8,7 +8,7 @@
 
 /* Navbar Styles */
 .navbar {
-    background-color: #2a9d8f; /* Un verde agradable */
+    background-color: #2a9d8f;
     height: 80px;
     display: flex;
     justify-content: center;
@@ -71,46 +71,46 @@
     border-radius: 5px;
 }
 
-  
+/* Botones */
+.navbar-button-container {
+    display: flex;
+    align-items: center;
+}
+
+.navbar-icon {
+    margin-right: 8px;
+    font-size: 1.2rem;
+}
+
+.navbar-button,
+.navbar-button-logout {
+    display: flex;
+    align-items: center;
+    padding: 10px 20px;
+    font-size: 1rem;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+}
+
 .navbar-button {
-    width: 9%;
-    padding: 10px;
     background-color: #28a745;
     color: white;
-    border: none;
-    border-radius: 10px;
-    font-size: 16px;
-    cursor: pointer;
-    display: block;
-    margin-bottom: 18px;
-    margin-right: 30px;
 }
 
 .navbar-button:hover {
-    background-color: green;
-    color: white;
+    background-color: #218838;
 }
 
 .navbar-button-logout {
-    width: 10%;
-    padding: 10px;
     background-color: #a7282c;
     color: white;
-    border: none;
-    border-radius: 10px;
-    font-size: 16px;
-    cursor: pointer;
-    display: block;
-    margin-bottom: 18px;
-    margin-right: 30px;
 }
 
 .navbar-button-logout:hover {
-    background-color: red;
-    color: white;
+    background-color: #922724;
 }
-
-  
 
 /* Responsive Styles */
 @media screen and (max-width: 768px) {
@@ -140,5 +140,16 @@
 
     .nav-links {
         font-size: 1.5rem;
+    }
+
+    /* Ocultar el botón en la vista móvil fuera del menú */
+    .navbar-button-container {
+        display: none;
+    }
+
+    /* Mostrar el botón dentro del menú desplegable */
+    .nav-menu.active .navbar-button-container {
+        display: flex;
+        margin-top: 20px;
     }
 }
