@@ -56,6 +56,7 @@
 
 .nav-item {
     margin-left: 20px;
+    margin-top: 10px;
 }
 
 .nav-links {
@@ -92,6 +93,7 @@
     border-radius: 5px;
     cursor: pointer;
     transition: background-color 0.3s ease;
+    margin-left: 10px;
 }
 
 .navbar-button {

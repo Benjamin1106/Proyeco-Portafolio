@@ -108,3 +108,47 @@ button:hover {
 .update-button:hover {
   background-color: #1e88e5;
 }
+
+/* Responsive Styles */
+@media screen and (max-width: 768px) {
+  /* Diseño en bloques para filas de la tabla en pantallas pequeñas */
+  .user-table, .user-table thead, .user-table tbody, .user-table th, .user-table td, .user-table tr {
+    display: block;
+    width: 100%;
+  }
+
+  /* Ocultar los encabezados de columna */
+  .user-table thead {
+    display: none;
+  }
+
+  /* Estilo de cada fila de la tabla en móvil */
+  .user-table tr {
+    margin-bottom: 15px;
+    border: 1px solid #ddd;
+    padding: 10px;
+    background-color: #f9f9f9;
+    border-radius: 8px;
+  }
+
+  /* Agregar etiquetas de datos para cada celda */
+  .user-table td {
+    position: relative;
+    padding-left: 50%;
+    text-align: left;
+  }
+
+  .user-table td::before {
+    content: attr(data-label);
+    position: absolute;
+    left: 10px;
+    font-weight: bold;
+    color: #4CAF50;
+  }
+
+  /* Botones de acción apilados en pantallas pequeñas */
+  .action-buttons {
+    flex-direction: column;
+    gap: 5px;
+  }
+}
