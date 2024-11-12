@@ -6,7 +6,7 @@ import { collection, query, where, getDocs } from 'firebase/firestore';
 interface LoginProps {
   isOpen: boolean;
   onClose: () => void;
-  onLogin: (role: string) => void;
+  onLogin: (userData: { role: string, rut: string, name: string, email: string, address: string, phone: string}) => void; // Pasamos todos los datos del usuario
 }
 
 const Login: React.FC<LoginProps> = ({ isOpen, onClose, onLogin }) => {
@@ -16,10 +16,23 @@ const Login: React.FC<LoginProps> = ({ isOpen, onClose, onLogin }) => {
   const [loading, setLoading] = useState(false);
 
   useEffect(() => {
-    // Verificar si el usuario ya tiene una sesión activa en localStorage
+    // Verificar si hay datos de sesión guardados en localStorage
     const savedRole = localStorage.getItem('userRole');
-    if (savedRole) {
-      onLogin(savedRole); // Llamar a onLogin con el rol guardado para mantener la sesión
+    const savedRUT = localStorage.getItem('userRUT');
+    const savedNombre = localStorage.getItem('userName');
+    const savedCorreo = localStorage.getItem('userEmail');
+    const savedDireccion = localStorage.getItem('userAddress');
+    const savedFono = localStorage.getItem('userPhone');
+
+    if (savedRole && savedRUT && savedNombre && savedCorreo && savedDireccion && savedFono) {
+      onLogin({ 
+        role: savedRole, 
+        rut: savedRUT, 
+        name: savedNombre, 
+        email: savedCorreo, 
+        address: savedDireccion,
+        phone: savedFono 
+      });
     }
   }, [onLogin]);
 
@@ -68,8 +81,26 @@ const Login: React.FC<LoginProps> = ({ isOpen, onClose, onLogin }) => {
       const storedPassword = userDoc.password;
 
       if (password === storedPassword) {
-        onLogin(userDoc.role);
-        localStorage.setItem('userRole', userDoc.role); // Guardar el rol en localStorage
+        const userData = {
+          role: userDoc.role,
+          rut,
+          name: userDoc.name,
+          email: userDoc.email,
+          address: userDoc.address,
+          phone: userDoc.phone
+        };
+        
+        onLogin(userData); // Pasamos todos los datos al componente principal
+
+        // Guardamos en localStorage los datos del usuario
+        localStorage.setItem('userRole', userDoc.role);
+        localStorage.setItem('userRUT', rut);
+        localStorage.setItem('userNombre', userDoc.name);
+        localStorage.setItem('userCorreo', userDoc.email);
+        localStorage.setItem('userDireccion', userDoc.address);
+        localStorage.setItem('userFono', userDoc.phone);
+
+        // Limpiamos los campos de entrada
         setRut('');
         setPassword('');
       } else {
@@ -84,6 +115,13 @@ const Login: React.FC<LoginProps> = ({ isOpen, onClose, onLogin }) => {
   };
 
   const handleLogout = () => {
+    // Eliminamos todos los datos del usuario del localStorage
+    localStorage.removeItem('userRole');
+    localStorage.removeItem('userRUT');
+    localStorage.removeItem('userNombre');
+    localStorage.removeItem('userCorreo');
+    localStorage.removeItem('userDireccion');
+    localStorage.removeItem('userFono');
     onClose(); // Ejecutar la lógica para cerrar sesión en el componente principal
   };
 

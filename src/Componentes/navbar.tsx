@@ -21,18 +21,25 @@ const Navbar: React.FC<NavbarProps> = ({ isAuthenticated, setIsAuthenticated, ro
   const closeModal = useCallback(() => setIsModalOpen(false), []);
 
   const handleLogin = useCallback(
-    (role: string) => {
+    (userData: { role: string, rut: string, name: string, email: string, address: string, phone: string }) => {
       setIsAuthenticated(true);
-      setRole(role);
+      setRole(userData.role);
       closeModal();
     },
     [setIsAuthenticated, setRole, closeModal]
   );
+  
 
   const handleLogout = useCallback(() => {
     setIsAuthenticated(false);
     setRole('vecino');
     localStorage.removeItem('userRole');
+    localStorage.removeItem('userRole');
+    localStorage.removeItem('userRUT');
+    localStorage.removeItem('userNombre');
+    localStorage.removeItem('userCorreo');
+    localStorage.removeItem('userDireccion');
+    localStorage.removeItem('userFono');
   }, [setIsAuthenticated, setRole]);
 
   return (
