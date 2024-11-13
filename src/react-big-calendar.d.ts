@@ -1,32 +1,70 @@
 declare module 'react-big-calendar' {
   import * as React from 'react';
-  import * as moment from 'moment'; // Import moment to provide more accurate typing for `momentLocalizer`
+  import * as moment from 'moment';
 
-  // Define SlotInfo type more specifically
   export interface SlotInfo {
     start: Date;
     end: Date;
     slots: Date[];
-    action: string;
+    action: 'select' | 'click' | 'doubleClick';
   }
 
-  // Define the `momentLocalizer` function type
+  export interface Event {
+    title: string;
+    start: Date;
+    end: Date;
+    allDay?: boolean;
+    resource?: any;
+  }
+
   export const momentLocalizer: (moment: typeof moment) => any;
 
-  // Define the CalendarProps type to reflect the component's props
-  interface CalendarProps {
-    events: any[]; // You can replace `any[]` with a more specific event type if needed
-    startAccessor: string;
-    endAccessor: string;
-    selectable: boolean;
-    localizer: any;
-    onSelectSlot: (slotInfo: SlotInfo) => void;
-    style: React.CSSProperties;
+  export interface DateFormat {
+    dayFormat?: string;
+    timeGutterFormat?: string;
+    monthHeaderFormat?: string;
+    dayHeaderFormat?: string;
   }
 
-  // Export the Calendar component with the props defined
-  export class Calendar extends React.Component<CalendarProps> {}
+  export interface Messages {
+    today?: string;
+    previous?: string;
+    next?: string;
+    month?: string;
+    week?: string;
+    day?: string;
+    agenda?: string;
+    date?: string;
+    time?: string;
+    event?: string;
+    noEventsInRange?: string;
+    showMore?: (total: number) => string;
+  }
 
-  // Export the default Calendar
+  export interface CalendarProps {
+    events: Event[];
+    startAccessor: string | ((event: Event) => Date);
+    endAccessor: string | ((event: Event) => Date);
+    selectable?: boolean;
+    localizer: any;
+    onSelectSlot?: (slotInfo: SlotInfo) => void;
+    onSelectEvent?: (event: Event) => void;
+    style?: React.CSSProperties;
+    defaultView?: string;
+    views?: string[] | { [view: string]: boolean };
+    formats?: DateFormat;
+    messages?: Messages;
+  }
+
+  export class Calendar extends React.Component<CalendarProps, any> {}
+
+  export const Views: {
+    MONTH: 'month';
+    WEEK: 'week';
+    WORK_WEEK: 'work_week';
+    DAY: 'day';
+    AGENDA: 'agenda';
+  };
+
   export default Calendar;
 }

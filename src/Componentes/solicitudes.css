@@ -45,7 +45,6 @@ input[type="email"] {
   transition: border-color 0.3s ease;
 }
 
-/* Cambios en los campos de entrada al recibir focus */
 input:focus,
 select:focus {
   border-color: #28a745;
@@ -87,11 +86,19 @@ button:hover {
   font-family: 'Arial', sans-serif;
 }
 
+/* Ajustar la barra de herramientas del calendario */
 .rbc-toolbar {
   background-color: #28a745;
   color: white;
   padding: 10px;
   border-radius: 6px;
+  display: flex;
+  gap: 40px;
+}
+
+.rbc-toolbar-label {
+  margin-right: 10px;
+  white-space: nowrap; /* Evita que el texto se expanda en varias líneas */
 }
 
 .rbc-toolbar button {
@@ -99,8 +106,9 @@ button:hover {
   border: none;
   background-color: transparent;
   font-size: 16px;
-  margin: 0 10px;
+  padding: 0 10px;
   cursor: pointer;
+  width: 100px;
 }
 
 .rbc-toolbar button:hover {
@@ -115,7 +123,7 @@ button:hover {
 }
 
 .rbc-event {
-  background-color: #e7f7e7;
+  background-color: #000000;
   border: 1px solid #28a745;
   border-radius: 4px;
 }
@@ -138,6 +146,34 @@ button:hover {
   background-color: #28a745;
   color: white;
   border-radius: 6px;
+}
+
+/* Estilo para el rango de horas seleccionado */
+.rbc-day-slot .rbc-time-slot-selected {
+  background-color: #c3e6cb;
+  border: 1px solid #28a745;
+}
+
+
+/* Centrar el calendario */
+.rbc-time-content {
+  padding: 0 10px;
+}
+
+.rbc-time-header {
+  background-color: #28a745;
+  color: white;
+}
+
+.rbc-event-label {
+  display: none; /* Ocultar label para eventos de un solo día */
+}
+
+/* Mejoras en botones y etiquetas */
+.centrar-select,
+button {
+  display: block;
+  margin: 0 auto;
 }
 
 /* Modal */
@@ -191,4 +227,3 @@ button:hover {
     margin-top: 20px;
   }
 }
-

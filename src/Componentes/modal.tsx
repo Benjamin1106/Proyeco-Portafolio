@@ -1,15 +1,14 @@
-// modal.tsx
 import React from 'react';
-import './modal.css'; // Asegúrate de tener estilos para el modal
+import './modal.css';
 
 interface ModalProps {
-  isOpen: boolean; // Añadir esta propiedad
+  isOpen: boolean;
   message: string;
-  onClose: () => void;
+  onClose: () => void;  // Cambié esto de 'setIsModalOpen' a 'onClose'
 }
 
 const Modal: React.FC<ModalProps> = ({ isOpen, message, onClose }) => {
-  if (!isOpen) return null; // No renderizar el modal si no está abierto
+  if (!isOpen) return null;  // Si no está abierto, no se renderiza
 
   return (
     <div className="modal-overlay">

@@ -1,17 +1,15 @@
 import React, { useState, useEffect } from "react";
-import { collection, addDoc, getDocs } from "firebase/firestore";
+import { collection, addDoc, query, where, onSnapshot } from "firebase/firestore";
 import { db } from "../firebase/firebaseConfig";
-import { Calendar, momentLocalizer, SlotInfo } from "react-big-calendar";
+import { Calendar, momentLocalizer, SlotInfo, Views } from "react-big-calendar";
 import moment from "moment";
-import "moment/locale/es";  // Asegúrate de que el idioma español esté cargado
+import "moment/locale/es";
 import "react-big-calendar/lib/css/react-big-calendar.css";
 import "./solicitudes.css";
 import Modal from "./modal";
 
-// Configurar moment.js para usar español
-moment.locale("es");  // Asegurarse de establecer el idioma en español
-
-// Configuración para usar moment.js en el calendario
+// Configuración para moment.js
+moment.locale("es");
 const localizer = momentLocalizer(moment);
 
 interface FormData {
@@ -40,6 +38,7 @@ const Solicitudes: React.FC = () => {
   });
 
   const [reservasOcupadas, setReservasOcupadas] = useState<any[]>([]);
+  const [selectedSlot, setSelectedSlot] = useState<any>(null);
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [modalMessage, setModalMessage] = useState("");
 
@@ -51,28 +50,38 @@ const Solicitudes: React.FC = () => {
       telefono: localStorage.getItem("userFono") || "",
       correo: localStorage.getItem("userCorreo") || "",
     };
-
     setFormData((prev) => ({ ...prev, ...savedData }));
   }, []);
 
   useEffect(() => {
-    const obtenerReservas = async () => {
-      const snapshot = await getDocs(collection(db, "reservas"));
+    if (!formData.tipoSolicitud) return;
+
+    // Escuchar cambios en tiempo real usando onSnapshot
+    const reservasQuery = query(
+      collection(db, formData.tipoSolicitud), 
+      where("tipoSolicitud", "==", formData.tipoSolicitud)
+    );
+
+    const unsubscribe = onSnapshot(reservasQuery, (snapshot) => {
       const fechasOcupadas = snapshot.docs.map((doc) => {
         const data = doc.data();
+        
+        // Convertir Timestamp a Date
+        const startDate = data.fechaInicio.toDate();
+        const endDate = data.fechaFin.toDate();
+
         return {
           title: "Ocupado",
-          start: new Date(data.fechaInicio.seconds * 1000),
-          end: new Date(data.fechaFin.seconds * 1000),
+          start: startDate,
+          end: endDate,
         };
       });
+
       setReservasOcupadas(fechasOcupadas);
-    };
+    });
 
-    obtenerReservas();
-  }, []);
-
-  const isRutValid = (rut: string) => /^[0-9]{2}\.[0-9]{3}\.[0-9]{3}-[0-9kK]$/.test(rut);
+    return () => unsubscribe();
+  }, [formData.tipoSolicitud]);
 
   const resetForm = () => {
     setFormData({
@@ -86,6 +95,7 @@ const Solicitudes: React.FC = () => {
       fechaInicio: null,
       fechaFin: null,
     });
+    setSelectedSlot(null);
   };
 
   const handleSelectSlot = (slotInfo: SlotInfo) => {
@@ -94,27 +104,26 @@ const Solicitudes: React.FC = () => {
       fechaInicio: slotInfo.start,
       fechaFin: slotInfo.end,
     }));
+    setSelectedSlot({
+      title: "Seleccionado",
+      start: slotInfo.start,
+      end: slotInfo.end,
+    });
   };
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
 
-    if (!isRutValid(formData.rut)) {
-      alert("El RUT ingresado no es válido.");
-      return;
-    }
-
-    if (formData.tipoSolicitud === "cancha" || formData.tipoSolicitud === "salas" || formData.tipoSolicitud === "plazas") {
+    if (["cancha", "salas", "plazas"].includes(formData.tipoSolicitud)) {
       if (!formData.fechaInicio || !formData.fechaFin) {
         alert("Por favor, selecciona un rango de fecha y hora.");
         return;
       }
 
       const isOcupado = reservasOcupadas.some((reserva) => {
-        return (
-          formData.fechaInicio! < reserva.end &&
-          formData.fechaFin! > reserva.start
-        );
+        const reservaStart = new Date(reserva.start);
+        const reservaEnd = new Date(reserva.end);
+        return formData.fechaInicio! < reservaEnd && formData.fechaFin! > reservaStart;
       });
 
       if (isOcupado) {
@@ -124,19 +133,20 @@ const Solicitudes: React.FC = () => {
       }
 
       try {
-        await addDoc(collection(db, "reservas"), {
+        await addDoc(collection(db, formData.tipoSolicitud), {
           ...formData,
-          fechaInicio: formData.fechaInicio.toISOString(),
-          fechaFin: formData.fechaFin.toISOString(),
+          fechaInicio: new Date(formData.fechaInicio!),
+          fechaFin: new Date(formData.fechaFin!),
         });
+
         setModalMessage("Solicitud de reserva enviada correctamente.");
         setIsModalOpen(true);
+
         setReservasOcupadas((prev) => [
           ...prev,
           { title: "Ocupado", start: formData.fechaInicio, end: formData.fechaFin },
         ]);
       } catch (error) {
-        console.error("Error al enviar la solicitud:", error);
         setModalMessage("Error al enviar la solicitud. Intente nuevamente.");
         setIsModalOpen(true);
       }
@@ -146,7 +156,6 @@ const Solicitudes: React.FC = () => {
         setModalMessage("Solicitud enviada correctamente.");
         setIsModalOpen(true);
       } catch (error) {
-        console.error("Error al enviar la solicitud:", error);
         setModalMessage("Error al enviar la solicitud. Intente nuevamente.");
         setIsModalOpen(true);
       }
@@ -155,16 +164,25 @@ const Solicitudes: React.FC = () => {
     resetForm();
   };
 
+  const calendarMessages = {
+    today: "Hoy",
+    previous: "Atrás",
+    next: "Siguiente",
+    month: "Mes",
+    week: "Semana",
+    day: "Día",
+    agenda: "Agenda",
+    date: "Fecha",
+    time: "Hora",
+    event: "Evento",
+    noEventsInRange: "No hay eventos en este rango.",
+    showMore: (total: number) => `+ Ver más (${total})`,
+  };
+
   return (
     <div className="container">
       <h1>Solicitudes</h1>
       <form onSubmit={handleSubmit}>
-        <input type="hidden" name="nombre" value={formData.nombre} />
-        <input type="hidden" name="rut" value={formData.rut} />
-        <input type="hidden" name="direccion" value={formData.direccion} />
-        <input type="hidden" name="telefono" value={formData.telefono} />
-        <input type="hidden" name="correo" value={formData.correo} />
-
         <label>Tipo de Solicitud:</label>
         <select
           name="tipoSolicitud"
@@ -183,26 +201,51 @@ const Solicitudes: React.FC = () => {
           <option value="certificadoActividades">Certificado de Participación de Actividades</option>
         </select>
 
-        {/* Calendario de reservas */}
-        {(formData.tipoSolicitud === "cancha" || formData.tipoSolicitud === "salas" || formData.tipoSolicitud === "plazas") && (
-          <>
-            <label>Seleccione una fecha y hora:</label>
-            <Calendar
-              selectable
-              localizer={localizer}
-              events={reservasOcupadas}
-              startAccessor="start"
-              endAccessor="end"
-              style={{ height: 500, margin: "20px" }}
-              onSelectSlot={handleSelectSlot}
-            />
-          </>
+        {(formData.tipoSolicitud === "cancha" ||
+          formData.tipoSolicitud === "salas" ||
+          formData.tipoSolicitud === "plazas") && (
+          <Calendar
+            selectable
+            localizer={localizer}
+            events={[...reservasOcupadas, ...(selectedSlot ? [selectedSlot] : [])]}
+            startAccessor="start"
+            endAccessor="end"
+            style={{ height: 500, margin: "20px" }}
+            onSelectSlot={handleSelectSlot}
+            defaultView={Views.WEEK}
+            views={[Views.WEEK, Views.DAY]}
+            messages={calendarMessages}  // Aquí agregas el objeto messages
+          />
+        )}
+
+        {(formData.tipoSolicitud === "certificadoResidencia" || formData.tipoSolicitud === "certificadoActividades") && (
+          <div>
+            <label>Razón:</label>
+            <select
+              name="datosCertificado"
+              value={formData.datosCertificado}
+              onChange={(e) => setFormData({ ...formData, datosCertificado: e.target.value })}
+              required
+            >
+              <option value="" disabled hidden>
+                Seleccione una razón
+              </option>
+              <option value="razon1">Para fines particulares</option>
+              <option value="razon2">Para fines especiales</option>
+            </select>
+          </div>
         )}
 
         <button type="submit">Enviar Solicitud</button>
       </form>
 
-      {isModalOpen && <Modal isOpen={isModalOpen} message={modalMessage} onClose={() => setIsModalOpen(false)} />}
+      {isModalOpen && (
+        <Modal 
+          isOpen={isModalOpen} 
+          message={modalMessage} 
+          onClose={() => setIsModalOpen(false)}  // Esta es la corrección
+        />
+      )}
     </div>
   );
 };
