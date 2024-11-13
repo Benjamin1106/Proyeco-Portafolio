@@ -1,4 +1,4 @@
-import React, { useState, useCallback } from 'react';
+import React, { useState, useCallback, useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import { FaSignInAlt, FaSignOutAlt } from 'react-icons/fa';
 import './navbar.css';
@@ -16,6 +16,20 @@ const Navbar: React.FC<NavbarProps> = ({ isAuthenticated, setIsAuthenticated, ro
   const [isActive, setIsActive] = useState(false);
   const [isModalOpen, setIsModalOpen] = useState(false);
 
+  // Restaurar el estado de autenticación y rol desde localStorage al cargar la página
+  useEffect(() => {
+    const savedRole = localStorage.getItem('userRole');
+    const savedAuthStatus = localStorage.getItem('isAuthenticated');
+    
+    if (savedRole && savedAuthStatus === 'true') {
+      setIsAuthenticated(true);
+      setRole(savedRole);
+    } else {
+      setIsAuthenticated(false);
+      setRole('vecino');
+    }
+  }, [setIsAuthenticated, setRole]);
+
   const toggleMenu = useCallback(() => setIsActive(prevState => !prevState), []);
   const openModal = useCallback(() => setIsModalOpen(true), []);
   const closeModal = useCallback(() => setIsModalOpen(false), []);
@@ -24,16 +38,17 @@ const Navbar: React.FC<NavbarProps> = ({ isAuthenticated, setIsAuthenticated, ro
     (userData: { role: string, rut: string, name: string, email: string, address: string, phone: string }) => {
       setIsAuthenticated(true);
       setRole(userData.role);
+      localStorage.setItem('isAuthenticated', 'true');
+      localStorage.setItem('userRole', userData.role);
       closeModal();
     },
     [setIsAuthenticated, setRole, closeModal]
   );
-  
 
   const handleLogout = useCallback(() => {
     setIsAuthenticated(false);
     setRole('vecino');
-    localStorage.removeItem('userRole');
+    localStorage.removeItem('isAuthenticated');
     localStorage.removeItem('userRole');
     localStorage.removeItem('userRUT');
     localStorage.removeItem('userNombre');

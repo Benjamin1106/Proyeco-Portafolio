@@ -6,7 +6,7 @@ import { collection, query, where, getDocs } from 'firebase/firestore';
 interface LoginProps {
   isOpen: boolean;
   onClose: () => void;
-  onLogin: (userData: { role: string, rut: string, name: string, email: string, address: string, phone: string}) => void; // Pasamos todos los datos del usuario
+  onLogin: (userData: { role: string, rut: string, name: string, email: string, address: string, phone: string }) => void;
 }
 
 const Login: React.FC<LoginProps> = ({ isOpen, onClose, onLogin }) => {
@@ -15,8 +15,8 @@ const Login: React.FC<LoginProps> = ({ isOpen, onClose, onLogin }) => {
   const [error, setError] = useState('');
   const [loading, setLoading] = useState(false);
 
+  // Verificar si hay datos de sesión guardados en localStorage
   useEffect(() => {
-    // Verificar si hay datos de sesión guardados en localStorage
     const savedRole = localStorage.getItem('userRole');
     const savedRUT = localStorage.getItem('userRUT');
     const savedNombre = localStorage.getItem('userName');
@@ -25,13 +25,13 @@ const Login: React.FC<LoginProps> = ({ isOpen, onClose, onLogin }) => {
     const savedFono = localStorage.getItem('userPhone');
 
     if (savedRole && savedRUT && savedNombre && savedCorreo && savedDireccion && savedFono) {
-      onLogin({ 
-        role: savedRole, 
-        rut: savedRUT, 
-        name: savedNombre, 
-        email: savedCorreo, 
+      onLogin({
+        role: savedRole,
+        rut: savedRUT,
+        name: savedNombre,
+        email: savedCorreo,
         address: savedDireccion,
-        phone: savedFono 
+        phone: savedFono
       });
     }
   }, [onLogin]);
@@ -89,8 +89,8 @@ const Login: React.FC<LoginProps> = ({ isOpen, onClose, onLogin }) => {
           address: userDoc.address,
           phone: userDoc.phone
         };
-        
-        onLogin(userData); // Pasamos todos los datos al componente principal
+
+        onLogin(userData); // Pasamos los datos al componente principal
 
         // Guardamos en localStorage los datos del usuario
         localStorage.setItem('userRole', userDoc.role);
@@ -157,7 +157,7 @@ const Login: React.FC<LoginProps> = ({ isOpen, onClose, onLogin }) => {
             {loading ? 'Cargando...' : 'Iniciar sesión'}
           </button>
         </form>
-        
+
         <p className="register-text">
           ¿Eres nuevo? <a href="/register">Regístrate aquí</a>
         </p>

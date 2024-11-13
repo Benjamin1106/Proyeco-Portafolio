@@ -1,12 +1,19 @@
 import React, { useState, useEffect } from "react";
-import { collection, addDoc, getDocs} from "firebase/firestore";
+import { collection, addDoc, getDocs } from "firebase/firestore";
 import { db } from "../firebase/firebaseConfig";
-import Calendar, { CalendarProps } from "react-calendar";
-import "react-calendar/dist/Calendar.css";
+import { Calendar, momentLocalizer, SlotInfo } from "react-big-calendar";
+import moment from "moment";
+import "moment/locale/es";  // Asegúrate de que el idioma español esté cargado
+import "react-big-calendar/lib/css/react-big-calendar.css";
 import "./solicitudes.css";
 import Modal from "./modal";
 
-// Definir tipos de datos para cada formulario
+// Configurar moment.js para usar español
+moment.locale("es");  // Asegurarse de establecer el idioma en español
+
+// Configuración para usar moment.js en el calendario
+const localizer = momentLocalizer(moment);
+
 interface FormData {
   nombre: string;
   rut: string;
@@ -15,9 +22,8 @@ interface FormData {
   correo: string;
   tipoSolicitud: string;
   datosCertificado?: string;
-  fecha?: Date | null;
-  horaInicio?: string;
-  horaFin?: string;
+  fechaInicio?: Date | null;
+  fechaFin?: Date | null;
 }
 
 const Solicitudes: React.FC = () => {
@@ -29,31 +35,24 @@ const Solicitudes: React.FC = () => {
     correo: "",
     tipoSolicitud: "",
     datosCertificado: "",
-    fecha: null,
-    horaInicio: "",
-    horaFin: "",
+    fechaInicio: null,
+    fechaFin: null,
   });
 
   const [reservasOcupadas, setReservasOcupadas] = useState<any[]>([]);
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [modalMessage, setModalMessage] = useState("");
 
-  // Cargar datos desde localStorage
   useEffect(() => {
-    const savedName = localStorage.getItem("userNombre") || "";
-    const savedRut = localStorage.getItem("userRUT") || "";
-    const savedAddress = localStorage.getItem("userDireccion") || "";
-    const savedPhone = localStorage.getItem("userFono") || "";
-    const savedEmail = localStorage.getItem("userCorreo") || "";
+    const savedData = {
+      nombre: localStorage.getItem("userNombre") || "",
+      rut: localStorage.getItem("userRUT") || "",
+      direccion: localStorage.getItem("userDireccion") || "",
+      telefono: localStorage.getItem("userFono") || "",
+      correo: localStorage.getItem("userCorreo") || "",
+    };
 
-    setFormData((prev) => ({
-      ...prev,
-      nombre: savedName,
-      rut: savedRut,
-      direccion: savedAddress,
-      telefono: savedPhone,
-      correo: savedEmail,
-    }));
+    setFormData((prev) => ({ ...prev, ...savedData }));
   }, []);
 
   useEffect(() => {
@@ -62,9 +61,9 @@ const Solicitudes: React.FC = () => {
       const fechasOcupadas = snapshot.docs.map((doc) => {
         const data = doc.data();
         return {
-          fecha: new Date(data.fecha.seconds * 1000),
-          horaInicio: data.horaInicio,
-          horaFin: data.horaFin,
+          title: "Ocupado",
+          start: new Date(data.fechaInicio.seconds * 1000),
+          end: new Date(data.fechaFin.seconds * 1000),
         };
       });
       setReservasOcupadas(fechasOcupadas);
@@ -73,29 +72,8 @@ const Solicitudes: React.FC = () => {
     obtenerReservas();
   }, []);
 
-  // Validación del RUT
   const isRutValid = (rut: string) => /^[0-9]{2}\.[0-9]{3}\.[0-9]{3}-[0-9kK]$/.test(rut);
 
-  // Manejar cambios en los campos del formulario
-  const handleInputChange = (
-    e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>
-  ) => {
-    const { name, value } = e.target;
-    setFormData((prev) => ({ ...prev, [name]: value }));
-  };
-
-  // Manejar cambios en la fecha
-  const handleDateChange: CalendarProps["onChange"] = (value) => {
-    if (value instanceof Date) {
-      setFormData((prev) => ({ ...prev, fecha: value }));
-    } else if (Array.isArray(value) && value.length === 2) {
-      setFormData((prev) => ({ ...prev, fecha: value[0] }));
-    } else {
-      setFormData((prev) => ({ ...prev, fecha: null }));
-    }
-  };
-
-  // Reiniciar el formulario
   const resetForm = () => {
     setFormData({
       nombre: "",
@@ -105,25 +83,19 @@ const Solicitudes: React.FC = () => {
       correo: "",
       tipoSolicitud: "",
       datosCertificado: "",
-      fecha: null,
-      horaInicio: "",
-      horaFin: "",
+      fechaInicio: null,
+      fechaFin: null,
     });
   };
 
-  // Comprobar si la franja horaria está ocupada
-  const isHorarioOcupado = (fecha: Date, horaInicio: string, horaFin: string) => {
-    return reservasOcupadas.some((reserva) => {
-      const reservaFecha = new Date(reserva.fecha);
-      return (
-        reservaFecha.toDateString() === fecha.toDateString() &&
-        ((horaInicio >= reserva.horaInicio && horaInicio < reserva.horaFin) ||
-          (horaFin > reserva.horaInicio && horaFin <= reserva.horaFin))
-      );
-    });
+  const handleSelectSlot = (slotInfo: SlotInfo) => {
+    setFormData((prev) => ({
+      ...prev,
+      fechaInicio: slotInfo.start,
+      fechaFin: slotInfo.end,
+    }));
   };
 
-  // Manejar el envío del formulario
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
 
@@ -132,20 +104,21 @@ const Solicitudes: React.FC = () => {
       return;
     }
 
-    if (formData.tipoSolicitud === "cancha" || formData.tipoSolicitud === "plazas" || formData.tipoSolicitud === "salas") {
-      if (!formData.fecha) {
-        alert("Por favor, selecciona una fecha.");
+    if (formData.tipoSolicitud === "cancha" || formData.tipoSolicitud === "salas" || formData.tipoSolicitud === "plazas") {
+      if (!formData.fechaInicio || !formData.fechaFin) {
+        alert("Por favor, selecciona un rango de fecha y hora.");
         return;
       }
 
-      if (!formData.horaInicio || !formData.horaFin) {
-        alert("Por favor, selecciona las horas de inicio y fin.");
-        return;
-      }
+      const isOcupado = reservasOcupadas.some((reserva) => {
+        return (
+          formData.fechaInicio! < reserva.end &&
+          formData.fechaFin! > reserva.start
+        );
+      });
 
-      // Comprobar si el horario ya está reservado
-      if (isHorarioOcupado(formData.fecha, formData.horaInicio, formData.horaFin)) {
-        setModalMessage("Esta fecha y horario ya están ocupados. Seleccione otro horario.");
+      if (isOcupado) {
+        setModalMessage("Esta fecha y hora ya están ocupadas. Seleccione otro rango.");
         setIsModalOpen(true);
         return;
       }
@@ -153,11 +126,15 @@ const Solicitudes: React.FC = () => {
       try {
         await addDoc(collection(db, "reservas"), {
           ...formData,
-          fecha: formData.fecha.toISOString(),
+          fechaInicio: formData.fechaInicio.toISOString(),
+          fechaFin: formData.fechaFin.toISOString(),
         });
         setModalMessage("Solicitud de reserva enviada correctamente.");
         setIsModalOpen(true);
-        setReservasOcupadas((prev) => [...prev, { fecha: formData.fecha!, horaInicio: formData.horaInicio, horaFin: formData.horaFin }]);
+        setReservasOcupadas((prev) => [
+          ...prev,
+          { title: "Ocupado", start: formData.fechaInicio, end: formData.fechaFin },
+        ]);
       } catch (error) {
         console.error("Error al enviar la solicitud:", error);
         setModalMessage("Error al enviar la solicitud. Intente nuevamente.");
@@ -192,7 +169,7 @@ const Solicitudes: React.FC = () => {
         <select
           name="tipoSolicitud"
           value={formData.tipoSolicitud}
-          onChange={handleInputChange}
+          onChange={(e) => setFormData({ ...formData, tipoSolicitud: e.target.value })}
           required
           className="centrar-select"
         >
@@ -206,63 +183,18 @@ const Solicitudes: React.FC = () => {
           <option value="certificadoActividades">Certificado de Participación de Actividades</option>
         </select>
 
-        {/* Campos de certificado */}
-        {(formData.tipoSolicitud === "certificadoResidencia" || formData.tipoSolicitud === "certificadoActividades") && (
-          <div>
-            <label>Razón:</label>
-            <select
-              className="centrar-select"
-              name="datosCertificado"
-              value={formData.datosCertificado}
-              onChange={handleInputChange}
-              required
-            >
-              <option value="" disabled hidden>
-                Seleccione una razón
-              </option>
-              {formData.tipoSolicitud === "certificadoResidencia" ? (
-                <>
-                  <option value="razon1">Para fines particulares</option>
-                  <option value="razon2">Para fines especiales</option>
-                </>
-              ) : (
-                <>
-                  <option value="razon1">Para fines académicos</option>
-                  <option value="razon2">Para demostrar experiencia en actividades</option>
-                </>
-              )}
-            </select>
-          </div>
-        )}
-
-        {/* Campos de reserva de espacio */}
+        {/* Calendario de reservas */}
         {(formData.tipoSolicitud === "cancha" || formData.tipoSolicitud === "salas" || formData.tipoSolicitud === "plazas") && (
           <>
-            <label>Fecha:</label>
+            <label>Seleccione una fecha y hora:</label>
             <Calendar
-              onChange={handleDateChange}
-              value={formData.fecha}
-              minDate={new Date()}
-              maxDate={new Date(new Date().setFullYear(new Date().getFullYear() + 1))}
-              tileDisabled={({ date }) =>
-                reservasOcupadas.some((reserva) => reserva.fecha.toDateString() === date.toDateString())
-              }
-            />
-            <label>Desde:</label>
-            <input
-              type="time"
-              name="horaInicio"
-              value={formData.horaInicio}
-              onChange={handleInputChange}
-              required
-            />
-            <label>Hasta:</label>
-            <input
-              type="time"
-              name="horaFin"
-              value={formData.horaFin}
-              onChange={handleInputChange}
-              required
+              selectable
+              localizer={localizer}
+              events={reservasOcupadas}
+              startAccessor="start"
+              endAccessor="end"
+              style={{ height: 500, margin: "20px" }}
+              onSelectSlot={handleSelectSlot}
             />
           </>
         )}

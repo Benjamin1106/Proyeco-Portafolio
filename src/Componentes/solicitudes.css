@@ -1,7 +1,8 @@
+/* Contenedor principal */
 .container {
   max-width: 600px;
   width: 100%;
-  margin: 50px auto; /* Agrega margen superior e inferior */
+  margin: 50px auto;
   padding: 20px;
   border: 1px solid #ccc;
   border-radius: 8px;
@@ -9,113 +10,185 @@
   background-color: #f9f9f9;
 }
 
-h3 {
+/* Título principal */
+h1 {
   text-align: center;
   color: #333;
   margin-bottom: 20px;
 }
 
+/* Etiquetas de formulario */
 label {
   display: block;
-  margin-bottom: 5px;
+  margin-bottom: 8px;
   font-weight: bold;
-  text-align: center;
+  text-align: left;
+  font-size: 16px;
+  color: #444;
 }
 
+/* Estilo de los campos de entrada */
 select,
-input[type="date"],
-input[type="time"],
 input[type="text"],
 input[type="file"],
 input[type="tel"],
 input[type="email"] {
   width: 100%;
-  max-width: 400px;
-  padding: 10px;
-  margin-bottom: 15px;
+  max-width: 100%;
+  padding: 12px;
+  margin-bottom: 20px;
   border: 1px solid #ccc;
-  border-radius: 4px;
+  border-radius: 6px;
   font-size: 16px;
   display: block;
-  margin-left: auto;
-  margin-right: auto;
+  box-sizing: border-box;
+  transition: border-color 0.3s ease;
 }
 
+/* Cambios en los campos de entrada al recibir focus */
+input:focus,
+select:focus {
+  border-color: #28a745;
+  outline: none;
+}
+
+/* Estilo para el botón */
 button {
-  width: 25%;
-  padding: 10px;
+  width: 100%;
+  max-width: 250px;
+  padding: 12px;
   background-color: #28a745;
   color: white;
   border: none;
-  border-radius: 4px;
-  font-size: 16px;
+  border-radius: 6px;
+  font-size: 18px;
   cursor: pointer;
-  display: block;
-  margin-left: auto;
-  margin-right: auto;
+  margin: 20px auto 0;
+  transition: background-color 0.3s ease;
 }
 
 button:hover {
   background-color: #218838;
 }
 
-.centrar{
-  align-items: center;
-}
-
-
-.centrar-select{
-  display: block; /* Hace que el select se comporte como un bloque */
-  margin: 0 auto; /* Centra el select horizontalmente */
-}
-
-/* Estilos personalizados para el calendario */
-.react-calendar {
+/* Select centrado */
+.centrar-select {
+  margin: 0 auto;
   width: 100%;
   max-width: 400px;
-  background-color: #fff;
-  border: 1px solid #ccc;
-  border-radius: 8px;
-  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
-  font-family: Arial, sans-serif;
-  margin: 0 auto 20px;
 }
 
-.react-calendar__navigation {
-  display: flex;
-  justify-content: space-between;
-  margin-bottom: 10px;
+/* Estilo del calendario */
+.react-big-calendar {
+  width: 100%;
+  max-width: 100%;
+  height: 500px;
+  margin: 20px 0;
+  font-family: 'Arial', sans-serif;
 }
 
-.react-calendar__tile {
-  height: 50px;
-  font-size: 16px;
-  color: #333;
-}
-
-.react-calendar__tile--now {
-  background: #f0f8ff;
+.rbc-toolbar {
+  background-color: #28a745;
+  color: white;
+  padding: 10px;
   border-radius: 6px;
 }
 
-.react-calendar__tile--active {
-  background: #28a745;
+.rbc-toolbar button {
+  color: white;
+  border: none;
+  background-color: transparent;
+  font-size: 16px;
+  margin: 0 10px;
+  cursor: pointer;
+}
+
+.rbc-toolbar button:hover {
+  color: #218838;
+}
+
+/* Estilo de los días y eventos en el calendario */
+.rbc-day-slot {
+  background-color: #f4f4f4;
+  border: 1px solid #e4e4e4;
+  border-radius: 4px;
+}
+
+.rbc-event {
+  background-color: #e7f7e7;
+  border: 1px solid #28a745;
+  border-radius: 4px;
+}
+
+.rbc-event:focus,
+.rbc-event:hover {
+  background-color: #28a745;
+  color: white;
+}
+
+.rbc-day-bg {
+  background-color: #fff;
+}
+
+.rbc-day:hover {
+  background-color: #f0f8ff;
+}
+
+.rbc-selected {
+  background-color: #28a745;
   color: white;
   border-radius: 6px;
 }
 
-.react-calendar__tile--active:enabled:hover,
-.react-calendar__tile--active:enabled:focus {
-  background: #218838;
+/* Modal */
+.modal {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-color: rgba(0, 0, 0, 0.5);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 1000;
+  transition: opacity 0.3s ease;
 }
 
-.react-calendar__tile:disabled {
-  background: #eee;
-  color: #ccc;
+.modal-content {
+  background-color: white;
+  padding: 20px;
+  border-radius: 8px;
+  max-width: 400px;
+  width: 100%;
 }
 
-.react-calendar__tile:enabled:hover,
-.react-calendar__tile:enabled:focus {
-  background: #e6f7e8;
+.modal-button {
+  display: block;
+  background-color: #28a745;
+  color: white;
+  border: none;
+  padding: 10px;
+  margin-top: 10px;
   border-radius: 6px;
+  cursor: pointer;
+  width: 100%;
 }
+
+.modal-button:hover {
+  background-color: #218838;
+}
+
+/* Media Queries para responsividad */
+@media (max-width: 768px) {
+  .container {
+    width: 90%;
+    margin: 20px auto;
+  }
+
+  .button {
+    width: 100%;
+    margin-top: 20px;
+  }
+}
+
