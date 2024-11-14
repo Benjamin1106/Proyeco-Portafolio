@@ -12,6 +12,7 @@ import Register from './Componentes/register';
 import UsersList from './Componentes/usersList';
 import ProtectedRoute from './Componentes/protectedRoute';
 import PendingUsersList from './Componentes/pendingUsersList';
+import NewsComponent from './Componentes/noticias';
 
 const NotFound: React.FC = () => (
   <div style={{
@@ -53,6 +54,7 @@ const App: React.FC = () => {
         <Route path="/" element={<Home />} />
         <Route path="/contacto" element={<Contacto />} />
         <Route path="/register" element={<Register />} />
+        <Route path="/noticias" element={<NewsComponent />} />
         
         {/* Rutas protegidas */}
         <Route element={<ProtectedRoute isAuthenticated={isAuthenticated} />}>
