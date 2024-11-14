@@ -75,6 +75,7 @@ const Contacto: React.FC = () => {
         telefono: formData.telefono,
         motivo: formData.motivo,
         
+        
       };
 
       emailjs.send('service_uakj6ut', 'template_zrxce7r', templateParams, 'xDYQGP5qWmrQPxol7')
