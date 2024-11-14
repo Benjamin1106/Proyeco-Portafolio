@@ -1,157 +1,138 @@
-import React, { useState, useEffect } from "react";
-import { collection, addDoc } from "firebase/firestore";
-import { db } from "../firebase/firebaseConfig";
-import { PDFDocument, StandardFonts, rgb } from "pdf-lib"; // Biblioteca para crear el PDF
-import "moment/locale/es";
-import "./solicitudes.css";
-import Modal from "./modal";
+import React, { useState, useEffect } from 'react';
+import { db } from '../firebase/firebaseConfig';
+import { collection, getDocs, doc, updateDoc, deleteDoc } from 'firebase/firestore';
+import EditUserForm from './editUserForm'; // Importamos el componente de formulario
+import './usersList.css';
 
-interface FormData {
-  nombre: string;
-  rut: string;
-  direccion: string;
-  telefono: string;
-  correo: string;
-  tipoSolicitud: string;
-  datosCertificado?: string;
-  fechaInicio?: Date | null;
-  fechaFin?: Date | null;
-}
+// Componente para mostrar y editar usuarios
+const UserList: React.FC = () => {
+  const [users, setUsers] = useState<any[]>([]);
+  const [selectedUser, setSelectedUser] = useState<any | null>(null);
+  const [name, setName] = useState('');
+  const [rut, setRut] = useState('');
+  const [email, setEmail] = useState('');
+  const [password, setPassword] = useState('');
+  const [address, setAddress] = useState('');
+  const [phone, setPhone] = useState('');
+  const [role, setRole] = useState('');
 
-const Solicitudes: React.FC = () => {
-  const [formData, setFormData] = useState<FormData>({
-    nombre: "",
-    rut: "",
-    direccion: "",
-    telefono: "",
-    correo: "",
-    tipoSolicitud: "",
-    datosCertificado: "",
-    fechaInicio: null,
-    fechaFin: null,
-  });
+  // Obtener usuarios de Firestore
+  const getUsers = async () => {
+    const querySnapshot = await getDocs(collection(db, 'users'));
+    const usersData: any[] = [];
+    querySnapshot.forEach((doc) => {
+      usersData.push({ id: doc.id, ...doc.data() });
+    });
+    setUsers(usersData);
+  };
 
-  const [isModalOpen, setIsModalOpen] = useState(false);
-  const [modalMessage, setModalMessage] = useState("");
+  // Obtener datos del usuario seleccionado para edición
+  const handleSelectUser = (user: any) => {
+    setSelectedUser(user);
+    setName(user.name);
+    setRut(user.rut);
+    setEmail(user.email);
+    setPassword(user.password);
+    setAddress(user.address);
+    setPhone(user.phone);
+    setRole(user.role);
+  };
 
+  // Actualizar los datos del usuario en Firestore
+  const handleUpdateUser = async (e: React.FormEvent) => {
+    e.preventDefault();
+    if (selectedUser) {
+      const userRef = doc(db, 'users', selectedUser.id);
+      await updateDoc(userRef, {
+        name,
+        rut,
+        email,
+        password,
+        address,
+        phone,
+        role,
+      });
+      // Actualizamos la lista de usuarios después de editar
+      getUsers();
+      // Limpiamos el formulario y la selección
+      setSelectedUser(null);
+      setName('');
+      setRut('');
+      setEmail('');
+      setPassword('');
+      setAddress('');
+      setPhone('');
+      setRole('');
+    }
+  };
+
+  // Eliminar usuario
+  const handleDeleteUser = async (userId: string) => {
+    const userRef = doc(db, 'users', userId);
+    await deleteDoc(userRef);
+    // Actualizamos la lista de usuarios después de eliminar
+    getUsers();
+  };
+
+  // Cargar los usuarios cuando el componente se monta
   useEffect(() => {
-    const savedData = {
-      nombre: localStorage.getItem("userNombre") || "",
-      rut: localStorage.getItem("userRUT") || "",
-      direccion: localStorage.getItem("userDireccion") || "",
-      telefono: localStorage.getItem("userFono") || "",
-      correo: localStorage.getItem("userCorreo") || "",
-    };
-    setFormData((prev) => ({ ...prev, ...savedData }));
+    getUsers();
   }, []);
 
-  const handleTipoSolicitudChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
-    const tipo = e.target.value;
-    setFormData((prev) => ({ ...prev, tipoSolicitud: tipo }));
-
-    if (tipo === "certificadoResidencia") {
-      // Rellenar los campos automáticamente
-      const savedData = {
-        nombre: localStorage.getItem("userNombre") || "",
-        rut: localStorage.getItem("userRUT") || "",
-        direccion: localStorage.getItem("userDireccion") || "",
-        correo: localStorage.getItem("userCorreo") || "",
-      };
-      setFormData((prev) => ({ ...prev, ...savedData }));
-    }
-  };
-
-  const generatePDF = async () => {
-    const pdfDoc = await PDFDocument.create();
-    const page = pdfDoc.addPage([600, 400]);
-    const font = await pdfDoc.embedFont(StandardFonts.Helvetica);
-
-    page.drawText("Certificado de Residencia", {
-      x: 200,
-      y: 350,
-      size: 20,
-      font,
-      color: rgb(0, 0, 0),
-    });
-    page.drawText(`Nombre: ${formData.nombre}`, { x: 50, y: 300, font, size: 12 });
-    page.drawText(`RUT: ${formData.rut}`, { x: 50, y: 280, font, size: 12 });
-    page.drawText(`Dirección: ${formData.direccion}`, { x: 50, y: 260, font, size: 12 });
-    page.drawText(`Correo: ${formData.correo}`, { x: 50, y: 240, font, size: 12 });
-    page.drawText("Este certificado confirma su residencia en la dirección indicada.", {
-      x: 50,
-      y: 200,
-      font,
-      size: 12,
-    });
-
-    const pdfBytes = await pdfDoc.save();
-    const blob = new Blob([pdfBytes], { type: "application/pdf" });
-    const link = document.createElement("a");
-    link.href = URL.createObjectURL(blob);
-    link.download = "CertificadoResidencia.pdf";
-    link.click();
-  };
-
-  const handleSubmit = async (e: React.FormEvent) => {
-    e.preventDefault();
-    if (formData.tipoSolicitud === "certificadoResidencia") {
-      await generatePDF(); // Genera y descarga el PDF
-    }
-
-    try {
-      await addDoc(collection(db, "solicitudes"), formData);
-      setModalMessage("Solicitud enviada correctamente.");
-      setIsModalOpen(true);
-    } catch (error) {
-      setModalMessage("Error al enviar la solicitud. Intente nuevamente.");
-      setIsModalOpen(true);
-    }
-  };
-
   return (
-    <div className="container">
-      <h1>Solicitudes</h1>
-      <form onSubmit={handleSubmit}>
-        <label>Tipo de Solicitud:</label>
-        <select
-          name="tipoSolicitud"
-          value={formData.tipoSolicitud}
-          onChange={handleTipoSolicitudChange}
-          required
-          className="centrar-select"
-        >
-          <option value="" disabled>
-            Seleccione tipo de Solicitud
-          </option>
-          <option value="cancha">Cancha</option>
-          <option value="salas">Salas</option>
-          <option value="plazas">Plazas</option>
-          <option value="certificadoResidencia">Certificado de Residencia</option>
-          <option value="certificadoActividades">Certificado de Participación de Actividades</option>
-        </select>
+    <div className="user-list-container">
+      <h2>Lista de Usuarios</h2>
 
-        {(formData.tipoSolicitud === "certificadoResidencia") && (
-          <div>
-            <p>Datos del usuario precargados:</p>
-            <p>Nombre: {formData.nombre}</p>
-            <p>RUT: {formData.rut}</p>
-            <p>Dirección: {formData.direccion}</p>
-            <p>Correo: {formData.correo}</p>
-          </div>
-        )}
+      {/* Tabla de usuarios */}
+      <table className="user-table">
+        <thead>
+          <tr>
+            <th>Nombre</th>
+            <th>RUT</th>
+            <th>Correo</th>
+            <th>Teléfono</th>
+            <th>Rol</th>
+            <th>Acciones</th>
+          </tr>
+        </thead>
+        <tbody>
+          {users.length > 0 ? (
+            users.map((user) => (
+              <tr key={user.id}>
+                <td>{user.name}</td>
+                <td>{user.rut}</td>
+                <td>{user.email}</td>
+                <td>{user.phone}</td>
+                <td>{user.role}</td>
+                <td>
+                  <button onClick={() => handleSelectUser(user)} className="edit-btn">Editar</button>
+                  <button onClick={() => handleDeleteUser(user.id)} className="delete-btn">Eliminar</button>
+                </td>
+              </tr>
+            ))
+          ) : (
+            <tr>
+              <td colSpan={6}>No hay usuarios registrados.</td>
+            </tr>
+          )}
+        </tbody>
+      </table>
 
-        <button type="submit">Enviar Solicitud</button>
-      </form>
-
-      {isModalOpen && (
-        <Modal 
-          isOpen={isModalOpen} 
-          message={modalMessage} 
-          onClose={() => setIsModalOpen(false)}
+      {/* Formulario de edición de usuario */}
+      {selectedUser && (
+        <EditUserForm
+          name={name} setName={setName}
+          rut={rut} setRut={setRut}
+          email={email} setEmail={setEmail}
+          password={password} setPassword={setPassword}
+          address={address} setAddress={setAddress}
+          phone={phone} setPhone={setPhone}
+          role={role} setRole={setRole}
+          handleSubmit={handleUpdateUser}
         />
       )}
     </div>
   );
 };
 
-export default Solicitudes;
+export default UserList;
