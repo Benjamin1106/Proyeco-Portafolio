@@ -15,15 +15,17 @@ type NavbarProps = {
 const Navbar: React.FC<NavbarProps> = ({ isAuthenticated, setIsAuthenticated, role, setRole }) => {
   const [isActive, setIsActive] = useState(false);
   const [isModalOpen, setIsModalOpen] = useState(false);
+  const [userName, setUserName] = useState<string | null>(null);
 
-  // Restaurar el estado de autenticación y rol desde localStorage al cargar la página
   useEffect(() => {
     const savedRole = localStorage.getItem('userRole');
     const savedAuthStatus = localStorage.getItem('isAuthenticated');
+    const savedUserName = localStorage.getItem('userNombre');
     
     if (savedRole && savedAuthStatus === 'true') {
       setIsAuthenticated(true);
       setRole(savedRole);
+      setUserName(savedUserName); // Cargamos el nombre del usuario
     } else {
       setIsAuthenticated(false);
       setRole('vecino');
@@ -38,8 +40,10 @@ const Navbar: React.FC<NavbarProps> = ({ isAuthenticated, setIsAuthenticated, ro
     (userData: { role: string, rut: string, name: string, email: string, address: string, phone: string }) => {
       setIsAuthenticated(true);
       setRole(userData.role);
+      setUserName(userData.name); // Guardamos el nombre del usuario en el estado
       localStorage.setItem('isAuthenticated', 'true');
       localStorage.setItem('userRole', userData.role);
+      localStorage.setItem('userNombre', userData.name); // Guardamos el nombre en localStorage
       closeModal();
     },
     [setIsAuthenticated, setRole, closeModal]
@@ -48,13 +52,10 @@ const Navbar: React.FC<NavbarProps> = ({ isAuthenticated, setIsAuthenticated, ro
   const handleLogout = useCallback(() => {
     setIsAuthenticated(false);
     setRole('vecino');
+    setUserName(null); // Limpiamos el nombre al cerrar sesión
     localStorage.removeItem('isAuthenticated');
     localStorage.removeItem('userRole');
-    localStorage.removeItem('userRUT');
     localStorage.removeItem('userNombre');
-    localStorage.removeItem('userCorreo');
-    localStorage.removeItem('userDireccion');
-    localStorage.removeItem('userFono');
   }, [setIsAuthenticated, setRole]);
 
   return (
@@ -107,6 +108,13 @@ const Navbar: React.FC<NavbarProps> = ({ isAuthenticated, setIsAuthenticated, ro
                 </>
               )}
             </>
+          )}
+
+          {/* Mostrar nombre del usuario loggeado si está autenticado */}
+          {isAuthenticated && (
+            <li className="nav-item user-name">
+              Usuario: {userName}
+            </li>
           )}
 
           {/* Botón de Conéctate/Cerrar sesión dentro del menú móvil */}

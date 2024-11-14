@@ -37,6 +37,23 @@ const Contacto: React.FC = () => {
     return '';
   };
 
+  const formatTelefono = (telefono: string) => {
+    // Eliminar caracteres no numéricos
+    let cleanTelefono = telefono.replace(/\D/g, '');
+
+    // Añadir el código de país si no está presente
+    if (!cleanTelefono.startsWith('56')) {
+      cleanTelefono = '56' + cleanTelefono;
+    }
+
+    // Limitar el número a 11 dígitos (2 de código de país + 9 del número local)
+    if (cleanTelefono.length > 11) {
+      cleanTelefono = cleanTelefono.slice(0, 11);
+    }
+
+    return cleanTelefono;
+  };
+
   const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement | HTMLTextAreaElement>) => {
     const { name, value } = e.target;
 
@@ -54,8 +71,14 @@ const Contacto: React.FC = () => {
       }
     }
 
+    // Validación y formateo del Teléfono
+    if (name === 'telefono') {
+      const formattedTelefono = formatTelefono(value);
+      setFormData({ ...formData, [name]: formattedTelefono });
+    }
+
     // Actualizar otros campos
-    if (name !== 'rut' && name !== 'nombre') {
+    if (name !== 'rut' && name !== 'nombre' && name !== 'telefono') {
       setFormData({ ...formData, [name]: value });
     }
   };
