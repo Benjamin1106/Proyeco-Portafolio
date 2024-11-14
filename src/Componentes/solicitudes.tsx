@@ -9,6 +9,9 @@ import "./solicitudes.css";
 import Modal from "./modal";
 import { jsPDF } from "jspdf";
 
+import logo from '../img/imglogo.png';
+import firma from '../img/firma.png';
+
 // Configuración para moment.js
 moment.locale("es");
 const localizer = momentLocalizer(moment);
@@ -164,14 +167,36 @@ const Solicitudes: React.FC = () => {
 
         // Aquí deberías generar el PDF con los datos
         // Ejemplo de cómo agregar al PDF (utilizando alguna librería como jsPDF):
+        
         const pdf = new jsPDF();
-        pdf.text(`Certificado de Residencia para: ${pdfData.nombre}`, 10, 10);
-        pdf.text(`RUT: ${pdfData.rut}`, 10, 20);
-        pdf.text(`Dirección: ${pdfData.direccion}`, 10, 30);
-        pdf.text(`Correo: ${pdfData.correo}`, 10, 40);
-        pdf.text(`Motivo: ${formData.datosCertificado}`, 10, 50);
+        const logoWidth = 40;  // Ajusta el tamaño del logo
+        const logoHeight = 30; // Ajusta el tamaño del logo
+        const xPosition = 165; // Ajusta la posición en el eje X (donde se coloca a la derecha)
+        const yPosition = 5;  // Ajusta la posición en el eje Y (cerca de la parte superior)
+        const firmaWidth = 40;
+        const firmaHeight = 20;
+        const xFirmaPosition = 10;  // Ajusta la posición en el eje X
+        const yFirmaPosition = 160; // Ajusta la posición en el eje Y
+        pdf.addImage(logo, 'PNG', xPosition, yPosition, logoWidth, logoHeight);
+        pdf.setFont("helvetica", "bold");
+        pdf.text("Certificado de Residencia Villa Los Lagos", pdf.internal.pageSize.width / 2, 20, { align: 'center' });
+        pdf.setFont("helvetica", "normal");
+        pdf.text(`El Señor o la Señora: ${pdfData.nombre}`, 10, 40);
+        pdf.text(`De número de Cédula de Identidad: ${pdfData.rut}`, 10, 50);
+        pdf.text(`Domiciliado en: ${pdfData.direccion}`, 10, 60);
+        pdf.text(`Correo: ${pdfData.correo}`, 10, 70);
+        pdf.text(`Con Motivo de: ${formData.datosCertificado}`, 10, 80);
+        
 
+        pdf.text("Firma de la Junta de Vecinos", 10, 120);
+        pdf.text("_____________________________", 10, 130);
+        pdf.text("Nombre: Jesús Navarro", 10, 140);
+        pdf.text("Cargo: Presidente JJVV Villa Los Lagos", 10, 150);
+        pdf.addImage(firma, 'PNG', xFirmaPosition, yFirmaPosition, firmaWidth, firmaHeight);
         pdf.save("certificado_residencia.pdf");
+        // Firma como imagen
+
+
       }
 
       try {
@@ -241,30 +266,31 @@ const Solicitudes: React.FC = () => {
           />
         )}
 
-        {(formData.tipoSolicitud === "certificadoResidencia" || formData.tipoSolicitud === "certificadoResidencia") && (
-          <div>
-            <label>Razón:</label>
-            <select
-              name="datosCertificado"
-              value={formData.datosCertificado}
-              onChange={(e) => setFormData({ ...formData, datosCertificado: e.target.value })}
-              required
-            >
-              <option value="" disabled hidden>
-                Seleccione una razón
-              </option>
-              <option value="certificado de residencia">Fines Particulares</option>
-              <option value="certificado de residencia">Fines Laborales</option>
-              <option value="certificado de residencia">Fines Recrativos</option>
-            </select>
-          </div>
-        )}
+{(formData.tipoSolicitud === "certificadoResidencia" || formData.tipoSolicitud === "certificadoResidencia") && (
+  <div>
+    <label>Razón:</label>
+    <select
+      name="datosCertificadoRes"
+      value={formData.datosCertificado}
+      onChange={(e) => setFormData({ ...formData, datosCertificado: e.target.value })}
+      required
+    >
+      <option value="" disabled hidden>
+        Seleccione una razón
+      </option>
+      <option value="Fines Particulares">Fines Particulares</option>
+      <option value="Fines Laborales">Fines Laborales</option>
+      <option value="Fines Recreativos">Fines Recreativos</option>
+    </select>
+  </div>
+)}
+
 
         {(formData.tipoSolicitud === "certificadoActividades" || formData.tipoSolicitud === "certificadoActividades") && (
           <div>
             <label>Razón:</label>
             <select
-              name="datosCertificado"
+              name="datosCertificadoAct"
               value={formData.datosCertificado}
               onChange={(e) => setFormData({ ...formData, datosCertificado: e.target.value })}
               required
@@ -272,9 +298,9 @@ const Solicitudes: React.FC = () => {
               <option value="" disabled hidden>
                 Seleccione una razón
               </option>
-              <option value="certificado de residencia">Fines Academicos</option>
-              <option value="certificado de residencia">Demostrar Experiencia En Actividades</option>
-              <option value="certificado de residencia">Otros</option>
+              <option value="Fines Academicos">Fines Academicos</option>
+              <option value="Demostrar Experiencia En Actividades">Demostrar Experiencia En Actividades</option>
+              <option value="Otros">Otros</option>
             </select>
           </div>
         )}
