@@ -13,6 +13,7 @@ import UsersList from './Componentes/usersList';
 import ProtectedRoute from './Componentes/protectedRoute';
 import PendingUsersList from './Componentes/pendingUsersList';
 import NewsComponent from './Componentes/noticias';
+import Chatbot from './Componentes/Chatbot';  // Importa el componente Chatbot
 
 const NotFound: React.FC = () => (
   <div style={{
@@ -43,8 +44,8 @@ const NotFound: React.FC = () => (
 );
 
 const App: React.FC = () => {
-  const [isAuthenticated, setIsAuthenticated] = useState(false); // Estado de autenticación
-  const [role, setRole] = useState<string>('vecino'); // Estado de rol del usuario
+  const [isAuthenticated, setIsAuthenticated] = useState(false);
+  const [role, setRole] = useState<string>('vecino');
 
   return (
     <Router>
@@ -55,7 +56,7 @@ const App: React.FC = () => {
         <Route path="/contacto" element={<Contacto />} />
         <Route path="/register" element={<Register />} />
         <Route path="/noticias" element={<NewsComponent />} />
-        
+
         {/* Rutas protegidas */}
         <Route element={<ProtectedRoute isAuthenticated={isAuthenticated} />}>
           <Route path="/solicitudes" element={<FormularioSolicitudes />} />
@@ -70,6 +71,7 @@ const App: React.FC = () => {
         <Route path="*" element={<NotFound />} />
       </Routes>
 
+      <Chatbot /> {/* Aquí agregas el componente del chatbot flotante */}
       <Footer />
     </Router>
   );
