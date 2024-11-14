@@ -74,9 +74,10 @@ const Contacto: React.FC = () => {
         rut: formData.rut,
         telefono: formData.telefono,
         motivo: formData.motivo,
+        
       };
 
-      emailjs.send('service_0atayxn', 'template_k0c1a5r', templateParams, 'Y-iWVpLHK19wcB1Lt')
+      emailjs.send('service_uakj6ut', 'template_zrxce7r', templateParams, 'xDYQGP5qWmrQPxol7')
         .then(() => {
           setStatus('¡El mensaje ha sido enviado con éxito!');
         }, (error) => {
