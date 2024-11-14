@@ -80,3 +80,8 @@
     text-align: center; /* Centrar el contenido de cada grupo de formulario */
   }
   
+  button {
+    min-width: 80px;
+    max-width: 120px;
+  }
+  

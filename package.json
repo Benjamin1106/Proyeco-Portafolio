@@ -12,6 +12,7 @@
   "dependencies": {
     "bootstrap": "^5.3.3",
     "browser-image-compression": "^2.0.2",
+    "emailjs-com": "^3.2.0",
     "firebase": "^11.0.1",
     "jspdf": "^2.5.2",
     "moment": "^2.30.1",
