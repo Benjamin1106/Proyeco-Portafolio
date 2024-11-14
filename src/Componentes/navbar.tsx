@@ -74,6 +74,9 @@ const Navbar: React.FC<NavbarProps> = ({ isAuthenticated, setIsAuthenticated, ro
           <li className="nav-item">
             <Link to="/" className="nav-links" onClick={toggleMenu}>Inicio</Link>
           </li>
+          <li className="nav-item">
+            <Link to="/noticias" className="nav-links" onClick={toggleMenu}>Noticias</Link>
+          </li>
           {role !== 'directiva' && (
             <li className="nav-item">
               <Link to="/contacto" className="nav-links" onClick={toggleMenu}>Contacto</Link>
