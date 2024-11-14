@@ -1,6 +1,6 @@
 import { useEffect, useState } from 'react';
 import axios from 'axios';
-import './noticias.css'
+import './noticias.css';
 
 interface Article {
   title: string;
@@ -17,8 +17,11 @@ const NewsComponent: React.FC = () => {
   useEffect(() => {
     const fetchArticles = async () => {
       try {
-        const response = await axios.get('https://magicloops.dev/api/loop/e63bc446-90ce-4940-a5c8-1ed2558a54c9/run'); // Reemplaza con la URL real de tu API
-        setArticles(response.data.articles);
+        // Aquí debes usar la URL real de tu API
+        const response = await axios.get('https://apimocha.com/news-maipu-api/post');
+        
+        // Asegúrate de acceder a response.data.articles
+        setArticles(response.data.articles); 
       } catch (err) {
         setError('No se pudo cargar la información de noticias.');
       } finally {
@@ -33,18 +36,21 @@ const NewsComponent: React.FC = () => {
   if (error) return <p>{error}</p>;
 
   return (
-    <div className="news-container">
-      {articles.map((article, index) => (
-        <div key={index} className="news-card">
-          <img src={article.imageUrl} alt={article.title} className="news-image" />
-          <h2>{article.title}</h2>
-          <p>{article.description}</p>
-          <a href={article.articleUrl} target="_blank" rel="noopener noreferrer">
-            Leer más
-          </a>
-        </div>
-      ))}
-    </div>
+    <>
+      <h1>Noticias</h1> {/* Título fuera del contenedor */}
+      <div className="news-container">
+        {articles.map((article, index) => (
+          <div key={index} className="news-card">
+            <img src={article.imageUrl} alt={article.title} className="news-image" />
+            <h2>{article.title}</h2>
+            <p>{article.description}</p>
+            <a href={article.articleUrl} target="_blank" rel="noopener noreferrer">
+              Leer más
+            </a>
+          </div>
+        ))}
+      </div>
+    </>
   );
 };
 
