@@ -7,6 +7,7 @@ import "moment/locale/es";
 import "react-big-calendar/lib/css/react-big-calendar.css";
 import "./solicitudes.css";
 import Modal from "./modal";
+import { jsPDF } from "jspdf";
 
 // Configuración para moment.js
 moment.locale("es");
@@ -58,7 +59,7 @@ const Solicitudes: React.FC = () => {
 
     // Escuchar cambios en tiempo real usando onSnapshot
     const reservasQuery = query(
-      collection(db, formData.tipoSolicitud), 
+      collection(db, formData.tipoSolicitud),
       where("tipoSolicitud", "==", formData.tipoSolicitud)
     );
 
@@ -151,6 +152,28 @@ const Solicitudes: React.FC = () => {
         setIsModalOpen(true);
       }
     } else {
+      // Para certificado de residencia, agregar los campos extra
+      if (formData.tipoSolicitud === "certificadoResidencia") {
+        const pdfData = {
+          ...formData,
+          nombre: localStorage.getItem("userNombre"),
+          rut: localStorage.getItem("userRUT"),
+          direccion: localStorage.getItem("userDireccion"),
+          correo: localStorage.getItem("userCorreo"),
+        };
+
+        // Aquí deberías generar el PDF con los datos
+        // Ejemplo de cómo agregar al PDF (utilizando alguna librería como jsPDF):
+        const pdf = new jsPDF();
+        pdf.text(`Certificado de Residencia para: ${pdfData.nombre}`, 10, 10);
+        pdf.text(`RUT: ${pdfData.rut}`, 10, 20);
+        pdf.text(`Dirección: ${pdfData.direccion}`, 10, 30);
+        pdf.text(`Correo: ${pdfData.correo}`, 10, 40);
+        pdf.text(`Motivo: ${formData.datosCertificado}`, 10, 50);
+
+        pdf.save("certificado_residencia.pdf");
+      }
+
       try {
         await addDoc(collection(db, "solicitudes"), formData);
         setModalMessage("Solicitud enviada correctamente.");
@@ -214,11 +237,11 @@ const Solicitudes: React.FC = () => {
             onSelectSlot={handleSelectSlot}
             defaultView={Views.WEEK}
             views={[Views.WEEK, Views.DAY]}
-            messages={calendarMessages}  // Aquí agregas el objeto messages
+            messages={calendarMessages}
           />
         )}
 
-        {(formData.tipoSolicitud === "certificadoResidencia" || formData.tipoSolicitud === "certificadoActividades") && (
+        {(formData.tipoSolicitud === "certificadoResidencia" || formData.tipoSolicitud === "certificadoResidencia") && (
           <div>
             <label>Razón:</label>
             <select
@@ -230,9 +253,52 @@ const Solicitudes: React.FC = () => {
               <option value="" disabled hidden>
                 Seleccione una razón
               </option>
-              <option value="razon1">Para fines particulares</option>
-              <option value="razon2">Para fines especiales</option>
+              <option value="certificado de residencia">Fines Particulares</option>
+              <option value="certificado de residencia">Fines Laborales</option>
+              <option value="certificado de residencia">Fines Recrativos</option>
             </select>
+          </div>
+        )}
+
+        {(formData.tipoSolicitud === "certificadoActividades" || formData.tipoSolicitud === "certificadoActividades") && (
+          <div>
+            <label>Razón:</label>
+            <select
+              name="datosCertificado"
+              value={formData.datosCertificado}
+              onChange={(e) => setFormData({ ...formData, datosCertificado: e.target.value })}
+              required
+            >
+              <option value="" disabled hidden>
+                Seleccione una razón
+              </option>
+              <option value="certificado de residencia">Fines Academicos</option>
+              <option value="certificado de residencia">Demostrar Experiencia En Actividades</option>
+              <option value="certificado de residencia">Otros</option>
+            </select>
+          </div>
+        )}
+
+        {(formData.tipoSolicitud === "cancha" ||
+          formData.tipoSolicitud === "salas" ||
+          formData.tipoSolicitud === "plazas") && (
+          <div>
+            <label>Fecha de Inicio:</label>
+            <input
+              type="datetime-local"
+              name="fechaInicio"
+              value={formData.fechaInicio ? moment(formData.fechaInicio).format("YYYY-MM-DDTHH:mm") : ""}
+              onChange={(e) => setFormData({ ...formData, fechaInicio: new Date(e.target.value) })}
+              required
+            />
+            <label>Fecha de Fin:</label>
+            <input
+              type="datetime-local"
+              name="fechaFin"
+              value={formData.fechaFin ? moment(formData.fechaFin).format("YYYY-MM-DDTHH:mm") : ""}
+              onChange={(e) => setFormData({ ...formData, fechaFin: new Date(e.target.value) })}
+              required
+            />
           </div>
         )}
 
@@ -240,11 +306,7 @@ const Solicitudes: React.FC = () => {
       </form>
 
       {isModalOpen && (
-        <Modal 
-          isOpen={isModalOpen} 
-          message={modalMessage} 
-          onClose={() => setIsModalOpen(false)}  // Esta es la corrección
-        />
+        <Modal isOpen={isModalOpen} message={modalMessage} onClose={() => setIsModalOpen(false)} />
       )}
     </div>
   );
