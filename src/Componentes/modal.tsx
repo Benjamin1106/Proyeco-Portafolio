@@ -52,10 +52,10 @@ const Modal: React.FC<ModalProps> = ({ isOpen, message, onClose }) => {
   return (
     <div className="modal-overlay">
       <div className="modal-content">
-        <h2>Mensaje PDF</h2>
+        <h2>Mensaje</h2>
         <p>{message}</p>
         {pdfUrl && (
-          <a href={pdfUrl} download="mensaje.pdf">
+          <a href={pdfUrl} download="certificado_Solicitud.pdf">
             <button>Descargar PDF</button>
             <h1></h1>
           </a>
