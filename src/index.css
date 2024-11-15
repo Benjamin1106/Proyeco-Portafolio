@@ -5,3 +5,8 @@ body {
   display: block; /* Cambiado de flex a block */
 }
 
+body {
+  background-color: #fffdd059; /* Fondo crema */
+  margin: 0; /* Elimina márgenes por defecto */
+  font-family: Arial, sans-serif; /* Opcional */
+}
