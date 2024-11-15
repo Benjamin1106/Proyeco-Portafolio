@@ -4,6 +4,7 @@ import { db } from '../firebase/firebaseConfig';
 import emailjs from 'emailjs-com';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import './contacto.css';
+import { useNavigate } from 'react-router-dom';  // Importa useNavigate
 
 const Contacto: React.FC = () => {
   const [formData, setFormData] = useState({
@@ -15,6 +16,7 @@ const Contacto: React.FC = () => {
     mensaje: ''
   });
   const [status, setStatus] = useState<string>('');
+  const navigate = useNavigate(); // Inicializa useNavigate
 
   const formatRUT = (rut: string) => {
     let cleanRUT = rut.replace(/[^0-9K]/gi, ''); 
@@ -74,8 +76,6 @@ const Contacto: React.FC = () => {
         rut: formData.rut,
         telefono: formData.telefono,
         motivo: formData.motivo,
-        
-        
       };
 
       emailjs.send('service_uakj6ut', 'template_zrxce7r', templateParams, 'xDYQGP5qWmrQPxol7')
@@ -111,13 +111,17 @@ const Contacto: React.FC = () => {
     });
   };
 
+  const handleExit = () => {
+    navigate('/'); // Redirige al inicio
+  };
+
   return (
     <div className="container mt-5">
       {status && (
-  <div className="alert alert-success text-center" role="alert">
-    {status}
-  </div>
-)}
+        <div className="alert alert-success text-center" role="alert">
+          {status}
+        </div>
+      )}
       <h2 className="text-center mb-4">Formulario de Contacto</h2>
       <form onSubmit={handleSubmit}>
         <div className="mb-3">
@@ -195,6 +199,7 @@ const Contacto: React.FC = () => {
         </div>
         <button type="submit" className="btn btn-primary me-2">Enviar</button>
         <button type="button" onClick={handleClear} className="btn btn-secondary">Limpiar</button>
+        <button type="button" onClick={handleExit} className="btn btn-danger ms-2">Salir</button>
       </form>
       {status && <p className="mt-3">{status}</p>}
     </div>
