@@ -13,15 +13,14 @@ const NewsComponent: React.FC = () => {
   const [articles, setArticles] = useState<Article[]>([]);
   const [loading, setLoading] = useState<boolean>(true);
   const [error, setError] = useState<string | null>(null);
+  const [currentPage, setCurrentPage] = useState<number>(1);
+  const articlesPerPage = 8; // Número de artículos por página
 
   useEffect(() => {
     const fetchArticles = async () => {
       try {
-        // Aquí debes usar la URL real de tu API
         const response = await axios.get('https://apimocha.com/news-maipu-api/post');
-        
-        // Asegúrate de acceder a response.data.articles
-        setArticles(response.data.articles); 
+        setArticles(response.data.articles);
       } catch (err) {
         setError('No se pudo cargar la información de noticias.');
       } finally {
@@ -32,14 +31,32 @@ const NewsComponent: React.FC = () => {
     fetchArticles();
   }, []);
 
+  const indexOfLastArticle = currentPage * articlesPerPage;
+  const indexOfFirstArticle = indexOfLastArticle - articlesPerPage;
+  const currentArticles = articles.slice(indexOfFirstArticle, indexOfLastArticle);
+
+  const totalPages = Math.ceil(articles.length / articlesPerPage);
+
+  const goToNextPage = () => {
+    if (currentPage < totalPages) {
+      setCurrentPage((prevPage) => prevPage + 1);
+    }
+  };
+
+  const goToPreviousPage = () => {
+    if (currentPage > 1) {
+      setCurrentPage((prevPage) => prevPage - 1);
+    }
+  };
+
   if (loading) return <p>Cargando...</p>;
   if (error) return <p>{error}</p>;
 
   return (
     <>
-      <h1>Noticias</h1> {/* Título fuera del contenedor */}
+      <h1>Noticias</h1>
       <div className="news-container">
-        {articles.map((article, index) => (
+        {currentArticles.map((article, index) => (
           <div key={index} className="news-card">
             <img src={article.imageUrl} alt={article.title} className="news-image" />
             <h2>{article.title}</h2>
@@ -49,6 +66,17 @@ const NewsComponent: React.FC = () => {
             </a>
           </div>
         ))}
+      </div>
+      <div className="pagination">
+        <button onClick={goToPreviousPage} disabled={currentPage === 1}>
+          Anterior
+        </button>
+        <span>
+          Página {currentPage} de {totalPages}
+        </span>
+        <button onClick={goToNextPage} disabled={currentPage === totalPages}>
+          Siguiente
+        </button>
       </div>
     </>
   );
