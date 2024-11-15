@@ -21,7 +21,7 @@ const ChatButton = styled.button`
 
 const Chatbot: React.FC = () => {
   
-  const whatsappNumber = "56912345678"; // Cambia este número por tu número real
+  const whatsappNumber = "56975131688"; 
   
   const whatsappURL = `https://wa.me/${whatsappNumber}?text=Hola,%20me%20interesa%20más%20información%20sobre%20la%20junta%20de%20vecinos.`;
 
