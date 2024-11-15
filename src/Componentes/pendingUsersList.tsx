@@ -49,7 +49,7 @@ const PendingUsersList: React.FC = () => {
 
   return (
     <div className="pending-users-list">
-      <h2>Usuarios Pendientes</h2>
+      <h2>Usuarios Pendientes de Aceptación</h2>
       <table className="user-table">
         <thead>
           <tr>
