@@ -1,94 +1,121 @@
 .actividades-grid {
-    display: flex;
-    flex-wrap: wrap;
-    gap: 20px;
-    justify-content: center;
-    padding: 20px;
-    margin-bottom: 60px; /* Espacio para el footer */
+  display: flex;
+  flex-wrap: wrap;
+  gap: 20px;
+  justify-content: center;
+  padding: 20px;
+  margin-bottom: 60px; /* Espacio para el footer */
+}
+
+.actividad-card,
+.proyecto-card {
+  width: 100%;
+  max-width: 300px;
+  border: 1px solid #ddd;
+  border-radius: 8px;
+  overflow: hidden;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  background-color: #fff;
+  transition: transform 0.3s;
+}
+
+.actividad-card:hover,
+.proyecto-card:hover {
+  transform: translateY(-5px);
+}
+
+.actividad-image {
+  width: 100%;
+  height: 150px;
+  object-fit: cover; /* Ensures the image covers the area without distortion */
+}
+
+.actividad-content,
+.proyecto-content {
+  padding: 15px;
+  text-align: center;
+}
+
+h3 {
+  font-size: 1.2rem;
+  margin: 10px 0;
+}
+
+p {
+  font-size: 1rem;
+  color: #555;
+}
+
+.inscribete-button {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 10px;
+  border: none;
+  background-color: #4CAF50; /* Verde por defecto */
+  color: white;
+  font-size: 1rem;
+  cursor: pointer;
+  border-radius: 4px;
+  transition: background-color 0.3s;
+  width: 100%;
+  margin-top: 10px;
+}
+
+.inscribete-button:hover {
+  background-color: #45a049;
+}
+
+.cupos-llenos {
+  background-color: #f44336; /* Rojo */
+  color: white;
+}
+
+.cupos-llenos:hover {
+  background-color: #f44336;
+}
+
+.proyectos-vecinales-grid {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 20px;
+  justify-content: center;
+  padding: 20px;
+}
+
+.proyecto-card {
+  width: 100%;
+  max-width: 300px;
+  border: 1px solid #ddd;
+  border-radius: 8px;
+  overflow: hidden;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  background-color: #fff;
+  transition: transform 0.3s;
+}
+
+.proyecto-card:hover {
+  transform: translateY(-5px);
+}
+
+@media (max-width: 768px) {
+  .actividad-card,
+  .proyecto-card {
+    max-width: 90%;
   }
-  
-  .actividad-card {
-    width: 100%;
-    max-width: 300px;
-    border: 1px solid #ddd;
-    border-radius: 8px;
-    overflow: hidden;
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-    background-color: #fff;
-    transition: transform 0.3s;
-  }
-  
-  .actividad-card:hover {
-    transform: translateY(-5px);
-  }
-  
-  .actividad-image {
-    width: 100%;
-    height: 150px;
-    object-fit: cover; /* Ensures the image covers the area without distortion */
-  }
-  
-  .actividad-content {
-    padding: 15px;
-    text-align: center;
-  }
-  
+}
+
+@media (max-width: 480px) {
   h3 {
-    font-size: 1.2rem;
-    margin: 10px 0;
-  }
-  
-  p {
     font-size: 1rem;
-    color: #555;
-  }
-  
-  .inscribete-button {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    padding: 10px;
-    border: none;
-    background-color: #4CAF50; /* Verde por defecto */
-    color: white;
-    font-size: 1rem;
-    cursor: pointer;
-    border-radius: 4px;
-    transition: background-color 0.3s;
-    width: 100%;
-    margin-top: 10px;
-  }
-  
-  .inscribete-button:hover {
-    background-color: #45a049;
-  }
-  
-  .cupos-llenos {
-    background-color: #f44336; /* Rojo */
-    color: white;
-  }
-  
-  .cupos-llenos:hover{
-    background-color: #f44336;
   }
 
-  @media (max-width: 768px) {
-    .actividad-card {
-      max-width: 90%;
-    }
+  p {
+    font-size: 0.9rem;
   }
-  
-  @media (max-width: 480px) {
-    h3 {
-      font-size: 1rem;
-    }
-  
-    p {
-      font-size: 0.9rem;
-    }
-  
-    .inscribete-button {
-      font-size: 0.9rem;
-      padding: 8px;
-    }
+
+  .inscribete-button {
+    font-size: 0.9rem;
+    padding: 8px;
   }
+}
