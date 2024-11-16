@@ -2,14 +2,16 @@ import React from 'react';
 import './footer.css';
 import logo from '../img/imglogo.png'; 
 import { FaFacebookF, FaTwitter, FaInstagram } from 'react-icons/fa';
-
+import { Link } from 'react-router-dom';
 const Footer: React.FC = () => {
   return (
     <footer className="footer">
+
       <div className="footer-content">
         {/* Sección del logo */}
+        
         <div className="footer-section footer-logo">
-          <img src={logo} alt="Logo de la Junta de Vecinos" className="logo-image1" />
+          <Link to="/" onClick={() => window.scrollTo(0, 0)}><img src={logo} alt="Logo de la Junta de Vecinos" className="logo-image1" /></Link>
         </div>
         
         <div className="footer-section footer-num">
