@@ -1,106 +1,106 @@
-  
+.actividad-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  width: 90%;
+  max-width: 400px;
+  margin: 40px auto;
+  padding: 30px;
+  border: 1px solid #ddd;
+  border-radius: 8px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  background-color: #f9f9f9;
+  box-sizing: border-box;
+}
+
+.actividad-title {
+  font-size: 1.5rem;
+  margin-bottom: 20px;
+  color: #333;
+  text-align: center;
+}
+
+.actividad-input,
+.actividad-textarea,
+.actividad-file-input,
+.actividad-select { /* Añadido el estilo para el select */
+  width: 100%;
+  padding: 10px;
+  margin-bottom: 15px;
+  border-radius: 4px;
+  border: 1px solid #ccc;
+  font-size: 1rem;
+}
+
+.actividad-textarea {
+  resize: vertical;
+}
+
+.actividad-button {
+  padding: 12px 20px;
+  border-radius: 4px;
+  border: none;
+  background-color: #4CAF50;
+  color: #fff;
+  font-size: 1rem;
+  font-weight: bold;
+  cursor: pointer;
+  transition: background-color 0.3s;
+  width: 100%;
+  max-width: 200px;
+  margin-top: 15px;
+}
+
+.actividad-button:hover {
+  background-color: #45a049;
+}
+
+footer {
+  margin-top: 40px;
+  text-align: center;
+}
+
+.alert {
+  padding: 10px;
+  margin: 10px 0;
+  color: #fff;
+  background-color: #4caf50; /* Green for success */
+  border-radius: 4px;
+  text-align: center;
+}
+
+.alert.error {
+  background-color: #f44336; /* Red for errors */
+}
+
+@media (max-width: 768px) {
   .actividad-container {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
-    width: 90%;
-    max-width: 400px;
-    margin: 40px auto; /* Centrar el contenedor verticalmente y horizontalmente */
-    padding: 30px;
-    border: 1px solid #ddd;
-    border-radius: 8px;
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-    background-color: #f9f9f9;
-    box-sizing: border-box;
+    padding: 20px;
   }
-  
+
   .actividad-title {
-    font-size: 1.5rem;
-    margin-bottom: 20px;
-    color: #333;
-    text-align: center; /* Centrar el título */
+    font-size: 1.3rem;
   }
-  
+
+  .actividad-button {
+    max-width: 100%;
+  }
+}
+
+@media (max-width: 480px) {
+  .actividad-title {
+    font-size: 1.2rem;
+  }
+
   .actividad-input,
   .actividad-textarea,
-  .actividad-file-input {
-    width: 100%;
-    padding: 10px;
-    margin-bottom: 15px;
-    border-radius: 4px;
-    border: 1px solid #ccc;
-    font-size: 1rem;
+  .actividad-file-input,
+  .actividad-select { /* Reducir tamaño de fuente también para el select */
+    font-size: 0.9rem;
   }
-  
-  .actividad-textarea {
-    resize: vertical;
-  }
-  
+
   .actividad-button {
-    padding: 12px 20px;
-    border-radius: 4px;
-    border: none;
-    background-color: #4CAF50;
-    color: #fff;
-    font-size: 1rem;
-    font-weight: bold;
-    cursor: pointer;
-    transition: background-color 0.3s;
-    width: 100%;
-    max-width: 200px;
-    margin-top: 15px; /* Añadir espacio entre el botón y otros elementos */
-  }
-  
-  .actividad-button:hover {
-    background-color: #45a049;
-  }
-  
-  footer {
-    margin-top: 40px; /* Margen entre el contenedor y el footer */
-    text-align: center; /* Centrar el footer */
-  }
-  .alert {
     padding: 10px;
-    margin: 10px 0;
-    color: #fff;
-    background-color: #4caf50; /* Green for success */
-    border-radius: 4px;
-    text-align: center;
   }
-  
-  .alert.error {
-    background-color: #f44336; /* Red for errors */
-  }  
-  
-  /* Consultas de medios para hacer el diseño más adaptable */
-  @media (max-width: 768px) {
-    .actividad-container {
-      padding: 20px; /* Reducir el padding en pantallas más pequeñas */
-    }
-  
-    .actividad-title {
-      font-size: 1.3rem; /* Ajustar el tamaño de fuente del título */
-    }
-  
-    .actividad-button {
-      max-width: 100%; /* Hacer que el botón ocupe el ancho completo */
-    }
-  }
-  
-  @media (max-width: 480px) {
-    .actividad-title {
-      font-size: 1.2rem; /* Ajustar aún más el tamaño de fuente del título */
-    }
-  
-    .actividad-input,
-    .actividad-textarea,
-    .actividad-file-input {
-      font-size: 0.9rem; /* Reducir el tamaño de fuente de los campos de entrada */
-    }
-  
-    .actividad-button {
-      padding: 10px; /* Ajustar el padding del botón */
-    }
-  }
-  
+}

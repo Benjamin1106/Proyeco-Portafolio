@@ -1,19 +1,20 @@
-import React, { useState, useRef } from 'react';
-import { db } from '../firebase/firebaseConfig';
-import { collection, addDoc } from 'firebase/firestore';
-import { getStorage, ref, uploadBytes, getDownloadURL } from 'firebase/storage';
-import imageCompression from 'browser-image-compression';
+import React, { useState, useRef } from 'react'; 
+import { db } from '../firebase/firebaseConfig'; 
+import { collection, addDoc } from 'firebase/firestore'; 
+import { getStorage, ref, uploadBytes, getDownloadURL } from 'firebase/storage'; 
+import imageCompression from 'browser-image-compression'; 
 import './crearActividades.css';
 
-const CrearActividades: React.FC = () => {
-  const [nombre, setNombre] = useState<string>('');
-  const [descripcion, setDescripcion] = useState<string>('');
+const CrearActividades: React.FC = () => { 
+  const [titulo, setTitulo] = useState<string>(''); // Cambié nombre a título
+  const [descripcion, setDescripcion] = useState<string>(''); 
   const [cupos, setCupos] = useState<number>(0); // Estado para cupos
-  const [mensaje, setMensaje] = useState<string>(''); // Estado para alertas
-  const fileInputRef = useRef<HTMLInputElement | null>(null); // Referencia para el input de archivo
+  const [tipo, setTipo] = useState<string>('actividad'); // Estado para tipo de actividad
+  const [mensaje, setMensaje] = useState<string>(''); 
+  const fileInputRef = useRef<HTMLInputElement | null>(null); 
 
   const crearActividad = async () => {
-    if (nombre.trim() && descripcion.trim() && cupos > 0) {
+    if (titulo.trim() && descripcion.trim() && (tipo === 'proyectoVecinal' || cupos > 0)) { // Si es proyecto vecinal, no se valida cupos
       try {
         let fotoURL = '';
 
@@ -34,26 +35,31 @@ const CrearActividades: React.FC = () => {
           fotoURL = await getDownloadURL(fotoRef);
         }
 
-        // Agregar la actividad con el campo de cupos
-        await addDoc(collection(db, 'actividades'), {
-          nombre,
+        // Guardar en la base de datos en función del tipo de actividad
+        const collectionName = tipo === 'actividad' ? 'actividades' : 'proyectosVecinales';
+
+        await addDoc(collection(db, collectionName), {
+          titulo, // Usamos "titulo" en vez de "nombre"
           descripcion,
-          cupos,  // Añadimos el número de cupos
+          tipo,   // Tipo de actividad
           fotoURL,
           inscritos: [], // Campo de inscripción como array vacío
+          ...(tipo === 'actividad' && { cupos }) // Solo agregamos "cupos" si es una actividad
         });
 
-        setNombre('');
+        // Limpiar formulario
+        setTitulo('');
         setDescripcion('');
         setCupos(0);
+        setTipo('actividad'); // Restablecemos el tipo
         if (fileInputRef.current) fileInputRef.current.value = '';
-        setMensaje('Actividad creada exitosamente!');
+        setMensaje('Actividad  o Proyecto Vecinal creado exitosamente!');
       } catch (error) {
         console.error('Error al crear la actividad:', error);
         setMensaje('Error al crear la actividad. Por favor intenta nuevamente.');
       }
     } else {
-      setMensaje('Por favor, completa todos los campos y asegúrate de que los cupos sean mayores a 0.');
+      setMensaje('Por favor, completa todos los campos y asegúrate de que los cupos sean mayores a 0 cuando sea necesario.');
     }
 
     setTimeout(() => setMensaje(''), 3000);
@@ -61,36 +67,53 @@ const CrearActividades: React.FC = () => {
 
   return (
     <div className="actividad-container">
-      <h2 className="actividad-title">Crear Nueva Actividad</h2>
+      <h2 className="actividad-title">Crear Nueva Actividad o Proyecto Vecinal</h2>
       {mensaje && <div className="alert">{mensaje}</div>}
+
+      {/* Select para elegir tipo de actividad */}
+      <select
+        value={tipo}
+        onChange={(e) => setTipo(e.target.value)}
+        className="actividad-select"
+      >
+        <option value="actividad">Actividad</option>
+        <option value="proyectoVecinal">Proyecto Vecinal</option>
+      </select>
+
+      {/* Título en vez de nombre */}
       <input
         type="text"
-        value={nombre}
-        onChange={(e) => setNombre(e.target.value)}
-        placeholder="Nombre de la actividad"
+        value={titulo}
+        onChange={(e) => setTitulo(e.target.value)}
+        placeholder="Título"
         className="actividad-input"
       />
       <textarea
         value={descripcion}
         onChange={(e) => setDescripcion(e.target.value)}
-        placeholder="Descripción de la actividad"
+        placeholder="Descripción"
         className="actividad-textarea"
       />
-      <input
-        type="number"
-        value={cupos}
-        onChange={(e) => setCupos(Number(e.target.value))}
-        placeholder="Cantidad de cupos"
-        className="actividad-input"
-        min={1}
-      />
+      
+      {/* Mostrar cupos solo si es una actividad */}
+      {tipo === 'actividad' && (
+        <input
+          type="number"
+          value={cupos}
+          onChange={(e) => setCupos(Number(e.target.value))}
+          placeholder="Cantidad de cupos"
+          className="actividad-input"
+          min={1}
+        />
+      )}
+
       <input
         type="file"
         accept="image/*"
         ref={fileInputRef}
         className="actividad-file-input"
       />
-      <button onClick={crearActividad} className="actividad-button">Crear Actividad</button>
+      <button onClick={crearActividad} className="actividad-button">Crear</button>
     </div>
   );
 };
