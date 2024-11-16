@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
+import { BrowserRouter as Router, Routes, Route, Link  } from 'react-router-dom';
 import Navbar from './Componentes/navbar';
 import FormularioSolicitudes from './Componentes/solicitudes';
 import Home from './Componentes/home';
@@ -14,6 +14,7 @@ import ProtectedRoute from './Componentes/protectedRoute';
 import PendingUsersList from './Componentes/pendingUsersList';
 import NewsComponent from './Componentes/noticias';
 import Chatbot from './Componentes/Chatbot';  // Importa el componente Chatbot
+import Feriados from './Componentes/Feriados';
 
 const NotFound: React.FC = () => (
   <div style={{
@@ -56,6 +57,7 @@ const App: React.FC = () => {
         <Route path="/contacto" element={<Contacto />} />
         <Route path="/register" element={<Register />} />
         <Route path="/noticias" element={<NewsComponent />} />
+        <Route path="/feriados" element={<Feriados />} />
 
         {/* Rutas protegidas */}
         <Route element={<ProtectedRoute isAuthenticated={isAuthenticated} />}>
@@ -65,6 +67,7 @@ const App: React.FC = () => {
           <Route path="/crearActividades" element={<CrearActividades />} />
           <Route path="/usersList" element={<UsersList />} />
           <Route path="/pending" element={<PendingUsersList />} />
+          
         </Route>
 
         {/* Ruta para capturar todas las rutas no existentes */}
