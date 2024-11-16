@@ -1,0 +1,44 @@
+/* Estilos generales */
+.tabla-feriados {
+    width: 100%;
+    border-collapse: collapse;
+    margin: 20px 0;
+    font-family: 'Arial', sans-serif;
+}
+
+.tabla-feriados th,
+.tabla-feriados td {
+    padding: 12px;
+    text-align: left;
+    border-bottom: 1px solid #ddd;
+}
+
+.tabla-feriados th {
+    background-color: #007BFF;
+    color: white;
+    font-size: 16px;
+}
+
+.tabla-feriados tr:hover {
+    background-color: #f1f1f1;
+}
+
+.tabla-feriados td a {
+    color: #007BFF;
+    text-decoration: none;
+}
+
+.tabla-feriados td a:hover {
+    text-decoration: underline;
+}
+
+.tabla-feriados td ul {
+    margin: 0;
+    padding-left: 20px;
+}
+
+h1 {
+    font-size: 24px;
+    color: #333;
+    margin-bottom: 20px;
+}
