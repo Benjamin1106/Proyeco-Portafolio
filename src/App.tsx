@@ -15,6 +15,7 @@ import PendingUsersList from './Componentes/pendingUsersList';
 import NewsComponent from './Componentes/noticias';
 import Chatbot from './Componentes/Chatbot';  // Importa el componente Chatbot
 import Feriados from './Componentes/Feriados';
+import Galeria from './Componentes/Galeria';
 
 const NotFound: React.FC = () => (
   <div style={{
@@ -58,6 +59,7 @@ const App: React.FC = () => {
         <Route path="/register" element={<Register />} />
         <Route path="/noticias" element={<NewsComponent />} />
         <Route path="/feriados" element={<Feriados />} />
+        <Route path="/Galeria" element={<Galeria />} />
 
         {/* Rutas protegidas */}
         <Route element={<ProtectedRoute isAuthenticated={isAuthenticated} />}>

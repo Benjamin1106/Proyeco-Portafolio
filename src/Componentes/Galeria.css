@@ -1,0 +1,95 @@
+.galeria-container {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 20px;
+    font-family: Arial, sans-serif;
+    background-color: #f9f9f9;
+    color: #333;
+  }
+  
+  .galeria-title {
+    text-align: center;
+    font-size: 2.5rem;
+    margin-bottom: 30px;
+    color: #2d6a4f;
+  }
+  
+  .galeria-section {
+    margin-bottom: 40px;
+    padding: 20px;
+    border: 1px solid #ddd;
+    border-radius: 10px;
+    background-color: #fff;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+  }
+  
+  .galeria-activity-title {
+    font-size: 1.8rem;
+    color: #1b4332;
+    margin-bottom: 10px;
+  }
+  
+  .galeria-activity-description {
+    font-size: 1rem;
+    margin-bottom: 20px;
+    color: #555;
+    line-height: 1.5;
+  }
+  
+  .galeria-images {
+    display: flex;
+    gap: 10px;
+    margin-bottom: 20px;
+  }
+  
+  .galeria-image {
+    width: 2000px;
+    height: 300px;
+    object-fit: cover;
+    border-radius: 5px;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
+  }
+  
+  .galeria-buttons {
+    display: flex;
+    gap: 15px;
+  }
+  
+  .like-button,
+  .dislike-button {
+    padding: 10px 15px;
+    font-size: 1rem;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+  }
+  
+  .like-button {
+    background-color: #2d6a4f;
+    color: #fff;
+  }
+  
+  .like-button:hover {
+    background-color: #40916c;
+  }
+  
+  .dislike-button {
+    background-color: #d00000;
+    color: #fff;
+  }
+  
+  .dislike-button:hover {
+    background-color: #a10000;
+  }
+  
+  @media (max-width: 768px) {
+    .galeria-images {
+      flex-direction: column;
+    }
+  
+    .galeria-image {
+      width: 100%;
+    }
+  }
+  

@@ -46,6 +46,7 @@
 .footer-contact a {
   margin: 5px 0;
   color: #cdeacd;
+  
 }
 
 .footer-social a {
@@ -53,6 +54,7 @@
   margin: 0 10px;
   font-size: 1.5rem;
   transition: color 0.3s;
+  text-align: left;
 }
 
 .footer-social a:hover {
@@ -92,6 +94,7 @@
 
   .footer-social a {
       margin: 5px;
+      text-align: left;
   }
 }
 .footer-logo {
@@ -103,5 +106,24 @@
 .logo-image1 {
   width: 140px; /* Ajusta el tamaño del logo según prefieras */
   height: auto;
+}
+.footer-links ul {
+  list-style: none;
+  padding: 0;
+}
+
+.footer-links ul li {
+  margin-bottom: 5px;
+}
+
+.footer-links ul li a {
+  color: #cdeacd;
+  text-decoration: none;
+  font-size: 1rem;
+}
+
+.footer-links ul li a:hover {
+  text-decoration: underline;
+  color: #f1faee;
 }
 

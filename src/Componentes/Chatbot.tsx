@@ -23,7 +23,7 @@ const Chatbot: React.FC = () => {
   
   const whatsappNumber = "56975131688"; 
   
-  const whatsappURL = `https://wa.me/${whatsappNumber}?text=Hola,%20me%20interesa%20más%20información%20sobre%20la%20junta%20de%20vecinos%por%favor.`;
+  const whatsappURL = `https://wa.me/${whatsappNumber}?text=Hola,%20me%20interesa%20obtener%20más%20información%20sobre%20la%20junta%20de%20vecinos%20Villa%20Los%20Lagos%20por%20favor.`;
 
 
   return (
