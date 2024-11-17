@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import { useState, useEffect } from 'react';
 import { feriados } from './feriadosData'; // Asegúrate de que la ruta sea correcta.
 import './Feriados.css';
 interface Ley {
