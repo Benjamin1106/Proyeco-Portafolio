@@ -1,22 +1,76 @@
-import React, { useState, useRef } from 'react'; 
-import { db } from '../firebase/firebaseConfig'; 
-import { collection, addDoc } from 'firebase/firestore'; 
-import { getStorage, ref, uploadBytes, getDownloadURL } from 'firebase/storage'; 
-import imageCompression from 'browser-image-compression'; 
-import './crearActividades.css';
+import React, { useState, useRef, useEffect } from "react";
+import { db } from "../firebase/firebaseConfig";
+import { collection, addDoc, getDocs } from "firebase/firestore";
+import { getStorage, ref, uploadBytes, getDownloadURL } from "firebase/storage";
+import imageCompression from "browser-image-compression";
+import emailjs from "emailjs-com";
+import "./crearActividades.css";
 
-const CrearActividades: React.FC = () => { 
-  const [titulo, setTitulo] = useState<string>(''); // Cambié nombre a título
-  const [descripcion, setDescripcion] = useState<string>(''); 
-  const [cupos, setCupos] = useState<number>(0); // Estado para cupos
-  const [tipo, setTipo] = useState<string>('actividad'); // Estado para tipo de actividad
-  const [mensaje, setMensaje] = useState<string>(''); 
-  const fileInputRef = useRef<HTMLInputElement | null>(null); 
+const CrearActividades: React.FC = () => {
+  const [titulo, setTitulo] = useState<string>("");
+  const [descripcion, setDescripcion] = useState<string>("");
+  const [cupos, setCupos] = useState<number>(0);
+  const [tipo, setTipo] = useState<string>("actividad");
+  const [mensaje, setMensaje] = useState<string>("");
+  const [usersEmails, setUsersEmails] = useState<string[]>([]);
+  const fileInputRef = useRef<HTMLInputElement | null>(null);
 
-  const crearActividad = async () => {
-    if (titulo.trim() && descripcion.trim() && (tipo === 'proyectoVecinal' || cupos > 0)) { // Si es proyecto vecinal, no se valida cupos
+  // Cargar correos electrónicos de los usuarios desde Firestore
+  useEffect(() => {
+    const fetchUsersEmails = async () => {
       try {
-        let fotoURL = '';
+        const usersSnapshot = await getDocs(collection(db, "users"));
+        const emails = usersSnapshot.docs.map((doc) => doc.data().email as string);
+        setUsersEmails(emails);
+      } catch (error) {
+        console.error("Error al obtener correos de usuarios:", error);
+      }
+    };
+
+    fetchUsersEmails();
+  }, []);
+
+  // Función para enviar notificaciones por correo utilizando emailjs
+  const enviarNotificacion = async (
+    subject: string,
+    tipo: string,
+    titulo: string,
+    descripcion: string
+  ) => {
+    if (usersEmails.length === 0) {
+      console.warn("No hay correos electrónicos registrados para enviar notificaciones.");
+      return;
+    }
+  
+    try {
+      const sendEmailPromises = usersEmails.map((email) => {
+        const templateParams = {
+          subject,
+          tipo,
+          titulo,
+          descripcion,
+          to_email: email,
+        };
+  
+        return emailjs.send(
+          "service_p2op1eu", // Reemplaza con tu Service ID
+          "template_avzxkrf", // Reemplaza con tu Template ID
+          templateParams,
+          "xDYQGP5qWmrQPxol7" // Reemplaza con tu Public Key
+        );
+      });
+  
+      await Promise.all(sendEmailPromises);
+      console.log("Todos los correos han sido enviados.");
+    } catch (error) {
+      console.error("Error al enviar notificaciones:", error);
+    }
+  };
+  // Función para crear una nueva actividad o proyecto
+  const crearActividad = async () => {
+    if (titulo.trim() && descripcion.trim() && (tipo === "proyectoVecinal" || cupos > 0)) {
+      try {
+        let fotoURL = "";
 
         const file = fileInputRef.current?.files?.[0];
         if (file) {
@@ -27,7 +81,6 @@ const CrearActividades: React.FC = () => {
           };
 
           const compressedFile = await imageCompression(file, options);
-
           const storage = getStorage();
           const uniqueFileName = `${Date.now()}_${file.name}`;
           const fotoRef = ref(storage, `uploads/${uniqueFileName}`);
@@ -35,34 +88,40 @@ const CrearActividades: React.FC = () => {
           fotoURL = await getDownloadURL(fotoRef);
         }
 
-        // Guardar en la base de datos en función del tipo de actividad
-        const collectionName = tipo === 'actividad' ? 'actividades' : 'proyectosVecinales';
+        const collectionName = tipo === "actividad" ? "actividades" : "proyectosVecinales";
 
         await addDoc(collection(db, collectionName), {
-          titulo, // Usamos "titulo" en vez de "nombre"
+          titulo,
           descripcion,
-          tipo,   // Tipo de actividad
+          tipo,
           fotoURL,
-          inscritos: [], // Campo de inscripción como array vacío
-          ...(tipo === 'actividad' && { cupos }) // Solo agregamos "cupos" si es una actividad
+          inscritos: [],
+          ...(tipo === "actividad" && { cupos }),
         });
 
+        const subject = tipo === "actividad" ? "Nueva Actividad Creada" : "Nuevo Proyecto Vecinal";
+
+        // Enviar notificación a los usuarios con los datos completos
+        await enviarNotificacion(subject, tipo, titulo, descripcion);
+
         // Limpiar formulario
-        setTitulo('');
-        setDescripcion('');
+        setTitulo("");
+        setDescripcion("");
         setCupos(0);
-        setTipo('actividad'); // Restablecemos el tipo
-        if (fileInputRef.current) fileInputRef.current.value = '';
-        setMensaje('Actividad  o Proyecto Vecinal creado exitosamente!');
+        setTipo("actividad");
+        if (fileInputRef.current) fileInputRef.current.value = "";
+        setMensaje(`${tipo === "actividad" ? "Actividad" : "Proyecto Vecinal"} creado exitosamente!`);
       } catch (error) {
-        console.error('Error al crear la actividad:', error);
-        setMensaje('Error al crear la actividad. Por favor intenta nuevamente.');
+        console.error("Error al crear la actividad:", error);
+        setMensaje("Error al crear la actividad. Por favor intenta nuevamente.");
       }
     } else {
-      setMensaje('Por favor, completa todos los campos y asegúrate de que los cupos sean mayores a 0 cuando sea necesario.');
+      setMensaje(
+        "Por favor, completa todos los campos y asegúrate de que los cupos sean mayores a 0 cuando sea necesario."
+      );
     }
 
-    setTimeout(() => setMensaje(''), 3000);
+    setTimeout(() => setMensaje(""), 3000);
   };
 
   return (
@@ -70,7 +129,6 @@ const CrearActividades: React.FC = () => {
       <h2 className="actividad-title">Crear Nueva Actividad o Proyecto Vecinal</h2>
       {mensaje && <div className="alert">{mensaje}</div>}
 
-      {/* Select para elegir tipo de actividad */}
       <select
         value={tipo}
         onChange={(e) => setTipo(e.target.value)}
@@ -80,7 +138,6 @@ const CrearActividades: React.FC = () => {
         <option value="proyectoVecinal">Proyecto Vecinal</option>
       </select>
 
-      {/* Título en vez de nombre */}
       <input
         type="text"
         value={titulo}
@@ -94,9 +151,8 @@ const CrearActividades: React.FC = () => {
         placeholder="Descripción"
         className="actividad-textarea"
       />
-      
-      {/* Mostrar cupos solo si es una actividad */}
-      {tipo === 'actividad' && (
+
+      {tipo === "actividad" && (
         <input
           type="number"
           value={cupos}
@@ -113,7 +169,10 @@ const CrearActividades: React.FC = () => {
         ref={fileInputRef}
         className="actividad-file-input"
       />
-      <button onClick={crearActividad} className="actividad-button">Crear</button>
+
+      <button onClick={crearActividad} className="actividad-button">
+        Crear
+      </button>
     </div>
   );
 };
