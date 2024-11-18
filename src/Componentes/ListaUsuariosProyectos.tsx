@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { db } from '../firebase/firebaseConfig';
 import { collection, getDocs, doc, updateDoc, deleteDoc } from 'firebase/firestore';
-import './Styles/listaUsuariosProyectos.css';
+import './Styles/ListaUsuariosProyectos.css';
 
 interface Usuario {
   id: string;
