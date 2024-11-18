@@ -128,7 +128,7 @@ const Navbar: React.FC<NavbarProps> = ({ isAuthenticated, setIsAuthenticated, ro
               </button>
             ) : (
               <button className="navbar-button" onClick={openModal}>
-                <FaSignInAlt className="navbar-icon" />Ingresa
+                <FaSignInAlt className="navbar-icon" />Conectate
               </button>
             )}
           </div>
