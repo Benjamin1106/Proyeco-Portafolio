@@ -57,7 +57,7 @@ const CrearActividades: React.FC = () => {
         };
 
         return emailjs.send(
-          "service_p2op1eu", // Reemplaza con tu Service ID
+          "service_uakj6ut", // Reemplaza con tu Service ID
           "template_avzxkrf", // Reemplaza con tu Template ID
           templateParams,
           "xDYQGP5qWmrQPxol7" // Reemplaza con tu Public Key
