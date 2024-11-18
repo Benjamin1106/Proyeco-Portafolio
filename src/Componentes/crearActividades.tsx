@@ -12,22 +12,25 @@ const CrearActividades: React.FC = () => {
   const [cupos, setCupos] = useState<number>(0);
   const [tipo, setTipo] = useState<string>("actividad");
   const [mensaje, setMensaje] = useState<string>("");
-  const [usersEmails, setUsersEmails] = useState<string[]>([]);
+  const [users, setUsers] = useState<{ email: string; nombre: string }[]>([]);
   const fileInputRef = useRef<HTMLInputElement | null>(null);
 
-  // Cargar correos electrónicos de los usuarios desde Firestore
+  // Cargar usuarios (email y nombre) desde Firestore
   useEffect(() => {
-    const fetchUsersEmails = async () => {
+    const fetchUsers = async () => {
       try {
         const usersSnapshot = await getDocs(collection(db, "users"));
-        const emails = usersSnapshot.docs.map((doc) => doc.data().email as string);
-        setUsersEmails(emails);
+        const usersData = usersSnapshot.docs.map((doc) => ({
+          email: doc.data().email as string,
+          nombre: doc.data().name as string, // Asegúrate de que 'nombre' esté en tu base de datos
+        }));
+        setUsers(usersData);
       } catch (error) {
-        console.error("Error al obtener correos de usuarios:", error);
+        console.error("Error al obtener usuarios:", error);
       }
     };
 
-    fetchUsersEmails();
+    fetchUsers();
   }, []);
 
   // Función para enviar notificaciones por correo utilizando emailjs
@@ -37,21 +40,22 @@ const CrearActividades: React.FC = () => {
     titulo: string,
     descripcion: string
   ) => {
-    if (usersEmails.length === 0) {
-      console.warn("No hay correos electrónicos registrados para enviar notificaciones.");
+    if (users.length === 0) {
+      console.warn("No hay usuarios registrados para enviar notificaciones.");
       return;
     }
-  
+
     try {
-      const sendEmailPromises = usersEmails.map((email) => {
+      const sendEmailPromises = users.map((user) => {
         const templateParams = {
           subject,
           tipo,
           titulo,
           descripcion,
-          to_email: email,
+          nombre_usuario: user.nombre, 
+          to_email: user.email,
         };
-  
+
         return emailjs.send(
           "service_p2op1eu", // Reemplaza con tu Service ID
           "template_avzxkrf", // Reemplaza con tu Template ID
@@ -59,13 +63,14 @@ const CrearActividades: React.FC = () => {
           "xDYQGP5qWmrQPxol7" // Reemplaza con tu Public Key
         );
       });
-  
+
       await Promise.all(sendEmailPromises);
       console.log("Todos los correos han sido enviados.");
     } catch (error) {
       console.error("Error al enviar notificaciones:", error);
     }
   };
+
   // Función para crear una nueva actividad o proyecto
   const crearActividad = async () => {
     if (titulo.trim() && descripcion.trim() && (tipo === "proyectoVecinal" || cupos > 0)) {
