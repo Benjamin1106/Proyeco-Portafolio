@@ -13,6 +13,6 @@
     "noUnusedParameters": true,
     "noFallthroughCasesInSwitch": true
   },
-  "include": ["src"],
+  "include": ["src", "public/feriadosData.ts"],
   "exclude": ["node_modules"]
 }

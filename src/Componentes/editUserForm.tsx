@@ -1,6 +1,6 @@
 // EditUserForm.tsx
 import React, { FC } from 'react';
-import './editUserForm.css'
+import './Styles/editUserForm.css'
 
 type EditUserFormProps = {
   name: string;

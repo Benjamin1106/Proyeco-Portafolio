@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { db } from '../firebase/firebaseConfig';
 import { doc, addDoc, collection, query, where, getDocs } from 'firebase/firestore';
-import './formulario.css';
+import './Styles/formulario.css';
 
 interface FormularioProyectoProps {
   proyecto: { id: string; titulo: string };

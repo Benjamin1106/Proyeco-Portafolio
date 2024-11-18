@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { db } from '../firebase/firebaseConfig';
 import { collection, getDocs, doc, updateDoc, deleteDoc } from 'firebase/firestore';
 import EditUserForm from './editUserForm'; // Importamos el componente de formulario
-import './usersList.css';
+import './Styles/usersList.css';
 
 // Componente para mostrar y editar usuarios
 const UserList: React.FC = () => {

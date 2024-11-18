@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { PDFDocument, rgb, StandardFonts } from 'pdf-lib';
-import './modal.css';
+import './Styles/modal.css';
 
 interface ModalProps {
   isOpen: boolean;

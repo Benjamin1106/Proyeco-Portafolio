@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import './login.css';
+import './Styles/login.css';
 import { db } from '../firebase/firebaseConfig';
 import { collection, query, where, getDocs } from 'firebase/firestore';
 

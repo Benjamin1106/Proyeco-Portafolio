@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { db } from '../firebase/firebaseConfig';
 import { collection, getDocs, doc, deleteDoc, addDoc } from 'firebase/firestore';
-import './pendingUsersList.css';
+import './Styles/pendingUsersList.css';
 
 const PendingUsersList: React.FC = () => {
   const [pendingUsers, setPendingUsers] = useState<any[]>([]);

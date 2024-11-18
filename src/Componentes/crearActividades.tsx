@@ -4,7 +4,7 @@ import { collection, addDoc, getDocs } from "firebase/firestore";
 import { getStorage, ref, uploadBytes, getDownloadURL } from "firebase/storage";
 import imageCompression from "browser-image-compression";
 import emailjs from "emailjs-com";
-import "./crearActividades.css";
+import "./Styles/crearActividades.css";
 
 const CrearActividades: React.FC = () => {
   const [titulo, setTitulo] = useState<string>("");

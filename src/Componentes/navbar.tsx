@@ -1,7 +1,7 @@
 import React, { useState, useCallback, useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import { FaSignInAlt, FaSignOutAlt } from 'react-icons/fa';
-import './navbar.css';
+import './Styles/navbar.css';
 import logo from '../img/imglogo.png';
 import Login from './login';
 

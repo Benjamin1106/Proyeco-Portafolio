@@ -3,7 +3,7 @@ import { collection, addDoc } from 'firebase/firestore';
 import { db } from '../firebase/firebaseConfig';
 import emailjs from 'emailjs-com';
 import 'bootstrap/dist/css/bootstrap.min.css';
-import './contacto.css';
+import './Styles/contacto.css';
 import { useNavigate } from 'react-router-dom';  // Importa useNavigate
 
 const Contacto: React.FC = () => {

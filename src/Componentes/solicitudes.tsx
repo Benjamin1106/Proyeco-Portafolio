@@ -5,7 +5,7 @@ import { Calendar, momentLocalizer, SlotInfo, Views } from "react-big-calendar";
 import moment from "moment";
 import "moment/locale/es";
 import "react-big-calendar/lib/css/react-big-calendar.css";
-import "./solicitudes.css";
+import "./Styles/solicitudes.css";
 import Modal from "./modal";
 import { jsPDF } from "jspdf";
 

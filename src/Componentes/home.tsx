@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import ScrollReveal from 'scrollreveal';
-import './home.css';
+import './Styles/home.css';
 import foto1 from "../img/Foto1.jpg";
 import presidente from "../img/presidente.jpg";
 import secretaria from "../img/secretaria.jpg";

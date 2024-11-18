@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { db } from '../firebase/firebaseConfig';
 import { collection, getDocs, query, where } from 'firebase/firestore';
-import './actividades.css';
+import './Styles/actividades.css';
 import Formulario from './formulario';
 import FormularioProyecto from './formularioProyecto';
 

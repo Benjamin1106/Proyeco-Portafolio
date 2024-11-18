@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import './Galeria.css';
+import './Styles/Galeria.css';
 import { db } from '../firebase/firebaseConfig';
 import { doc, getDoc, setDoc, updateDoc } from 'firebase/firestore';
 import ScrollReveal from 'scrollreveal';
