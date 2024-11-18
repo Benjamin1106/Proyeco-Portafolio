@@ -30,11 +30,18 @@ const Home: React.FC = () => {
       delay: 400,
       opacity: 0,
     });
+    ScrollReveal().reveal('.gallery-section', {
+      duration: 2000,
+      origin: 'left',
+      distance: '50px',
+      delay: 800,
+      opacity: 0,
+    });
     ScrollReveal().reveal('.directiva-section', {
       duration: 2000,
       origin: 'bottom',
       distance: '50px',
-      delay: 600,
+      delay: 800,
       opacity: 0,
     });
 
@@ -77,6 +84,23 @@ const Home: React.FC = () => {
         </div>
       </section>
 
+
+      {/* Sección de Galería */}
+      <section className="gallery-section">
+        <div className="gallery-image">
+          <img src="./src/img/galleryplaceholder.jpg" alt="Galería de Fotos" />
+        </div>
+        <div className="gallery-content">
+          <h2>Galería de Fotos</h2>
+          <p>
+            Descubre momentos destacados de nuestras actividades comunitarias en la Villa Los Lagos. 
+            Un espacio para recordar y compartir nuestros logros y celebraciones.
+          </p>
+          <a href="/Galeria" className="gallery-button">Ver Galería</a>
+        </div>
+      </section>
+
+      
       {/* Sección de Nuestra Directiva */}
       <section className="directiva-section">
         <h2>Nuestra Directiva</h2>

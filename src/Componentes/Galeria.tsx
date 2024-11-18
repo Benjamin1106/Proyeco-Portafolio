@@ -87,10 +87,10 @@ const Galeria: React.FC = () => {
           </div>
           <div className="galeria-buttons">
             <button className="like-button" onClick={() => updateCounts(activity.id, "likes")}>
-              👍 Like ({likes[activity.id] || 0})
+              👍 Me Gusta ({likes[activity.id] || 0})
             </button>
             <button className="dislike-button" onClick={() => updateCounts(activity.id, "dislikes")}>
-              👎 Dislike ({dislikes[activity.id] || 0})
+              👎 No Me Gusta ({dislikes[activity.id] || 0})
             </button>
           </div>
         </div>
