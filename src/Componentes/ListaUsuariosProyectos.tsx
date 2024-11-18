@@ -6,7 +6,7 @@ import './Styles/listaUsuariosProyectos.css';
 interface Usuario {
   id: string;
   email: string;
-  nombre: string;
+  name: string;
   estado: 'pendiente' | 'aceptado' | 'rechazado';
 }
 
@@ -109,7 +109,7 @@ const ListaUsuariosProyectos: React.FC = () => {
           {usuarios.length > 0 ? (
             usuarios.map(usuario => (
               <div key={usuario.id} className="usuario-card">
-                <p><strong>Nombre:</strong> {usuario.nombre}</p>
+                <p><strong>Nombre:</strong> {usuario.name}</p>
                 <p><strong>Email:</strong> {usuario.email}</p>
                 <p><strong>Estado:</strong> {usuario.estado}</p>
                 <div className="acciones">
