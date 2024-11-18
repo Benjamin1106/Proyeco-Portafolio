@@ -1,10 +1,11 @@
 .galeria-container {
-    max-width: 1200px;
+    max-width: 1500px;
     margin: 0 auto;
     padding: 20px;
     font-family: Arial, sans-serif;
     background-color: #f9f9f9;
     color: #333;
+    box-sizing: border-box;
   }
   
   .galeria-title {
@@ -46,7 +47,7 @@
     width: 2000px;
     height: 300px;
     object-fit: cover;
-    border-radius: 5px;
+    border-radius: 8px;
     box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
   }
   
@@ -92,4 +93,27 @@
       width: 100%;
     }
   }
-  
+  /* Responsividad */
+@media (max-width: 768px) {
+  .galeria-title {
+    font-size: 1.8rem;
+  }
+
+  .galeria-activity-title {
+    font-size: 1.3rem;
+  }
+
+  .galeria-activity-description {
+    font-size: 0.9rem;
+  }
+
+  .galeria-buttons {
+    flex-direction: column;
+    gap: 10px;
+  }
+
+  .like-button,
+  .dislike-button {
+    font-size: 0.9rem;
+  }
+}

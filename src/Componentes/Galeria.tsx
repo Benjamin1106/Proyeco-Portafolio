@@ -2,8 +2,7 @@ import React, { useEffect, useState } from 'react';
 import './Galeria.css';
 import { db } from '../firebase/firebaseConfig';
 import { doc, getDoc, setDoc, updateDoc } from 'firebase/firestore';
-
-// Importación de imágenes
+import ScrollReveal from 'scrollreveal';
 import manualidades1 from "../img/manualidades1.jpg";
 import manualidades2 from "../img/manualidades2.jpg";
 import limpieza1 from "../img/limpieza1.jpg";
@@ -66,8 +65,17 @@ const Galeria: React.FC = () => {
       setLikes(Object.fromEntries(Object.entries(data).map(([id, val]) => [id, val.likes])));
       setDislikes(Object.fromEntries(Object.entries(data).map(([id, val]) => [id, val.dislikes])));
     };
-
     fetchData();
+  }, []);
+
+  useEffect(() => {
+    ScrollReveal().reveal('.galeria-section', {
+      duration: 2000,
+      distance: '50px',
+      easing: 'ease-in-out',
+      origin: 'bottom',
+      interval: 200,
+    });
   }, []);
 
   const updateCounts = async (id: string, field: "likes" | "dislikes") => {
