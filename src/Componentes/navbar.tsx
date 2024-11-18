@@ -90,6 +90,9 @@ const Navbar: React.FC<NavbarProps> = ({ isAuthenticated, setIsAuthenticated, ro
                     <Link to="/crearActividades" className="nav-links" onClick={toggleMenu}>Crear</Link>
                   </li>
                   <li className="nav-item">
+                    <Link to="/lup" className="nav-links" onClick={toggleMenu}>Lup</Link>
+                  </li>
+                  <li className="nav-item">
                     <Link to="/usersList" className="nav-links" onClick={toggleMenu}>Usuarios</Link>
                   </li>
                   <li className="nav-item">

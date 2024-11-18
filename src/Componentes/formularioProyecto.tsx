@@ -25,6 +25,7 @@ const FormularioProyecto: React.FC<FormularioProyectoProps> = ({ proyecto, onClo
       const proyectoRef = doc(db, 'proyectosVecinales', proyecto.id);
       const participantesRef = collection(proyectoRef, 'participantes');
 
+      // Verificar si el correo ya está inscrito
       const q = query(participantesRef, where("email", "==", formData.email));
       const querySnapshot = await getDocs(q);
 
@@ -33,16 +34,21 @@ const FormularioProyecto: React.FC<FormularioProyectoProps> = ({ proyecto, onClo
         return;
       }
 
+      // Añadir el registro
       await addDoc(participantesRef, formData);
 
       console.log('Participación registrada:', formData);
       setSuccessMessage('¡Te has registrado exitosamente en el proyecto!');
 
+      // Reiniciar formulario tras 5 segundos
       setTimeout(() => {
-        window.location.reload();
+        setFormData({ name: '', email: '', reason: '' });
+        setSuccessMessage(null);
+        onClose();
       }, 5000);
     } catch (error) {
       console.error('Error al registrar participación:', error);
+      setErrorMessage('Ocurrió un error al enviar el formulario. Intenta nuevamente.');
     }
   };
 
@@ -58,6 +64,7 @@ const FormularioProyecto: React.FC<FormularioProyectoProps> = ({ proyecto, onClo
               name="name"
               value={formData.name}
               onChange={handleChange}
+              placeholder="Tu nombre completo"
               required
             />
           </label>
@@ -68,6 +75,7 @@ const FormularioProyecto: React.FC<FormularioProyectoProps> = ({ proyecto, onClo
               name="email"
               value={formData.email}
               onChange={handleChange}
+              placeholder="ejemplo@correo.com"
               required
             />
           </label>
@@ -77,12 +85,13 @@ const FormularioProyecto: React.FC<FormularioProyectoProps> = ({ proyecto, onClo
               name="reason"
               value={formData.reason}
               onChange={handleChange}
+              placeholder="Describe brevemente por qué deseas participar"
               required
             ></textarea>
           </label>
           <div className="button-group">
-            <button type="submit">Enviar</button>
-            <button type="button" onClick={onClose}>Cerrar</button>
+            <button type="submit" className="btn-submit">Enviar</button>
+            <button type="button" onClick={onClose} className="btn-close">Cerrar</button>
           </div>
         </form>
         {successMessage && <div className="success-message">{successMessage}</div>}

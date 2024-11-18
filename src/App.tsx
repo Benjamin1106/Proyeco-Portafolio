@@ -16,6 +16,7 @@ import NewsComponent from './Componentes/noticias';
 import Chatbot from './Componentes/Chatbot';  // Importa el componente Chatbot
 import Feriados from './Componentes/Feriados';
 import Galeria from './Componentes/Galeria';
+import ListaUsuariosProyectos from './Componentes/ListaUsuariosProyectos';
 
 const NotFound: React.FC = () => (
   <div style={{
@@ -69,6 +70,7 @@ const App: React.FC = () => {
           <Route path="/crearActividades" element={<CrearActividades />} />
           <Route path="/usersList" element={<UsersList />} />
           <Route path="/pending" element={<PendingUsersList />} />
+          <Route path="/lup" element={<ListaUsuariosProyectos />} />
           
         </Route>
 
