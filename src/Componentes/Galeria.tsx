@@ -3,37 +3,47 @@ import './Galeria.css';
 import { db } from '../firebase/firebaseConfig';
 import { doc, getDoc, setDoc, updateDoc } from 'firebase/firestore';
 
+// Importación de imágenes
+import manualidades1 from "../img/manualidades1.jpg";
+import manualidades2 from "../img/manualidades2.jpg";
+import limpieza1 from "../img/limpieza1.jpg";
+import cocina1 from "../img/cocina1.jpg";
+import cocina2 from "../img/cocina2.jpg";
+import futbol1 from "../img/futbol1.jpg";
+import cine1 from "../img/cine1.jpg";
+import cine2 from "../img/cine2.jpg";
+
 const Galeria: React.FC = () => {
   const activities = [
     {
       id: "manualidades",
       title: "Taller de Manualidades",
       description: "Vecinas aprenden a crear decoraciones con materiales reciclados. Ideal para todas las edades.",
-      images: ["./src/img/manualidades1.jpg", "./src/img/manualidades2.jpg"],
+      images: [manualidades1, manualidades2],
     },
     {
       id: "limpieza",
       title: "Jornada de Limpieza Comunal",
       description: "Unimos fuerzas para mantener nuestras plazas y calles limpias y verdes.",
-      images: ["./src/img/limpieza1.jpg"],
+      images: [limpieza1],
     },
     {
       id: "cocina",
       title: "Clase de Cocina Saludable",
-      description: "Descubre recetas nutritivas y fáciles de preparar para toda la familia, en especial para los mas pequeños.",
-      images: ["./src/img/cocina1.jpg", "./src/img/cocina2.jpg"],
+      description: "Descubre recetas nutritivas y fáciles de preparar para toda la familia, en especial para los más pequeños.",
+      images: [cocina1, cocina2],
     },
     {
       id: "futbol",
       title: "Campeonato de Fútbol Infantil",
       description: "Fomenta el deporte y la diversión en nuestros niños y jóvenes.",
-      images: ["./src/img/futbol1.jpg"],
+      images: [futbol1],
     },
     {
       id: "cine",
       title: "Cine al Aire Libre",
       description: "Disfrutamos de películas familiares bajo las estrellas en nuestra plaza central.",
-      images: ["./src/img/cine1.jpg", "./src/img/cine2.jpg"],
+      images: [cine1, cine2],
     },
   ];
 

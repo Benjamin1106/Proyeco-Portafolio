@@ -5,6 +5,7 @@ import foto1 from "../img/Foto1.jpg";
 import presidente from "../img/presidente.jpg";
 import secretaria from "../img/secretaria.jpg";
 import tesorera from "../img/tesorera.jpg";
+import gallery from "../img/galleryplaceholder.jpg"
 
 const Home: React.FC = () => {
   const [visitorsOnline, setVisitorsOnline] = useState<number>(0);
@@ -88,7 +89,7 @@ const Home: React.FC = () => {
       {/* Sección de Galería */}
       <section className="gallery-section">
         <div className="gallery-image">
-          <img src="./src/img/galleryplaceholder.jpg" alt="Galería de Fotos" />
+          <img src={gallery} alt="Galería de Fotos" />
         </div>
         <div className="gallery-content">
           <h2>Galería de Fotos</h2>
