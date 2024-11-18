@@ -83,7 +83,7 @@ const Home: React.FC = () => {
           <img src={foto1} alt="Comunidad Unida" />
         </div>
       </section>
-
+      <br />
 
       {/* Sección de Galería */}
       <section className="gallery-section">
@@ -99,7 +99,7 @@ const Home: React.FC = () => {
           <a href="/Galeria" className="gallery-button">Ver Galería</a>
         </div>
       </section>
-
+<br />
       
       {/* Sección de Nuestra Directiva */}
       <section className="directiva-section">
