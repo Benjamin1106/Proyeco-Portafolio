@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useRef } from "react";
 import styled from "styled-components";
 
 // Estilos para el botón flotante
@@ -81,13 +81,13 @@ const Chatbot: React.FC = () => {
   const [isOpen, setIsOpen] = useState(false);
   const [messages, setMessages] = useState<string[]>([]);
   const [userMessage, setUserMessage] = useState("");
+  const messagesEndRef = useRef<HTMLDivElement>(null); // Referencia al final de los mensajes
 
   useEffect(() => {
     if (isOpen) {
       const welcomeMessage =
         "¡Hola! Soy Laguito, tu asistente virtual de la Junta de Vecinos Villa Los Lagos. Estoy aquí para ayudarte. Pregúntame sobre actividades, horarios o cualquier información que necesites.";
       setMessages([`<div style="display: flex; align-items: center;"><img src="/favicon.ico" alt="favicon" style="width: 50px; height: 50px; margin-right: 5px;" /><strong>Laguito: </strong> ${welcomeMessage}</div>`]);
-      
     }
   }, [isOpen]);
 
@@ -123,7 +123,7 @@ const Chatbot: React.FC = () => {
     <br/>Ingresar a nuestra página web de contacto: <a href="/contacto">Contacto</a>
     <br/>Llenar el formulario de contacto con tus datos
     <br/>Luego de llenarlo, te llegará un correo de confirmación del contacto y serás contactado a la brevedad por un miembro de la directiva.`,
-};
+  };
 
   const keywords = [
     "residencia",
@@ -189,6 +189,13 @@ const Chatbot: React.FC = () => {
   const whatsappNumber = "56975131688";
   const whatsappURL = `https://wa.me/${whatsappNumber}?text=Hola,%20me%20interesa%20obtener%20más%20información%20sobre%20la%20junta%20de%20vecinos%20Villa%20Los%20Lagos%20por%20favor.`;
 
+  // Hacer scroll hacia el último mensaje cuando se actualicen los mensajes
+  useEffect(() => {
+    if (messagesEndRef.current) {
+      messagesEndRef.current.scrollIntoView({ behavior: "smooth" });
+    }
+  }, [messages]); // Esto se dispara cada vez que los mensajes cambian
+
   return (
     <>
       <ChatButton onClick={() => setIsOpen(!isOpen)}>💬</ChatButton>
@@ -203,9 +210,12 @@ const Chatbot: React.FC = () => {
               </a>.
             </WhatsAppMessage>
 
+            {/* Mostrar los mensajes */}
             {messages.map((message, index) => (
               <div key={index} dangerouslySetInnerHTML={{ __html: message }}></div>
             ))}
+            {/* Referencia al último mensaje */}
+            <div ref={messagesEndRef}></div>
           </MessagesContainer>
           <MessageInput
             value={userMessage}
@@ -220,3 +230,4 @@ const Chatbot: React.FC = () => {
 };
 
 export default Chatbot;
+
