@@ -86,15 +86,16 @@ const Chatbot: React.FC = () => {
     if (isOpen) {
       const welcomeMessage =
         "¡Hola! Soy Laguito, tu asistente virtual de la Junta de Vecinos Villa Los Lagos. Estoy aquí para ayudarte. Pregúntame sobre actividades, horarios o cualquier información que necesites.";
-      setMessages([`<div style="display: flex; align-items: center;"><img src="./public/favicon.ico" alt="favicon" style="width: 20px; height: 20px; margin-right: 5px;" /><strong>Laguito:</strong> ${welcomeMessage}</div>`]);
+      setMessages([`<div style="display: flex; align-items: center;"><img src="./public/favicon.ico" alt="favicon" style="width: 50px; height: 50px; margin-right: 5px;" /><strong>Laguito: </strong> ${welcomeMessage}</div>`]);
+      
     }
   }, [isOpen]);
 
   // Respuestas predeterminadas
   const predefinedResponses: { [key: string]: string } = {
-    ayuda: "¡Hola! ¿En qué puedo ayudarte?",
+    ayuda: "<br/>¡Hola! ¿En qué puedo ayudarte?",
     horario: "Nuestros horarios de atención son de 9:00 a 18:00 de lunes a viernes.",
-    actividades: "Las próximas actividades son una limpieza vecinal y un bingo comunitario.",
+    actividades: "Las próximas actividades son una limpieza vecinal y un bingo comunitario para reconstruir el ano de Nelson Maury.",
     reunión: "La próxima reunión será el día sábado a las 16:00.",
     ofensivo: `Lamento no ser de tu ayuda, pero no me hables así por favor 😢.`,
     menu: `Para más información escoge una de las siguientes opciones:<br/><br/>
@@ -103,7 +104,7 @@ const Chatbot: React.FC = () => {
               3. Inscríbete en proyectos vecinales<br/>
               4. Solicitar cancha o plaza<br/>
               5. Ser contactado por la directiva<br/><br/>
-              Escribe solo el número de la opción que necesitas.`,
+              Escribe solo el número de la opción que necesitas.<br/>`,
     "1": `<br/>Para obtener tu certificado de residencia debes ingresar a nuestra página web <a href="/inicio">aquí</a>.
     <br/>Registrarte presionando el botón verde que dice 'Ingresa'.
     <br/>Una vez registrado, debes iniciar sesión y pinchar el botón de SOLICITUDES o seguir este enlace: <a href="/solicitudes">Solicitudes</a>
