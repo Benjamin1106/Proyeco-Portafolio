@@ -94,9 +94,10 @@ const Chatbot: React.FC = () => {
   // Respuestas predeterminadas
   const predefinedResponses: { [key: string]: string } = {
     ayuda: "<br/>¡Hola! ¿En qué puedo ayudarte?",
+    hola: "<br/>¡Hola! ¿En qué puedo ayudarte?",
     horario: "Nuestros horarios de atención son de 9:00 a 18:00 de lunes a viernes.",
     actividades: "Las próximas actividades son una limpieza vecinal y un bingo comunitario para reconstruir el ano de Nelson Maury.",
-    reunión: "La próxima reunión será el día sábado a las 16:00.",
+    reunion: "La próxima reunión será el día sábado a las 16:00.",
     ofensivo: `Lamento no ser de tu ayuda, pero no me hables así por favor 😢.`,
     menu: `Para más información escoge una de las siguientes opciones:<br/><br/>
               1. Obtener Certificado de Residencia<br/>
@@ -123,6 +124,9 @@ const Chatbot: React.FC = () => {
     <br/>Ingresar a nuestra página web de contacto: <a href="/contacto">Contacto</a>
     <br/>Llenar el formulario de contacto con tus datos
     <br/>Luego de llenarlo, te llegará un correo de confirmación del contacto y serás contactado a la brevedad por un miembro de la directiva.`,
+    despedida: "¡Adiós! Fue un placer ayudarte. Si necesitas algo más, no dudes en escribirme. 😊",
+    preguntaPersonal: "Soy un asistente virtual, no puedo responder preguntas personales, pero si necesitas ayuda, ¡estoy aquí para ti! 🤖",
+    contactoDirectivo: `Si necesitas hablar con un directivo, por favor visita nuestra página de contacto <a href="/contacto">aquí</a> y llena el formulario. ¡Te responderán pronto!`,
   };
 
   const keywords = [
@@ -132,7 +136,6 @@ const Chatbot: React.FC = () => {
     "proyecto",
     "descargar",
     "hablar",
-    "hola",
     "sacar",
     "inscribir",
     "participar",
@@ -140,6 +143,7 @@ const Chatbot: React.FC = () => {
     "cancha",
     "plaza",
     "registro",
+    "obtener"
   ];
 
   const offensiveWords = [
@@ -157,24 +161,55 @@ const Chatbot: React.FC = () => {
     "conche",
     "chuche",
     "tumare",
+    "pene",
+    "tula",
+    "qlo",
+    "pichula",
+    "pico",
+    "gay"
   ];
+
+  const farewellWords = ["adios", "chao", "hasta luego", "nos vemos", "hasta pronto", "estes bien", "nada mas", "gracias"];
+  const personalQuestions = ["como estas", "que tal", "cómo te va", "que haces", "cuantos años tienes"];
+  const directivoRequests = ["directivo", "encargado", "presidente", "junta directiva", "directiva", "tesorera", "encargado"];
 
   const handleMessageSend = () => {
     if (userMessage.trim() === "") return;
 
     const lowerCaseMessage = userMessage.toLowerCase();
-    const containsOffensive = offensiveWords.some((word) => lowerCaseMessage.includes(word));
     let response = "";
 
+    // Verificar si el mensaje contiene palabras ofensivas
+    const containsOffensive = offensiveWords.some((word) => lowerCaseMessage.includes(word));
     if (containsOffensive) {
       response = predefinedResponses["ofensivo"];
     } else {
-      const containsKeyword = keywords.some((keyword) => lowerCaseMessage.includes(keyword));
-      if (containsKeyword) {
-        response = predefinedResponses["menu"];
-      } else {
-        const responseKey = Object.keys(predefinedResponses).find((key) => lowerCaseMessage.includes(key));
-        response = responseKey && predefinedResponses[responseKey] ? predefinedResponses[responseKey] : "Lo siento, no entiendo tu consulta. Por favor, intenta ser más claro.";
+      // Verificar si es una despedida
+      const containsFarewell = farewellWords.some((word) => lowerCaseMessage.includes(word));
+      if (containsFarewell) {
+        response = predefinedResponses["despedida"];
+      }
+      // Verificar si es una pregunta personal
+      else if (personalQuestions.some((question) => lowerCaseMessage.includes(question))) {
+        response = predefinedResponses["preguntaPersonal"];
+      }
+      // Verificar si se solicita un directivo
+      else if (directivoRequests.some((request) => lowerCaseMessage.includes(request))) {
+        response = predefinedResponses["contactoDirectivo"];
+      }
+      // Verificar si es un caso con palabras clave
+      else {
+        const containsKeyword = keywords.some((keyword) => lowerCaseMessage.includes(keyword));
+        if (containsKeyword) {
+          response = predefinedResponses["menu"];
+        } else {
+          const responseKey = Object.keys(predefinedResponses).find((key) =>
+            lowerCaseMessage.includes(key)
+          );
+          response = responseKey && predefinedResponses[responseKey]
+            ? predefinedResponses[responseKey]
+            : "Lo siento, no entiendo tu consulta. Por favor, intenta ser más claro.";
+        }
       }
     }
 
@@ -230,4 +265,3 @@ const Chatbot: React.FC = () => {
 };
 
 export default Chatbot;
-
