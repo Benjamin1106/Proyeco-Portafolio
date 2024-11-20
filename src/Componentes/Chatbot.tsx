@@ -86,7 +86,7 @@ const Chatbot: React.FC = () => {
     if (isOpen) {
       const welcomeMessage =
         "¡Hola! Soy Laguito, tu asistente virtual de la Junta de Vecinos Villa Los Lagos. Estoy aquí para ayudarte. Pregúntame sobre actividades, horarios o cualquier información que necesites.";
-      setMessages([`<div style="display: flex; align-items: center;"><img src="./public/favicon.ico" alt="favicon" style="width: 50px; height: 50px; margin-right: 5px;" /><strong>Laguito: </strong> ${welcomeMessage}</div>`]);
+      setMessages([`<div style="display: flex; align-items: center;"><img src="/favicon.ico" alt="favicon" style="width: 50px; height: 50px; margin-right: 5px;" /><strong>Laguito: </strong> ${welcomeMessage}</div>`]);
       
     }
   }, [isOpen]);
