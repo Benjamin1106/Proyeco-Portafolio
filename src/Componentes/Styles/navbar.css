@@ -9,7 +9,7 @@
 /* Navbar Styles */
 .navbar {
     background-color: #2a9d8f;
-    height: 90px;
+    height: 100%;
     display: flex;
     justify-content: center;
     align-items: center;
