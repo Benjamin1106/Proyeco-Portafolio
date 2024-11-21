@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { collection, addDoc, query, where, onSnapshot } from "firebase/firestore";
+import { collection, addDoc, query, where, onSnapshot} from "firebase/firestore";
 import { db } from "../firebase/firebaseConfig";
 import { Calendar, momentLocalizer, SlotInfo, Views } from "react-big-calendar";
 import moment from "moment";
@@ -15,6 +15,8 @@ import firma from '../img/firma.png';
 // Configuración para moment.js
 moment.locale("es");
 const localizer = momentLocalizer(moment);
+const fechaEmision = moment().format("DD-MM-YYYY HH:mm:ss");
+const fechaEmisionDate = moment(fechaEmision, "DD-MM-YYYY HH:mm:ss").toDate();
 
 interface FormData {
   nombre: string;
@@ -26,6 +28,8 @@ interface FormData {
   datosCertificado?: string;
   fechaInicio?: Date | null;
   fechaFin?: Date | null;
+  fechaEmision: Date | null;
+
 }
 
 const Solicitudes: React.FC = () => {
@@ -39,6 +43,7 @@ const Solicitudes: React.FC = () => {
     datosCertificado: "",
     fechaInicio: null,
     fechaFin: null,
+    fechaEmision: fechaEmisionDate,
   });
 
   const [reservasOcupadas, setReservasOcupadas] = useState<any[]>([]);
@@ -98,6 +103,7 @@ const Solicitudes: React.FC = () => {
       datosCertificado: "",
       fechaInicio: null,
       fechaFin: null,
+      fechaEmision: null,
     });
     setSelectedSlot(null);
   };
@@ -186,7 +192,7 @@ const Solicitudes: React.FC = () => {
         pdf.text(`Domiciliado en: ${pdfData.direccion}`, 10, 60);
         pdf.text(`Correo: ${pdfData.correo}`, 10, 70);
         pdf.text(`Con Motivo de: ${formData.datosCertificado}`, 10, 80);
-        
+        pdf.text(`Fecha de Emisión: ${fechaEmision}`, 10, 90);
 
         pdf.text("Firma de la Junta de Vecinos", 10, 120);
         pdf.text("_____________________________", 10, 130);
