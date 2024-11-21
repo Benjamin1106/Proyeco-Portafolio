@@ -4,6 +4,7 @@ import { FaSignInAlt, FaSignOutAlt } from 'react-icons/fa';
 import './Styles/navbar.css';
 import logo from '../img/imglogo.png';
 import Login from './login';
+import { FaChartBar } from 'react-icons/fa';
 
 type NavbarProps = {
   isAuthenticated: boolean;
@@ -97,6 +98,9 @@ const Navbar: React.FC<NavbarProps> = ({ isAuthenticated, setIsAuthenticated, ro
                   </li>
                   <li className="nav-item">
                     <Link to="/pending" className="nav-links" onClick={toggleMenu}>Pendientes</Link>
+                  </li>
+                  <li className="nav-item">
+                    <Link to="/grafico" className="nav-links" onClick={toggleMenu}><FaChartBar /></Link>
                   </li>
                 </>
               )}
