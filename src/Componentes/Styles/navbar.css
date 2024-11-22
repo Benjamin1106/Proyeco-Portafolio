@@ -22,8 +22,9 @@
     justify-content: space-between;
     align-items: center;
     width: 100%;
-    max-width: 1300px;
+    max-width: 100%; /* Asegura un límite máximo del ancho */
     padding: 0 20px;
+    overflow: hidden; /* Esto previene el desbordamiento horizontal */
 }
 
 .navbar-logo {
@@ -114,8 +115,12 @@
     background-color: #922724;
 }
 
-/* Responsive Styles */
+/* Responsivo */
 @media screen and (max-width: 768px) {
+    body, html {
+        overflow-x: hidden; /* Esto previene el desbordamiento horizontal */
+    }
+
     .menu-icon {
         display: block;
     }
@@ -130,6 +135,7 @@
         background-color: #2a9d8f;
         transition: all 0.5s ease;
         align-items: center;
+        padding: 0;
     }
 
     .nav-menu.active {

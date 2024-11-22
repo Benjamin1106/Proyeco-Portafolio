@@ -59,6 +59,20 @@ const Navbar: React.FC<NavbarProps> = ({ isAuthenticated, setIsAuthenticated, ro
     localStorage.removeItem('userNombre');
   }, [setIsAuthenticated, setRole]);
 
+  // Calculamos el número de enlaces (links) en el menú
+  const getMenuItemsCount = () => {
+    let count = 5; // Siempre hay al menos 5 enlaces por defecto
+
+    // Agregar elementos adicionales dependiendo de si está autenticado o no
+    if (isAuthenticated) {
+      count += role === 'directiva' 
+        ? 5  // Si es directiva, se muestran 5 enlaces más
+        : 3; // Si es vecino, se muestran 3 enlaces más
+    }
+
+    return count;
+  };
+
   return (
     <nav className="navbar">
       <div className="navbar-container">
@@ -67,9 +81,12 @@ const Navbar: React.FC<NavbarProps> = ({ isAuthenticated, setIsAuthenticated, ro
           Junta de Vecinos
         </Link>
 
-        <div className="menu-icon" onClick={toggleMenu}>
-          &#9776;
-        </div>
+        {/* Mostramos el ícono de hamburguesa solo si hay más de 5 enlaces */}
+        {getMenuItemsCount() > 3 && (
+          <div className="menu-icon" onClick={toggleMenu}>
+            &#9776;
+          </div>
+        )}
 
         <ul className={`nav-menu ${isActive ? 'active' : ''}`}>
           <li className="nav-item">
