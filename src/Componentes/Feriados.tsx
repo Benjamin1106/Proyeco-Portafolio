@@ -1,6 +1,7 @@
 import { useState, useEffect } from 'react';
 import { feriados } from '../../public/feriadosData'; // Asegúrate de que la ruta sea correcta.
 import './Styles/Feriados.css';
+
 interface Ley {
     nombre: string;
     url: string;
@@ -26,6 +27,9 @@ const Feriados = () => {
     };
 
     useEffect(() => {
+        // Desplazarse al principio de la página cuando el componente se monta
+        window.scrollTo(0, 0); // Esto desplazará la página al principio (top 0)
+
         // Obtener el año actual
         const currentYear = new Date().getFullYear();
 
@@ -36,7 +40,7 @@ const Feriados = () => {
         });
 
         setFeriadosState(feriadosDelAño); // Establecer el estado con los feriados del año actual
-    }, []);
+    }, []); // El array vacío [] asegura que esto solo se ejecute una vez cuando el componente se monte.
 
     return (
         <div style={{ padding: '20px' }}>
