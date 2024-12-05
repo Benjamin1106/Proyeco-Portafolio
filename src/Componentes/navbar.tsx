@@ -1,6 +1,6 @@
 import React, { useState, useCallback, useEffect } from 'react';
 import { Link } from 'react-router-dom';
-import { FaSignInAlt, FaSignOutAlt, FaShoppingCart, FaChartBar } from 'react-icons/fa';
+import { FaSignInAlt, FaSignOutAlt, FaChartBar } from 'react-icons/fa';
 import './Styles/navbar.css';
 import logo from '../img/imglogo.png';
 import Login from './login';
