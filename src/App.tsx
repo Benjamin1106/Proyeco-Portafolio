@@ -18,7 +18,7 @@ import Feriados from './Componentes/Feriados';
 import Galeria from './Componentes/Galeria';
 import ListaUsuariosProyectos from './Componentes/ListaUsuariosProyectos';
 import SolicitudesGrafico from './Componentes/grafico';
-import Comprar from './Componentes/comprar';
+import Comprar from './Componentes/Comprar';
 import WebPay from './Componentes/WebPay';
 
 const NotFound: React.FC = () => (
