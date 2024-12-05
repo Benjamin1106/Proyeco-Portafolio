@@ -41,6 +41,7 @@ const Footer: React.FC = () => {
             <li><a href="https://www.carabineros.cl/" target="_blank" rel="noopener noreferrer">Carabineros de Chile</a></li>
             <li><a href="https://www.bomberos.cl/" target="_blank" rel="noopener noreferrer">Bomberos de Chile</a></li>
             <li><Link to="/feriados">Feriados de Chile</Link></li>
+            <li><Link to="/comprar">Propuesta de Compras</Link></li>
             
           </ul>
         </div>

@@ -1,0 +1,77 @@
+.webpay-container {
+    font-family: Arial, sans-serif;
+    max-width: 600px;
+    margin: 0 auto;
+    text-align: center;
+  }
+  
+  .webpay-header {
+    background-color: #620065;
+    padding: 10px 0;
+  }
+  
+  .webpay-logo {
+    height: 40px;
+  }
+  
+  .webpay-content {
+    padding: 20px;
+  }
+  
+  .webpay-info p {
+    margin: 5px 0;
+  }
+  
+  .webpay-amount {
+    color: #0073e6;
+    font-size: 1.5rem;
+    font-weight: bold;
+  }
+  
+  .webpay-alert {
+    background-color: #e6f7ff;
+    color: #0056b3;
+    padding: 10px;
+    margin: 20px 0;
+    border-radius: 5px;
+  }
+  
+  .webpay-options h3 {
+    margin-bottom: 10px;
+  }
+  
+  .webpay-buttons {
+    display: flex;
+    justify-content: center;
+    gap: 10px;
+  }
+  
+  .webpay-button {
+    padding: 10px 20px;
+    border: none;
+    border-radius: 5px;
+    background-color: #f0f0f0;
+    cursor: pointer;
+    font-size: 1rem;
+  }
+  
+  .webpay-button:hover {
+    background-color: #620065;
+    color: white;
+  }
+  
+  .webpay-footer {
+    margin-top: 20px;
+    font-size: 0.9rem;
+  }
+  
+  .webpay-link {
+    color: #0073e6;
+    text-decoration: none;
+  }
+  
+  .webpay-link:hover,
+  .webpay-policy:hover {
+    text-decoration: underline;
+  }
+  

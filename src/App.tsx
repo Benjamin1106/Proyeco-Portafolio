@@ -18,6 +18,8 @@ import Feriados from './Componentes/Feriados';
 import Galeria from './Componentes/Galeria';
 import ListaUsuariosProyectos from './Componentes/ListaUsuariosProyectos';
 import SolicitudesGrafico from './Componentes/grafico';
+import Comprar from './Componentes/comprar';
+import WebPay from './Componentes/WebPay';
 
 const NotFound: React.FC = () => (
   <div style={{
@@ -73,7 +75,8 @@ const App: React.FC = () => {
           <Route path="/pending" element={<PendingUsersList />} />
           <Route path="/lup" element={<ListaUsuariosProyectos />} />
           <Route path="/grafico" element={<SolicitudesGrafico />} />
-          
+          <Route path="/comprar" element={<Comprar />} />
+          <Route path="/webpay" element={<WebPay />} />
         </Route>
 
         {/* Ruta para capturar todas las rutas no existentes */}

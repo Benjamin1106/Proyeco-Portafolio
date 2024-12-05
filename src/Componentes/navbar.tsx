@@ -1,10 +1,9 @@
 import React, { useState, useCallback, useEffect } from 'react';
 import { Link } from 'react-router-dom';
-import { FaSignInAlt, FaSignOutAlt } from 'react-icons/fa';
+import { FaSignInAlt, FaSignOutAlt, FaShoppingCart, FaChartBar } from 'react-icons/fa';
 import './Styles/navbar.css';
 import logo from '../img/imglogo.png';
 import Login from './login';
-import { FaChartBar } from 'react-icons/fa';
 
 type NavbarProps = {
   isAuthenticated: boolean;
@@ -22,29 +21,29 @@ const Navbar: React.FC<NavbarProps> = ({ isAuthenticated, setIsAuthenticated, ro
     const savedRole = localStorage.getItem('userRole');
     const savedAuthStatus = localStorage.getItem('isAuthenticated');
     const savedUserName = localStorage.getItem('userNombre');
-    
+
     if (savedRole && savedAuthStatus === 'true') {
       setIsAuthenticated(true);
       setRole(savedRole);
-      setUserName(savedUserName); // Cargamos el nombre del usuario
+      setUserName(savedUserName);
     } else {
       setIsAuthenticated(false);
       setRole('vecino');
     }
   }, [setIsAuthenticated, setRole]);
 
-  const toggleMenu = useCallback(() => setIsActive(prevState => !prevState), []);
+  const toggleMenu = useCallback(() => setIsActive((prevState) => !prevState), []);
   const openModal = useCallback(() => setIsModalOpen(true), []);
   const closeModal = useCallback(() => setIsModalOpen(false), []);
 
   const handleLogin = useCallback(
-    (userData: { role: string, rut: string, name: string, email: string, address: string, phone: string }) => {
+    (userData: { role: string; rut: string; name: string; email: string; address: string; phone: string }) => {
       setIsAuthenticated(true);
       setRole(userData.role);
-      setUserName(userData.name); // Guardamos el nombre del usuario en el estado
+      setUserName(userData.name);
       localStorage.setItem('isAuthenticated', 'true');
       localStorage.setItem('userRole', userData.role);
-      localStorage.setItem('userNombre', userData.name); // Guardamos el nombre en localStorage
+      localStorage.setItem('userNombre', userData.name);
       closeModal();
     },
     [setIsAuthenticated, setRole, closeModal]
@@ -53,20 +52,20 @@ const Navbar: React.FC<NavbarProps> = ({ isAuthenticated, setIsAuthenticated, ro
   const handleLogout = useCallback(() => {
     setIsAuthenticated(false);
     setRole('vecino');
-    setUserName(null); // Limpiamos el nombre al cerrar sesión
+    setUserName(null);
     localStorage.removeItem('isAuthenticated');
     localStorage.removeItem('userRole');
     localStorage.removeItem('userNombre');
   }, [setIsAuthenticated, setRole]);
 
-  // Calculamos el número de enlaces (links) en el menú
+  // Calculamos el número de enlaces en el menú
   const getMenuItemsCount = () => {
-    let count = 5; // Siempre hay al menos 5 enlaces por defecto
+    let count = 3; // Siempre hay al menos 3 enlaces por defecto
 
     // Agregar elementos adicionales dependiendo de si está autenticado o no
     if (isAuthenticated) {
-      count += role === 'directiva' 
-        ? 5  // Si es directiva, se muestran 5 enlaces más
+      count += role === 'directiva'
+        ? 5 // Si es directiva, se muestran 5 enlaces más
         : 3; // Si es vecino, se muestran 3 enlaces más
     }
 
@@ -81,7 +80,6 @@ const Navbar: React.FC<NavbarProps> = ({ isAuthenticated, setIsAuthenticated, ro
           Junta de Vecinos
         </Link>
 
-        {/* Mostramos el ícono de hamburguesa solo si hay más de 5 enlaces */}
         {getMenuItemsCount() > 3 && (
           <div className="menu-icon" onClick={toggleMenu}>
             &#9776;
@@ -114,11 +112,9 @@ const Navbar: React.FC<NavbarProps> = ({ isAuthenticated, setIsAuthenticated, ro
                     <Link to="/usersList" className="nav-links" onClick={toggleMenu}>Usuarios</Link>
                   </li>
                   <li className="nav-item">
-                    <Link to="/pending" className="nav-links" onClick={toggleMenu}>Pendientes</Link>
-                  </li>
-                  <li className="nav-item">
                     <Link to="/grafico" className="nav-links" onClick={toggleMenu}><FaChartBar /></Link>
                   </li>
+
                 </>
               )}
               {role === 'vecino' && (
@@ -136,15 +132,11 @@ const Navbar: React.FC<NavbarProps> = ({ isAuthenticated, setIsAuthenticated, ro
               )}
             </>
           )}
-
-          {/* Mostrar nombre del usuario loggeado si está autenticado */}
           {isAuthenticated && (
             <li className="nav-item user-name">
               Usuario: {userName}
             </li>
           )}
-
-          {/* Botón de Conéctate/Cerrar sesión dentro del menú móvil */}
           <div className="navbar-button-container">
             {isAuthenticated ? (
               <button className="navbar-button-logout" onClick={handleLogout}>
@@ -158,7 +150,6 @@ const Navbar: React.FC<NavbarProps> = ({ isAuthenticated, setIsAuthenticated, ro
           </div>
         </ul>
       </div>
-
       <Login isOpen={isModalOpen} onClose={closeModal} onLogin={handleLogin} />
     </nav>
   );
