@@ -18,7 +18,7 @@ const WebPay = () => {
           </p>
           <p>
             <strong>Monto a pagar:</strong>{" "}
-            <span className="webpay-amount">$999.492</span>
+            <span className="webpay-amount">$7.000</span>
           </p>
         </div>
         <div className="webpay-alert">

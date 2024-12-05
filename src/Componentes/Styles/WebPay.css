@@ -29,7 +29,7 @@
   }
   
   .webpay-alert {
-    background-color: #e6f7ff;
+    background-color: #d8e0d8;
     color: #0056b3;
     padding: 10px;
     margin: 20px 0;
@@ -50,14 +50,14 @@
     padding: 10px 20px;
     border: none;
     border-radius: 5px;
-    background-color: #f0f0f0;
+    background-color: #914848;
     cursor: pointer;
     font-size: 1rem;
   }
   
   .webpay-button:hover {
     background-color: #620065;
-    color: white;
+    color: rgb(255, 255, 255);
   }
   
   .webpay-footer {

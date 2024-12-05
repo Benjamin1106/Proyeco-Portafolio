@@ -1,7 +1,6 @@
-import React, { useState } from 'react';
+import { useState } from 'react';
 import './Styles/comprar.css';
 import { FaShoppingCart } from 'react-icons/fa';
-import axios from 'axios';
 import { useNavigate } from 'react-router-dom';  // Importar useNavigate
 
 const Comprar = () => {

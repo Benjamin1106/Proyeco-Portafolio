@@ -96,7 +96,7 @@ const Chatbot: React.FC = () => {
     ayuda: "<br/>¡Hola! ¿En qué puedo ayudarte?",
     hola: "<br/>¡Hola! ¿En qué puedo ayudarte?",
     horario: "Nuestros horarios de atención son de 9:00 a 18:00 de lunes a viernes.",
-    actividades: "Las próximas actividades son una limpieza vecinal y un bingo comunitario para reconstruir el ano de Nelson Maury.",
+    actividades: "Las próximas actividades son una limpieza vecinal y un bingo comunitario.",
     reunion: "La próxima reunión será el día sábado a las 16:00.",
     ofensivo: `Lamento no ser de tu ayuda, pero no me hables así por favor 😢.`,
     menu: `Para más información escoge una de las siguientes opciones:<br/><br/>
