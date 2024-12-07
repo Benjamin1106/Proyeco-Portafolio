@@ -1,0 +1,44 @@
+name: Deploy to Firebase
+
+on:
+  push:
+    branches:
+      - main # Ejecutar el workflow al hacer push a la rama 'main'
+
+jobs:
+  deploy:
+    runs-on: windows-latest # Cambiar a 'ubuntu-latest' si no es estrictamente necesario usar Windows
+
+    env:
+      GOOGLE_APPLICATION_CREDENTIALS: ${{ secrets.GOOGLE_APPLICATION_CREDENTIALS }}
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v3
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v3
+        with:
+          node-version: 18 # Cambia esto según tu versión de Node.js
+
+      - name: Install Yarn
+        run: npm install -g yarn
+
+      - name: Install Dependencies
+        run: yarn install
+
+      - name: Build Application
+        run: npm run build
+
+      - name: Deploy to Firebase
+        env:
+          FIREBASE_TOKEN: ${{ secrets.FIREBASE_TOKEN }} # Necesitas configurar este secreto
+        run: firebase deploy
+
+      - name: Success Message
+        if: ${{ success() }}
+        run: echo 'Despliegue exitoso en Firebase.'
+
+      - name: Failure Message
+        if: ${{ failure() }}
+        run: echo 'El despliegue ha fallado.'
